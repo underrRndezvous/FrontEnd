@@ -38,5 +38,7 @@ export default tseslint.config([
         
        ]
     }
+=======
+>>>>>>> 16078bd8792a6b0fda8df0be067043f73b364053
   },
 ])
