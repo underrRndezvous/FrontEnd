@@ -1,9 +1,13 @@
+import { useRoutes } from "react-router-dom";
+import routes from "./app/routes/routes";
+
 function App() {
+  const element = useRoutes(routes);
   return (
     <div>
-      <p>시작</p>
+      {element}
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
