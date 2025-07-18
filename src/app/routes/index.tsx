@@ -4,7 +4,7 @@ const routes: RouteObject[] = [
   {
     path: "/",
     element: <div>Hello World</div>,
-  },
+  }
 ];
 
 export default routes;
