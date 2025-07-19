@@ -1,7 +1,7 @@
 function App() {
   return (
     <div>
-      <p>시작</p>
+      <p className="sub-01 text-point">폰트 Test</p>
     </div>
   );
 }
