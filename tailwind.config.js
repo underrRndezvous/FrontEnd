@@ -19,6 +19,7 @@ export default {
         gray2: '#B1B4B1',
         gray1: '#EDF0ED',
         white: '#FCFFFC'
+
       },
       fontSize: {
         '30': '30px',
