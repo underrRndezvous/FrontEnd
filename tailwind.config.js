@@ -12,7 +12,13 @@ export default {
         sub01: '#D0FFEB',
         sub02: '#EFFFF8',
         sub03: '#FFFACC',
-        point: '#FFE600'
+        point: '#FFE600',
+        black: '#111411',
+        gray4: '#393C39',
+        gray3: '#757875',
+        gray2: '#B1B4B1',
+        gray1: '#EDF0ED',
+        white: '#FCFFFC'
       },
       fontSize: {
         '30': '30px',
