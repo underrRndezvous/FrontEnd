@@ -29,16 +29,13 @@ export default tseslint.config([
           leadingUnderscore: 'allow',
         },
       
-      // 3. 전역 상수는 UPPER_CASE 추가 허용
+      // 2. 전역 상수는 UPPER_CASE 추가 허용
         {
           selector: 'variable',
           modifiers: ['const', 'global'],
           format: ['camelCase', 'UPPER_CASE'],
         },
-        
-       ]
+      ]
     }
-=======
->>>>>>> 16078bd8792a6b0fda8df0be067043f73b364053
   },
 ])
