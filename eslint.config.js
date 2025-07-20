@@ -35,9 +35,7 @@ export default tseslint.config([
           modifiers: ['const', 'global'],
           format: ['camelCase', 'UPPER_CASE'],
         },
-        
-       ]
+      ]
     }
-
   },
 ])
