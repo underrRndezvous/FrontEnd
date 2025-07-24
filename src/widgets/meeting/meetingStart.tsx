@@ -1,11 +1,11 @@
-import Button1 from "@/shared/ui/Button1";
+import Button from "@/shared/ui/Button";
 import characterImage from "@/shared/asset/images/character.png";
 
-const MeetingStart = () => {
-  const handleStart = () => {
-    console.log("시작하기 버튼 클릭 시");
-  };
+interface MeetingStartProps {
+  onStart: () => void;
+}
 
+const MeetingStart = ({ onStart }: MeetingStartProps) => {
   return (
     <div className="flex h-full flex-col items-center justify-center text-center">
       <h1 className="title-01 mb-2 text black">
@@ -21,7 +21,9 @@ const MeetingStart = () => {
       <img src={characterImage} alt="캐릭터" className="mb-24 w-60" />
 
       <div className="w-full max-w-sm px-4">
-        <Button1 onClick={handleStart}>시작하기</Button1>
+        <Button format="Button1" color="primary" onClick={onStart}>
+          시작하기
+        </Button>
       </div>
     </div>
   );

@@ -22,20 +22,26 @@ export default tseslint.config([
     rules: {
       '@typescript-eslint/naming-convention': [
         'error',
-        // 1. 일반 변수, 함수, 객체는 camelCase
+        // 일반 변수, 함수, 객체는 camelCase
         {
           selector: 'default',
           format: ['camelCase','PascalCase'],
           leadingUnderscore: 'allow',
         },
       
-      // 2. 전역 상수는 UPPER_CASE 추가 허용
+        // 전역 상수는 UPPER_CASE 추가 허용
         {
           selector: 'variable',
           modifiers: ['const', 'global'],
-          format: ['camelCase', 'UPPER_CASE'],
+          format: ['camelCase','PascalCase', 'UPPER_CASE'],
         },
-      ]
+
+        {
+        "selector": "variable",
+        "types": ["function"],
+        "format": ["camelCase", "PascalCase"]
+        },
+       ]
     }
   },
 ])
