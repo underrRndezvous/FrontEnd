@@ -1,5 +1,6 @@
 import MeetingStart from "@/widgets/meeting/meetingStart";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const Step0_Page = () => {
   const navigate = useNavigate();
@@ -8,9 +9,15 @@ const Step0_Page = () => {
     navigate("/Plaza/step1_1");
   };
   return (
-    <main className="h-screen w-full">
+    <motion.main
+      className="h-screen w-full"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
+    >
       <MeetingStart onStart={handleStart} />
-    </main>
+    </motion.main>
   );
 };
 
