@@ -1,6 +1,7 @@
 import React from "react";
 import StepNavigation from "@/widgets/common/stepNavigation";
 
+// 이전, 다음 버튼 레이아웃
 interface StepFormLayoutProps {
   children: React.ReactNode;
   onNext: () => void;

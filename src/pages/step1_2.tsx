@@ -8,7 +8,7 @@ const Step1_2Page = () => {
   const [selectedPurpose, setSelectedPurpose] = useState<string | null>(null);
 
   const handleNext = () => {
-    console.log("선택된 모임 목적:", selectedPurpose);
+    navigate("/plaza/step1_3");
   };
 
   const handlePrev = () => {
