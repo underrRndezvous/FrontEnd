@@ -6,7 +6,9 @@ import StepFormLayout from "@/shared/ui/StepFormLayout";
 const Step1_3Page = () => {
   const navigate = useNavigate();
 
-  const handleNext = () => {};
+  const handleNext = () => {
+    navigate("/Plaza/step1_5");
+  };
 
   const handlePrev = () => {
     navigate(-1);
@@ -14,6 +16,8 @@ const Step1_3Page = () => {
 
   return (
     <StepFormLayout
+      title="어떤 모임인가요?"
+      subtitle="모임 목적을 선택해주세요"
       onNext={handleNext}
       onPrev={handlePrev}
       isNextDisabled={false} // TODO: 선택 여부에 따라 비활성화 처리

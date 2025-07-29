@@ -25,9 +25,6 @@ const GroupPurposeForm = ({
 }: GroupPurposeFormProps) => {
   return (
     <div className="flex w-full flex-col items-center text-center">
-      <h1 className="title-02 text-black">어떤 모임인가요?</h1>
-      <p className="body-02 text-gray3 mb-12">모임 목적을 선택해주세요</p>
-
       <Selection
         options={purposeOptions}
         selectedId={selectedPurpose}

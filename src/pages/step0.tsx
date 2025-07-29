@@ -10,13 +10,15 @@ const Step0_Page = () => {
   };
   return (
     <motion.main
-      className="h-screen w-full"
+      className="flex h-screen w-full items-center justify-center"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
     >
-      <MeetingStart onStart={handleStart} />
+      <div className="relative flex h-[600px] w-full max-w-sm flex-col items-center justify-center rounded-lg bg-white p-6">
+        <MeetingStart onStart={handleStart} />
+      </div>
     </motion.main>
   );
 };

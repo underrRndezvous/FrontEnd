@@ -13,9 +13,6 @@ const GroupNameForm = ({
 }: GroupNameFormProps) => {
   return (
     <div className="flex flex-col">
-      <h1 className="title-02 mb-16 text-black text-center">
-        모임 이름은 무엇인가요?
-      </h1>
       <img src={hiImage} alt="캐릭터" className="mb-16 w-40 self-center" />
       <div className="w=full px-8">
         <p className="body-02 text-gray3 mb-2 text-left">

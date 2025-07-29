@@ -20,6 +20,8 @@ const Step1_1Page = () => {
 
   return (
     <StepFormLayout
+      title="모임 이름은 무엇인가요?"
+      subtitle=""
       onNext={handleNext}
       onPrev={handlePrev}
       isNextDisabled={isNextDisabled}

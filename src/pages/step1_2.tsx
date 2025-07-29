@@ -8,7 +8,7 @@ const Step1_2Page = () => {
   const [selectedPurpose, setSelectedPurpose] = useState<string | null>(null);
 
   const handleNext = () => {
-    navigate("/plaza/step1_3");
+    navigate("/Plaza/step1_3");
   };
 
   const handlePrev = () => {
@@ -19,6 +19,8 @@ const Step1_2Page = () => {
 
   return (
     <StepFormLayout
+      title="어떤 모임인가요?"
+      subtitle="모임 목적을 선택해주세요"
       onNext={handleNext}
       onPrev={handlePrev}
       isNextDisabled={isNextDisabled}
