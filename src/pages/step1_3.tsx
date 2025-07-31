@@ -7,7 +7,7 @@ const Step1_3Page = () => {
   const navigate = useNavigate();
 
   const handleNext = () => {
-    navigate("/Plaza/step1_5");
+    navigate("/Plaza/step1_4");
   };
 
   const handlePrev = () => {
