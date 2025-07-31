@@ -6,9 +6,7 @@ import StepFormLayout from "@/shared/ui/StepFormLayout";
 const Step1_5Page = () => {
   const navigate = useNavigate();
 
-  const handleNext = () => {
-    // 다음 단계 로직
-  };
+  const handleNext = () => {};
 
   const handlePrev = () => {
     navigate(-1);

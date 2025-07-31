@@ -14,7 +14,7 @@ const DepartureInputForm = () => {
   ]);
 
   const handleAdd = () => {
-    // 최대 5개까지만 추가
+    // 최대 인원수 설정 ? 아직
     if (departures.length >= 5) return;
     const newDeparture: Departure = {
       id: Date.now(),
@@ -27,7 +27,6 @@ const DepartureInputForm = () => {
     setDepartures((prev) => prev.filter((dep) => dep.id !== idToRemove));
   };
   const handleChange = (id: number, newValue: string) => {
-    // ✅ 이제 이 함수는 순수하게 값만 변경하고, 새 상자를 추가하지 않습니다.
     setDepartures((prev) =>
       prev.map((dep) => (dep.id === id ? { ...dep, value: newValue } : dep))
     );
@@ -40,7 +39,7 @@ const DepartureInputForm = () => {
       const currentInput = departures.find((d) => d.id === id);
       const isLastInput = departures[departures.length - 1].id === id;
 
-      // 마지막 입력창이고, 값이 있고, 모임원 타입일 때만 새 상자 추가
+      // 마지막 입력창이고, 값이 있고, 모임원 타입이면 새상자 추가
       if (
         currentInput?.type === "member" &&
         isLastInput &&

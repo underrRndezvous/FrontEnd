@@ -22,7 +22,9 @@ const Selection = ({ options, selectedId, onSelect }: SelectionProps) => {
           onClick={() => onSelect(option.id)}
           className={clsx(
             "flex flex-col items-center justify-center rounded-lg bg-white p-4 transition-all",
-            selectedId === option.id ? "ring-2 ring-main" : "ring-1 ring-gray1"
+            selectedId === option.id
+              ? "ring-2 ring-main shadow-glow-main"
+              : "ring-1 ring-gray1"
           )}
         >
           <span className="body-02 text-gray3">{option.label}</span>
