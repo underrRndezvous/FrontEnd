@@ -19,11 +19,6 @@ const TimeSelector = () => {
 
   return (
     <div className="flex w-full flex-col items-center">
-      <h1 className="title-02 text-black">언제 모일 예정인가요?</h1>
-      <p className="body-02 text-gray3 mb-12">
-        모임 시간대를 모두 선택해주세요
-      </p>
-
       <div className="relative h-64 w-64 ">
         <div className="grid h-full w-full grid-cols-2 grid-rows-2 gap-2 transform rotate-45">
           <button

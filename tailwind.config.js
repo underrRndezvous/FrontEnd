@@ -8,7 +8,7 @@ export default {
         sans: ['Pretendard', 'sans-serif'],
       },
        boxShadow: {
-        'glow-main': '0 0 30px 0px #62FFBB'
+        'glow-main': '0 0 40px 0px #62FFBB'
       },
       colors: {
         main: '#62FFBB',
