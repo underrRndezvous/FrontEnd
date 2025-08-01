@@ -23,7 +23,7 @@ const Step1_4Page = () => {
   ]);
 
   const handleNext = () => {
-    /* ... */
+    navigate("/Plaza/step1_5");
   };
   const handlePrev = () => {
     navigate(-1);
