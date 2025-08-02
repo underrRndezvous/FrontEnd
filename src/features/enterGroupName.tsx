@@ -12,7 +12,7 @@ const EnterGroupName = ({ value, onChange }: EnterGroupNameProps) => {
   };
 
   return (
-    <div className="w-full max-w-sm px-4">
+    <div className="w-full max-w-sm px-6">
       <Input
         type="text"
         placeholder="모임 이름"

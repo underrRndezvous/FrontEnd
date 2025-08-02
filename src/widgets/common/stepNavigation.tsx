@@ -13,7 +13,7 @@ const StepNavigation = ({
   isNextDisabled = false,
 }: StepNavigationProps) => {
   return (
-    <div className="flex w-full gap-x-5 py-6 px-8">
+    <div className="flex w-full gap-x-5 py-6 px-2">
       <Button format="Button2" color="secondary" onClick={onPrev}>
         이전
       </Button>

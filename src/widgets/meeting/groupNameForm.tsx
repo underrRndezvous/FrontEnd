@@ -13,7 +13,7 @@ const GroupNameForm = ({
 }: GroupNameFormProps) => {
   return (
     <div className="flex flex-col">
-      <img src={hiImage} alt="캐릭터" className="mb-16 w-40 self-center" />
+      <img src={hiImage} alt="캐릭터" className="mb-20 w-48 self-center" />
       <div className="w=full px-8">
         <p className="body-02 text-gray3 mb-2 text-left">
           모임 이름을 작성해주세요
