@@ -51,8 +51,9 @@ interface Place {
 const Step1_4Page = () => {
   const navigate = useNavigate();
   const [places, setPlaces] = useState<Place[]>([
-    { id: 1, type: null, subType: null },
+    { id: Date.now(), type: null, subType: null },
   ]);
+  const [editingPlaceId, setEditingPlaceId] = useState<number | null>(null);
   const [overlayData, setOverlayData] = useState<{
     title: string;
     buttonText: string;
@@ -68,25 +69,39 @@ const Step1_4Page = () => {
   };
 
   const handleItemClick = (id: number) => {
-    // 현재는 첫 번째 항목만 수정 가능하다고 가정하고 오버레이를 엽니다.
-    // TODO: 나중에 여러 장소를 추가/수정하는 로직으로 확장 필요
-    if (id === places[0].id) {
-      setOverlayData({
-        title: "모임 장소 유형을 선택해주세요",
-        buttonText: "다음",
-        options: placeTypeOptions,
-        step: "main",
-      });
-    }
+    setEditingPlaceId(id);
+    setOverlayData({
+      title: "모임 장소 유형을 선택해주세요",
+      buttonText: "다음",
+      options: placeTypeOptions,
+      step: "main",
+    });
+  };
+
+  const handleAddPlace = () => {
+    if (places.length >= 5) return;
+    setPlaces((prev) => [
+      ...prev,
+      { id: Date.now(), type: null, subType: null },
+    ]);
+  };
+
+  const handleRemovePlace = (idToRemove: number) => {
+    if (places.length <= 1) return;
+    setPlaces((prev) => prev.filter((p) => p.id !== idToRemove));
   };
 
   const handleConfirm = (selectedId: string) => {
-    if (overlayData?.step === "main") {
-      const newPlaces = places.map((p) =>
-        p.id === 1 ? { ...p, type: selectedId, subType: null } : p
-      );
-      setPlaces(newPlaces);
+    const isMainStep = overlayData?.step === "main";
 
+    // 현재 수정 중인 항목 업데이트
+    let newPlaces = places.map((p) =>
+      p.id === editingPlaceId
+        ? { ...p, [isMainStep ? "type" : "subType"]: selectedId }
+        : p
+    );
+
+    if (isMainStep) {
       if (selectedId === "restaurant") {
         setOverlayData({
           title: "음식점 유형을 선택해주세요",
@@ -105,12 +120,15 @@ const Step1_4Page = () => {
         setOverlayData(null);
       }
     } else {
-      const newPlaces = places.map((p) =>
-        p.id === 1 ? { ...p, subType: selectedId } : p
-      );
-      setPlaces(newPlaces);
       setOverlayData(null);
     }
+
+    // 마지막 항목이었는지 확인 후 새 항목 추가
+    const wasLastItem = places[places.length - 1].id === editingPlaceId;
+    if (wasLastItem && places.length < 5) {
+      newPlaces = [...newPlaces, { id: Date.now(), type: null, subType: null }];
+    }
+    setPlaces(newPlaces);
   };
 
   return (
@@ -120,11 +138,15 @@ const Step1_4Page = () => {
         subtitle="모임에 필요한 장소 유형과 순서를 정해주세요"
         onNext={handleNext}
         onPrev={handlePrev}
-        isNextDisabled={!places[0].type}
+        isNextDisabled={places.some((p) => p.type === null)}
       >
-        <PlaceTypeForm places={places} onItemClick={handleItemClick} />
+        <PlaceTypeForm
+          places={places}
+          onItemClick={handleItemClick}
+          onAdd={handleAddPlace}
+          onRemove={handleRemovePlace}
+        />
       </StepFormLayout>
-
       <Overlay
         isOpen={overlayData !== null}
         onClose={() => setOverlayData(null)}
