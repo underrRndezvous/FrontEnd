@@ -22,13 +22,13 @@ export const IconDragHandle = () => (
   >
     <path
       d="M9 8L12 5L15 8"
-      strokeWidth="4"
+      strokeWidth="3"
       strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
       d="M15 16L12 19L9 16"
-      strokeWidth="4"
+      strokeWidth="3"
       strokeLinecap="round"
       strokeLinejoin="round"
     />

@@ -93,13 +93,33 @@ const Step1_4Page = () => {
 
   const handleConfirm = (selectedId: string) => {
     const isMainStep = overlayData?.step === "main";
+    const wasLastAndEmpty =
+      !places.find((p) => p.id === editingPlaceId)?.type &&
+      places.length - 1 === places.findIndex((p) => p.id === editingPlaceId);
 
-    // 현재 수정 중인 항목 업데이트
-    let newPlaces = places.map((p) =>
-      p.id === editingPlaceId
-        ? { ...p, [isMainStep ? "type" : "subType"]: selectedId }
-        : p
-    );
+    // ✅ 상태 업데이트 로직을 명확하게 분리합니다.
+    setPlaces((currentPlaces) => {
+      // 1. 현재 수정 중인 항목을 먼저 업데이트합니다.
+      let newPlaces = currentPlaces.map((p) =>
+        p.id === editingPlaceId
+          ? {
+              ...p,
+              [isMainStep ? "type" : "subType"]: selectedId,
+              ...(isMainStep && { subType: null }),
+            }
+          : p
+      );
+
+      // 2. 비어있던 마지막 항목을 채웠고, 5개 미만이면 새 항목을 추가합니다.
+      if (wasLastAndEmpty && newPlaces.length < 5) {
+        newPlaces = [
+          ...newPlaces,
+          { id: Date.now(), type: null, subType: null },
+        ];
+      }
+
+      return newPlaces;
+    });
 
     if (isMainStep) {
       if (selectedId === "restaurant") {
@@ -122,14 +142,8 @@ const Step1_4Page = () => {
     } else {
       setOverlayData(null);
     }
-
-    // 마지막 항목이었는지 확인 후 새 항목 추가
-    const wasLastItem = places[places.length - 1].id === editingPlaceId;
-    if (wasLastItem && places.length < 5) {
-      newPlaces = [...newPlaces, { id: Date.now(), type: null, subType: null }];
-    }
-    setPlaces(newPlaces);
   };
+  const isNextDisabled = places.some((p) => p.type === null);
 
   return (
     <>
@@ -138,10 +152,11 @@ const Step1_4Page = () => {
         subtitle="모임에 필요한 장소 유형과 순서를 정해주세요"
         onNext={handleNext}
         onPrev={handlePrev}
-        isNextDisabled={places.some((p) => p.type === null)}
+        isNextDisabled={isNextDisabled}
       >
         <PlaceTypeForm
           places={places}
+          setPlaces={setPlaces}
           onItemClick={handleItemClick}
           onAdd={handleAddPlace}
           onRemove={handleRemovePlace}
