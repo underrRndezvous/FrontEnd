@@ -14,8 +14,6 @@ const DepartureInputForm = () => {
   ]);
 
   const handleAdd = () => {
-    // 최대 인원수 설정 ? 아직
-    if (departures.length >= 5) return;
     const newDeparture: Departure = {
       id: Date.now(),
       value: "",
@@ -51,23 +49,24 @@ const DepartureInputForm = () => {
   };
 
   return (
-    <div className="flex w-full flex-col items-center gap-y-3 text-center pb-36">
-      {departures.map((departure) => (
-        <DepartureInput
-          key={departure.id}
-          variant={departure.type}
-          value={departure.value}
-          placeholder="출발지 입력"
-          onChange={(e) => handleChange(departure.id, e.target.value)}
-          onKeyDown={(e) => handleKeyDown(e, departure.id)}
-          // 모임장(leader)이 아닐 때만 삭제 함수를 전달
-          onRemove={
-            departure.type === "member"
-              ? () => handleRemove(departure.id)
-              : undefined
-          }
-        />
-      ))}
+    <div className="flex w-full flex-col items-center gap-y-3 text-center">
+      <div className="w-full flex flex-col gap-y-3 max-h-60 overflow-y-auto pr-2">
+        {departures.map((departure) => (
+          <DepartureInput
+            key={departure.id}
+            variant={departure.type}
+            value={departure.value}
+            placeholder="출발지 입력"
+            onChange={(e) => handleChange(departure.id, e.target.value)}
+            onKeyDown={(e) => handleKeyDown(e, departure.id)}
+            onRemove={
+              departure.type === "member"
+                ? () => handleRemove(departure.id)
+                : undefined
+            }
+          />
+        ))}
+      </div>
     </div>
   );
 };

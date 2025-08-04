@@ -17,29 +17,30 @@ const TimeSelector = () => {
     morning: "오전",
   };
 
+  const textBaseStyle = "body-02 block transform -rotate-45";
+
   return (
     <div className="flex w-full flex-col items-center">
       <div className="relative h-64 w-64 ">
         <div className="grid h-full w-full grid-cols-2 grid-rows-2 gap-2 transform rotate-45">
           <button
-            onClick={() => handleSelect("lunch")}
+            onClick={() => handleSelect("morning")}
             className={clsx(
-              "rounded-tl-full bg-white border-2 transition-all flex items-center justify-center",
-              selectedTimes.includes("lunch")
+              "relative rounded-tl-full bg-white border-2 transition-all",
+              selectedTimes.includes("morning")
                 ? "shadow-glow-main border-main"
                 : "border-gray1"
             )}
-            style={{
-              borderRadius: "100% 7% 7% 7%",
-            }}
           >
+            {/* ✅ 2. span에 absolute와 위치 지정 클래스(bottom-5 right-5)를 추가합니다. */}
             <span
               className={clsx(
-                "body-02 block transform -rotate-45",
-                selectedTimes.includes("lunch") ? "text-black" : "text-gray3"
+                textBaseStyle,
+                "absolute bottom-9 right-9",
+                selectedTimes.includes("morning") ? "text-black" : "text-gray3"
               )}
             >
-              {timeSlots.lunch}
+              {timeSlots.morning}
             </span>
           </button>
 
