@@ -3,24 +3,62 @@ import { useNavigate } from "react-router-dom";
 import StepFormLayout from "@/shared/ui/StepFormLayout";
 import PlaceTypeForm from "@/widgets/meeting/placeTypeForm";
 import Overlay from "@/shared/ui/overlay";
-import PlaceTypeOverlay from "@/widgets/meeting/placeTypeOverlay";
-import AtmosphereOverlay from "@/widgets/meeting/atmosphereOverlay";
+import SelectionOverlay from "@/widgets/common/selectionOverlay";
+import type { SelectionOption } from "@/shared/ui/selection";
+
+// 장소 유형 아이콘
+import IconRestaurant from "@/shared/asset/icon/restaurant.svg?react";
+import IconCafe from "@/shared/asset/icon/cafe.svg?react";
+import IconActivity from "@/shared/asset/icon/activity.svg?react";
+import IconBar from "@/shared/asset/icon/bar.svg?react";
+// 음식점 유형 아이콘
+import IconPasta from "@/shared/asset/icon/pasta.svg?react";
+import IconChinaFood from "@/shared/asset/icon/chinafood.svg?react";
+import IconJapanFood from "@/shared/asset/icon/japanfood.svg?react";
+import IconKoreaFood from "@/shared/asset/icon/koreafood.svg?react";
+// 술집 유형 아이콘
+import IconIzakaya from "@/shared/asset/icon/izakaya.svg?react";
+import IconKor from "@/shared/asset/icon/kor.svg?react";
+import IconBeer from "@/shared/asset/icon/beer.svg?react";
+import IconWine from "@/shared/asset/icon/wine.svg?react";
+
+// --- 데이터 정의 ---
+const placeTypeOptions: SelectionOption[] = [
+  { id: "restaurant", label: "음식점", IconComponent: IconRestaurant },
+  { id: "cafe", label: "카페", IconComponent: IconCafe },
+  { id: "activity", label: "액티비티", IconComponent: IconActivity },
+  { id: "bar", label: "술집", IconComponent: IconBar },
+];
+const foodTypeOptions: SelectionOption[] = [
+  { id: "western", label: "양식", IconComponent: IconPasta },
+  { id: "chinese", label: "중식", IconComponent: IconChinaFood },
+  { id: "japanese", label: "일식", IconComponent: IconJapanFood },
+  { id: "korean", label: "한식", IconComponent: IconKoreaFood },
+];
+const barTypeOptions: SelectionOption[] = [
+  { id: "izakaya", label: "이자카야", IconComponent: IconIzakaya },
+  { id: "kor-bar", label: "한식주점", IconComponent: IconKor },
+  { id: "beer", label: "맥주", IconComponent: IconBeer },
+  { id: "wine", label: "와인/위스키", IconComponent: IconWine },
+];
 
 interface Place {
   id: number;
   type: string | null;
-  atmosphere: string | null;
+  subType: string | null;
 }
 
 const Step1_4Page = () => {
   const navigate = useNavigate();
-  // ✅ 1. 현재 어떤 오버레이를 띄울지 관리하는 상태
-  const [activeOverlay, setActiveOverlay] = useState<
-    "placeType" | "atmosphere" | null
-  >(null);
   const [places, setPlaces] = useState<Place[]>([
-    { id: 1, type: null, atmosphere: null },
+    { id: 1, type: null, subType: null },
   ]);
+  const [overlayData, setOverlayData] = useState<{
+    title: string;
+    buttonText: string;
+    options: SelectionOption[];
+    step: "main" | "sub";
+  } | null>(null);
 
   const handleNext = () => {
     navigate("/Plaza/step1_5");
@@ -29,19 +67,50 @@ const Step1_4Page = () => {
     navigate(-1);
   };
 
-  const handlePlaceTypeSelect = (type: string) => {
-    const updatedPlaces = places.map((p) => (p.id === 1 ? { ...p, type } : p));
-    setPlaces(updatedPlaces);
-    // ✅ 2. 장소 유형 선택이 끝나면, 'atmosphere' 오버레이를 띄우도록 상태를 변경합니다.
-    setActiveOverlay("atmosphere");
+  const handleItemClick = (id: number) => {
+    // 현재는 첫 번째 항목만 수정 가능하다고 가정하고 오버레이를 엽니다.
+    // TODO: 나중에 여러 장소를 추가/수정하는 로직으로 확장 필요
+    if (id === places[0].id) {
+      setOverlayData({
+        title: "모임 장소 유형을 선택해주세요",
+        buttonText: "다음",
+        options: placeTypeOptions,
+        step: "main",
+      });
+    }
   };
 
-  const handleAtmosphereSelect = (atmosphere: string) => {
-    const updatedPlaces = places.map((p) =>
-      p.id === 1 ? { ...p, atmosphere } : p
-    );
-    setPlaces(updatedPlaces);
-    setActiveOverlay(null);
+  const handleConfirm = (selectedId: string) => {
+    if (overlayData?.step === "main") {
+      const newPlaces = places.map((p) =>
+        p.id === 1 ? { ...p, type: selectedId, subType: null } : p
+      );
+      setPlaces(newPlaces);
+
+      if (selectedId === "restaurant") {
+        setOverlayData({
+          title: "음식점 유형을 선택해주세요",
+          buttonText: "선택하기",
+          options: foodTypeOptions,
+          step: "sub",
+        });
+      } else if (selectedId === "bar") {
+        setOverlayData({
+          title: "술집 유형을 선택해주세요",
+          buttonText: "선택하기",
+          options: barTypeOptions,
+          step: "sub",
+        });
+      } else {
+        setOverlayData(null);
+      }
+    } else {
+      const newPlaces = places.map((p) =>
+        p.id === 1 ? { ...p, subType: selectedId } : p
+      );
+      setPlaces(newPlaces);
+      setOverlayData(null);
+    }
   };
 
   return (
@@ -53,31 +122,22 @@ const Step1_4Page = () => {
         onPrev={handlePrev}
         isNextDisabled={!places[0].type}
       >
-        <PlaceTypeForm
-          places={places}
-          onInputClick={() => setActiveOverlay("placeType")}
-        />
+        <PlaceTypeForm places={places} onItemClick={handleItemClick} />
       </StepFormLayout>
 
       <Overlay
-        isOpen={activeOverlay === "placeType"}
-        onClose={() => setActiveOverlay(null)}
+        isOpen={overlayData !== null}
+        onClose={() => setOverlayData(null)}
       >
-        <PlaceTypeOverlay
-          onSelect={handlePlaceTypeSelect}
-          onClose={() => setActiveOverlay(null)}
-        />
-      </Overlay>
-
-      {/* ✅ 3. 이 오버레이의 isOpen 조건이 'atmosphere'로 되어있는지 확인합니다. */}
-      <Overlay
-        isOpen={activeOverlay === "atmosphere"}
-        onClose={() => setActiveOverlay(null)}
-      >
-        <AtmosphereOverlay
-          onSelect={handleAtmosphereSelect}
-          onClose={() => setActiveOverlay(null)}
-        />
+        {overlayData && (
+          <SelectionOverlay
+            title={overlayData.title}
+            buttonText={overlayData.buttonText}
+            options={overlayData.options}
+            onConfirm={handleConfirm}
+            onClose={() => setOverlayData(null)}
+          />
+        )}
       </Overlay>
     </>
   );

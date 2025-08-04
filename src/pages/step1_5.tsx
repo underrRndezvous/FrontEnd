@@ -16,6 +16,7 @@ const Step1_5Page = () => {
     <StepFormLayout
       title="어떤 장소 유형이 필요한가요?"
       subtitle="모임에 필요한 장소 유형과 순서를 정해주세요"
+      isScrollable={true}
       onNext={handleNext}
       onPrev={handlePrev}
       isNextDisabled={false}

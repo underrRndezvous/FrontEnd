@@ -17,18 +17,18 @@ const Overlay = ({ isOpen, onClose, children }: OverlayProps) => {
           exit={{ opacity: 0 }}
           className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
           onClick={(e) => {
-            // ✅ 실제 클릭 대상(target)이 배경(currentTarget)일 때만 닫기 함수를 실행합니다.
             if (e.target === e.currentTarget) {
               onClose();
             }
           }}
         >
+          {/* ✅ 너비(w), 높이(h), 배경색(bg)을 수정했습니다. */}
           <motion.div
             initial={{ y: 50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 50, opacity: 0 }}
-            className="relative w-full max-w-sm rounded-lg bg-white p-6"
-            onClick={(e) => e.stopPropagation()} // 오버레이 내부 클릭 시 닫힘 방지
+            className="relative w-[350px] h-[556px] rounded-lg bg-sub02 p-6"
+            onClick={(e) => e.stopPropagation()}
           >
             {children}
           </motion.div>
