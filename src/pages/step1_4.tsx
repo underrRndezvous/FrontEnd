@@ -122,6 +122,35 @@ const Step1_4Page = () => {
       return newPlaces;
     });
 =======
+<<<<<<< HEAD
+    const wasLastAndEmpty =
+      !places.find((p) => p.id === editingPlaceId)?.type &&
+      places.length - 1 === places.findIndex((p) => p.id === editingPlaceId);
+
+    // ✅ 상태 업데이트 로직을 명확하게 분리합니다.
+    setPlaces((currentPlaces) => {
+      // 1. 현재 수정 중인 항목을 먼저 업데이트합니다.
+      let newPlaces = currentPlaces.map((p) =>
+        p.id === editingPlaceId
+          ? {
+              ...p,
+              [isMainStep ? "type" : "subType"]: selectedId,
+              ...(isMainStep && { subType: null }),
+            }
+          : p
+      );
+
+      // 2. 비어있던 마지막 항목을 채웠고, 5개 미만이면 새 항목을 추가합니다.
+      if (wasLastAndEmpty && newPlaces.length < 5) {
+        newPlaces = [
+          ...newPlaces,
+          { id: Date.now(), type: null, subType: null },
+        ];
+      }
+
+      return newPlaces;
+    });
+=======
 
     // 현재 수정 중인 항목 업데이트
     let newPlaces = places.map((p) =>
@@ -130,6 +159,7 @@ const Step1_4Page = () => {
         : p
     );
 >>>>>>> main
+>>>>>>> 92c2747a42d5828e644bac7abe932af35378f359
 
     if (isMainStep) {
       if (selectedId === "restaurant") {
@@ -156,6 +186,10 @@ const Step1_4Page = () => {
   };
   const isNextDisabled = places.some((p) => p.type === null);
 =======
+<<<<<<< HEAD
+  };
+  const isNextDisabled = places.some((p) => p.type === null);
+=======
 
     // 마지막 항목이었는지 확인 후 새 항목 추가
     const wasLastItem = places[places.length - 1].id === editingPlaceId;
@@ -165,6 +199,7 @@ const Step1_4Page = () => {
     setPlaces(newPlaces);
   };
 >>>>>>> main
+>>>>>>> 92c2747a42d5828e644bac7abe932af35378f359
 
   return (
     <>
@@ -180,11 +215,19 @@ const Step1_4Page = () => {
           places={places}
           setPlaces={setPlaces}
 =======
+<<<<<<< HEAD
+        isNextDisabled={isNextDisabled}
+      >
+        <PlaceTypeForm
+          places={places}
+          setPlaces={setPlaces}
+=======
         isNextDisabled={places.some((p) => p.type === null)}
       >
         <PlaceTypeForm
           places={places}
 >>>>>>> main
+>>>>>>> 92c2747a42d5828e644bac7abe932af35378f359
           onItemClick={handleItemClick}
           onAdd={handleAddPlace}
           onRemove={handleRemovePlace}
