@@ -1,5 +1,4 @@
 import React from "react";
-<<<<<<< HEAD
 import {
   DndContext,
   closestCenter,
@@ -14,10 +13,6 @@ import {
   arrayMove,
 } from "@dnd-kit/sortable";
 import SortablePlaceItem from "@/shared/ui/placeTypeItem";
-=======
-import clsx from "clsx";
-import { IconMinus, IconDragHandle, IconPlus } from "@/shared/ui/svg";
->>>>>>> main
 
 interface Place {
   id: number;
@@ -27,10 +22,7 @@ interface Place {
 
 interface PlaceTypeFormProps {
   places: Place[];
-<<<<<<< HEAD
   setPlaces: React.Dispatch<React.SetStateAction<Place[]>>;
-=======
->>>>>>> main
   onItemClick: (id: number) => void;
   onRemove: (id: number) => void;
   onAdd: () => void;
@@ -38,26 +30,17 @@ interface PlaceTypeFormProps {
 
 const PlaceTypeForm = ({
   places,
-<<<<<<< HEAD
   setPlaces,
-=======
->>>>>>> main
   onItemClick,
   onRemove,
   onAdd,
 }: PlaceTypeFormProps) => {
-<<<<<<< HEAD
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 8 } })
   );
 
   const getPlaceTypeText = (place: Place): string => {
     if (!place.type) return "장소 유형 추가";
-=======
-  const getPlaceTypeText = (place: Place): string => {
-    if (!place.type) return "장소 유형 추가";
-
->>>>>>> main
     const typeMap: { [key: string]: string } = {
       restaurant: "음식점",
       cafe: "카페",
@@ -74,17 +57,11 @@ const PlaceTypeForm = ({
       beer: "맥주",
       wine: "와인/위스키",
     };
-<<<<<<< HEAD
     const mainText = typeMap[place.type];
-=======
-
-    const mainText = typeMap[place.type] || "장소 유형";
->>>>>>> main
     const subText = place.subType ? ` - ${subTypeMap[place.subType]}` : "";
     return `${mainText}${subText}`;
   };
 
-<<<<<<< HEAD
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
     if (over && active.id !== over.id) {
@@ -142,64 +119,6 @@ const PlaceTypeForm = ({
         )}
       </div>
     </DndContext>
-=======
-  return (
-    <div className="w-full flex flex-col gap-y-3">
-      {places.map((place, index) => (
-        <div key={place.id} className="flex w-full items-center gap-x-2">
-          <button className="flex-shrink-0 text-gray-400">
-            <IconDragHandle />
-          </button>
-          <div
-            className={clsx(
-              "flex flex-grow items-center rounded-lg border-2 bg-white p-3 text-left",
-              place.type ? "border-main" : "border-gray-200"
-            )}
-          >
-            <div className="mr-3 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-md bg-gray1 text-sm">
-              {index + 1}
-            </div>
-            <button
-              onClick={() => onItemClick(place.id)}
-              className="flex-grow text-left"
-            >
-              <span
-                className={clsx(
-                  "body-02",
-                  place.type ? "text-black" : "text-gray3"
-                )}
-              >
-                {getPlaceTypeText(place)}
-              </span>
-            </button>
-            {places.length > 1 && (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onRemove(place.id);
-                }}
-                className="ml-auto flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-gray-100"
-              >
-                <IconMinus />
-              </button>
-            )}
-          </div>
-        </div>
-      ))}
-
-      {places[places.length - 1]?.type && places.length < 5 && (
-        <button
-          onClick={onAdd}
-          className="flex w-full items-center rounded-lg border-2 border-gray-200 bg-white p-3 text-left"
-        >
-          <div className="mr-3 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-md bg-gray1 text-sm">
-            {places.length + 1}
-          </div>
-          <span className="body-02 text-gray3">장소 유형 추가</span>
-        </button>
-      )}
-    </div>
->>>>>>> main
   );
 };
 
