@@ -20,7 +20,7 @@ const Step1_5Page = () => {
   }, [departures, setDepartures]);
 
   const handleNext = () => {
-    navigate("/create-meeting/step1-6");
+    navigate("/Plaza/step1_6");
   };
   const handlePrev = () => {
     navigate(-1);
