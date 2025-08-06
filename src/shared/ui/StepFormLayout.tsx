@@ -10,6 +10,7 @@ interface StepFormLayoutProps {
   onPrev: () => void;
   isNextDisabled?: boolean;
   isScrollable?: boolean;
+  contentAlignment?: "center" | "start";
 }
 
 const StepFormLayout = ({
@@ -20,6 +21,7 @@ const StepFormLayout = ({
   onPrev,
   isNextDisabled,
   isScrollable = false,
+  contentAlignment = "center",
 }: StepFormLayoutProps) => {
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100">

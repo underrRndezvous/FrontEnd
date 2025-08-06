@@ -1,4 +1,5 @@
 import { useSortable } from "@dnd-kit/sortable";
+import React from "react";
 import { CSS } from "@dnd-kit/utilities";
 import { IconMinus, IconDragHandle } from "@/shared/ui/svg";
 import clsx from "clsx";
@@ -76,7 +77,8 @@ const SortablePlaceItem = ({
             {displayText}
           </span>
         </button>
-        {!isOnlyItem && (
+
+        {place.type && !isOnlyItem && (
           <button
             onClick={() => onRemove(place.id)}
             className="ml-auto flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-gray-100"
