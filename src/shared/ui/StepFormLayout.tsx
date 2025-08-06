@@ -11,6 +11,8 @@ interface StepFormLayoutProps {
   isNextDisabled?: boolean;
   isScrollable?: boolean;
   contentAlignment?: "center" | "start";
+  prevButtonText?: string;
+  nextButtonText?: string;
 }
 
 const StepFormLayout = ({
@@ -22,6 +24,8 @@ const StepFormLayout = ({
   isNextDisabled,
   isScrollable = false,
   contentAlignment = "center",
+  prevButtonText = "이전", // ✅ 기본값 설정
+  nextButtonText = "다음",
 }: StepFormLayoutProps) => {
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100">
@@ -43,6 +47,8 @@ const StepFormLayout = ({
             onNext={onNext}
             onPrev={onPrev}
             isNextDisabled={isNextDisabled}
+            prevText={prevButtonText} // ✅ prop 전달
+            nextText={nextButtonText}
           />
         </div>
       </div>

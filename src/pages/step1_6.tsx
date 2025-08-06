@@ -14,7 +14,7 @@ const Step1_6Page = () => {
   };
 
   const handleEdit = () => {
-    navigate("/Plaza/step1_1"); // 첫 단계로 이동
+    navigate("/Plaza/editMeetingPage"); // 첫 단계로 이동
   };
 
   return (
