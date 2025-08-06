@@ -1,11 +1,11 @@
-import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import StepFormLayout from "@/shared/ui/StepFormLayout";
 import PlaceTypeForm from "@/widgets/meeting/placeTypeForm";
 import Overlay from "@/shared/ui/overlay";
 import SelectionOverlay from "@/widgets/common/selectionOverlay";
 import type { SelectionOption } from "@/shared/ui/selection";
-
+import { useMeetingStore } from "@/store/meetingStore";
+import React, { useState, useEffect } from "react";
 // 장소 유형 아이콘
 import IconRestaurant from "@/shared/asset/icon/restaurant.svg?react";
 import IconCafe from "@/shared/asset/icon/cafe.svg?react";
@@ -42,17 +42,9 @@ const barTypeOptions: SelectionOption[] = [
   { id: "wine", label: "와인/위스키", IconComponent: IconWine },
 ];
 
-interface Place {
-  id: number;
-  type: string | null;
-  subType: string | null;
-}
-
 const Step1_4Page = () => {
   const navigate = useNavigate();
-  const [places, setPlaces] = useState<Place[]>([
-    { id: Date.now(), type: null, subType: null },
-  ]);
+  const { places, setPlaces } = useMeetingStore();
   const [editingPlaceId, setEditingPlaceId] = useState<number | null>(null);
   const [overlayData, setOverlayData] = useState<{
     title: string;
@@ -60,6 +52,12 @@ const Step1_4Page = () => {
     options: SelectionOption[];
     step: "main" | "sub";
   } | null>(null);
+
+  useEffect(() => {
+    if (!places || places.length === 0) {
+      setPlaces([{ id: Date.now(), type: null, subType: null }]);
+    }
+  }, [places, setPlaces]);
 
   const handleNext = () => {
     navigate("/Plaza/step1_5");
@@ -80,43 +78,37 @@ const Step1_4Page = () => {
 
   const handleAddPlace = () => {
     if (places.length >= 5) return;
-    setPlaces((prev) => [
-      ...prev,
-      { id: Date.now(), type: null, subType: null },
-    ]);
+    setPlaces([...places, { id: Date.now(), type: null, subType: null }]);
   };
 
   const handleRemovePlace = (idToRemove: number) => {
     if (places.length <= 1) return;
-    setPlaces((prev) => prev.filter((p) => p.id !== idToRemove));
+    setPlaces(places.filter((p) => p.id !== idToRemove));
   };
 
   const handleConfirm = (selectedId: string) => {
     const isMainStep = overlayData?.step === "main";
+
+    const currentPlaces = useMeetingStore.getState().places;
     const wasLastAndEmpty =
-      !places.find((p) => p.id === editingPlaceId)?.type &&
-      places.length - 1 === places.findIndex((p) => p.id === editingPlaceId);
+      !currentPlaces.find((p) => p.id === editingPlaceId)?.type &&
+      currentPlaces.length - 1 ===
+        currentPlaces.findIndex((p) => p.id === editingPlaceId);
 
-    setPlaces((currentPlaces) => {
-      let newPlaces = currentPlaces.map((p) =>
-        p.id === editingPlaceId
-          ? {
-              ...p,
-              [isMainStep ? "type" : "subType"]: selectedId,
-              ...(isMainStep && { subType: null }),
-            }
-          : p
-      );
+    let newPlaces = currentPlaces.map((p) =>
+      p.id === editingPlaceId
+        ? {
+            ...p,
+            [isMainStep ? "type" : "subType"]: selectedId,
+            ...(isMainStep && { subType: null }),
+          }
+        : p
+    );
 
-      if (wasLastAndEmpty && newPlaces.length < 5) {
-        newPlaces = [
-          ...newPlaces,
-          { id: Date.now(), type: null, subType: null },
-        ];
-      }
-
-      return newPlaces;
-    });
+    if (wasLastAndEmpty && newPlaces.length < 5) {
+      newPlaces.push({ id: Date.now(), type: null, subType: null });
+    }
+    setPlaces(newPlaces);
 
     if (isMainStep) {
       if (selectedId === "restaurant") {
@@ -141,7 +133,7 @@ const Step1_4Page = () => {
     }
   };
 
-  const isNextDisabled = places.some((p) => p.type === null);
+  const isNextDisabled = places.filter((p) => p.type !== null).length === 0;
 
   return (
     <>
@@ -152,13 +144,15 @@ const Step1_4Page = () => {
         onPrev={handlePrev}
         isNextDisabled={isNextDisabled}
       >
-        <PlaceTypeForm
-          places={places}
-          setPlaces={setPlaces}
-          onItemClick={handleItemClick}
-          onAdd={handleAddPlace}
-          onRemove={handleRemovePlace}
-        />
+        <div className="flex h-full w-full flex-col justify-start pt-4">
+          <PlaceTypeForm
+            places={places || []}
+            setPlaces={setPlaces}
+            onItemClick={handleItemClick}
+            onAdd={handleAddPlace}
+            onRemove={handleRemovePlace}
+          />
+        </div>
       </StepFormLayout>
       <Overlay
         isOpen={overlayData !== null}

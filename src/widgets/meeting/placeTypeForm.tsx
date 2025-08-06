@@ -12,29 +12,15 @@ import {
   verticalListSortingStrategy,
   arrayMove,
 } from "@dnd-kit/sortable";
-import SortablePlaceItem from "@/shared/ui/placeTypeItem";
-
-interface Place {
-  id: number;
-  type: string | null;
-  subType: string | null;
-}
-
-interface PlaceTypeFormProps {
-  places: Place[];
-  setPlaces: React.Dispatch<React.SetStateAction<Place[]>>;
-  onItemClick: (id: number) => void;
-  onRemove: (id: number) => void;
-  onAdd: () => void;
-}
+import SortablePlaceItem from "@/shared/ui/SortablePlaceItem";
+import { IconPlus } from "@/shared/ui/svg";
+import type { Place } from "@/store/meetingStore";
 
 const PlaceTypeForm = ({
   places,
-
   setPlaces,
   onItemClick,
   onRemove,
-  onAdd,
 }: PlaceTypeFormProps) => {
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 8 } })
@@ -58,7 +44,6 @@ const PlaceTypeForm = ({
       beer: "맥주",
       wine: "와인/위스키",
     };
-
     const mainText = typeMap[place.type];
     const subText = place.subType ? ` - ${subTypeMap[place.subType]}` : "";
     return `${mainText}${subText}`;
@@ -69,15 +54,9 @@ const PlaceTypeForm = ({
     if (over && active.id !== over.id) {
       const oldIndex = places.findIndex((p) => p.id === active.id);
       const newIndex = places.findIndex((p) => p.id === over.id);
-      setPlaces((currentPlaces) =>
-        arrayMove(currentPlaces, oldIndex, newIndex)
-      );
+      setPlaces(arrayMove(places, oldIndex, newIndex));
     }
   };
-
-  // 값이 있는 항목과 없는 항목(마지막 추가 버튼)을 분리합니다.
-  const filledPlaces = places.filter((p) => p.type !== null);
-  const emptyPlace = places.find((p) => p.type === null);
 
   return (
     <DndContext
@@ -87,10 +66,10 @@ const PlaceTypeForm = ({
     >
       <div className="w-full flex flex-col gap-y-3">
         <SortableContext
-          items={filledPlaces.map((p) => p.id)}
+          items={places.map((p) => p.id)}
           strategy={verticalListSortingStrategy}
         >
-          {filledPlaces.map((place, index) => (
+          {places.map((place, index) => (
             <SortablePlaceItem
               key={place.id}
               place={place}
@@ -98,27 +77,10 @@ const PlaceTypeForm = ({
               displayText={getPlaceTypeText(place)}
               onItemClick={onItemClick}
               onRemove={onRemove}
-              isOnlyItem={filledPlaces.length === 1 && !emptyPlace}
+              isOnlyItem={places.length === 1}
             />
           ))}
         </SortableContext>
-
-        {/* 값이 없는 마지막 항목은 드래그가 불가능한 추가 버튼으로 렌더링합니다. */}
-        {emptyPlace && places.length < 5 && (
-          <div className="flex w-full items-center gap-x-2">
-            {/* 빈 공간을 차지하여 정렬을 맞추기 위한 핸들 */}
-            <div className="w-[24px] flex-shrink-0" />
-            <button
-              onClick={() => onItemClick(emptyPlace.id)}
-              className="flex flex-grow items-center rounded-md border border-gray-200 bg-white p-3 text-left"
-            >
-              <div className="mr-3 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-md bg-gray1 text-sm">
-                {filledPlaces.length + 1}
-              </div>
-              <span className="body-02 text-gray3">장소 유형 추가</span>
-            </button>
-          </div>
-        )}
       </div>
     </DndContext>
   );
