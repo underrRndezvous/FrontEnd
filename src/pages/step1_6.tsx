@@ -22,6 +22,8 @@ const Step1_6Page = () => {
       subtitle="정보가 맞는지 한 번 더 확인해주세요"
       onNext={handleRecommend}
       onPrev={handleEdit}
+      nextButtonText="추천받기"
+      prevButtonText="수정하기"
       isNextDisabled={false}
     >
       <MeetingSummary />

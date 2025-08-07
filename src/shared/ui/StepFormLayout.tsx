@@ -24,7 +24,7 @@ const StepFormLayout = ({
   isNextDisabled,
   isScrollable = false,
   contentAlignment = "center",
-  prevButtonText = "이전", // ✅ 기본값 설정
+  prevButtonText = "이전",
   nextButtonText = "다음",
 }: StepFormLayoutProps) => {
   return (
@@ -47,7 +47,7 @@ const StepFormLayout = ({
             onNext={onNext}
             onPrev={onPrev}
             isNextDisabled={isNextDisabled}
-            prevText={prevButtonText} // ✅ prop 전달
+            prevText={prevButtonText}
             nextText={nextButtonText}
           />
         </div>

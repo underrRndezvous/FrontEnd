@@ -16,11 +16,20 @@ import SortablePlaceItem from "@/shared/ui/SortablePlaceItem";
 import { IconPlus } from "@/shared/ui/svg";
 import type { Place } from "@/store/meetingStore";
 
+interface PlaceTypeFormProps {
+  places: Place[];
+  setPlaces: (places: Place[]) => void;
+  onItemClick: (id: number) => void;
+  onRemove: (id: number) => void;
+  onAdd: () => void;
+}
+
 const PlaceTypeForm = ({
   places,
   setPlaces,
   onItemClick,
   onRemove,
+  onAdd,
 }: PlaceTypeFormProps) => {
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 8 } })
@@ -44,6 +53,7 @@ const PlaceTypeForm = ({
       beer: "맥주",
       wine: "와인/위스키",
     };
+
     const mainText = typeMap[place.type];
     const subText = place.subType ? ` - ${subTypeMap[place.subType]}` : "";
     return `${mainText}${subText}`;
@@ -54,9 +64,13 @@ const PlaceTypeForm = ({
     if (over && active.id !== over.id) {
       const oldIndex = places.findIndex((p) => p.id === active.id);
       const newIndex = places.findIndex((p) => p.id === over.id);
-      setPlaces(arrayMove(places, oldIndex, newIndex));
+      const newPlaces = arrayMove(places, oldIndex, newIndex);
+      setPlaces(newPlaces);
     }
   };
+
+  const filledPlaces = places.filter((p) => p.type !== null);
+  const emptyPlace = places.find((p) => p.type === null);
 
   return (
     <DndContext
@@ -66,9 +80,10 @@ const PlaceTypeForm = ({
     >
       <div className="w-full flex flex-col gap-y-3">
         <SortableContext
-          items={places.map((p) => p.id)}
+          items={filledPlaces.map((p) => p.id)}
           strategy={verticalListSortingStrategy}
         >
+          {/* {filledPlaces.map((place, index) => ( */}
           {places.map((place, index) => (
             <SortablePlaceItem
               key={place.id}
@@ -77,10 +92,25 @@ const PlaceTypeForm = ({
               displayText={getPlaceTypeText(place)}
               onItemClick={onItemClick}
               onRemove={onRemove}
-              isOnlyItem={places.length === 1}
+              isOnlyItem={filledPlaces.length === 1 && !emptyPlace}
             />
           ))}
         </SortableContext>
+
+        {/* {emptyPlace && places.length < 5 && (
+          <div className="flex w-full items-center">
+            <div className="w-[32px] flex-shrink-0" />
+            <button
+              onClick={onAdd}
+              className="flex flex-grow items-center rounded-md border border-dashed border-gray-300 bg-white bg-opacity-50 p-3 text-left"
+            >
+              <div className="mr-3 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-md bg-gray1 text-sm">
+                <IconPlus />
+              </div>
+              <span className="body-02 text-gray3">장소 유형 추가</span>
+            </button>
+          </div>
+        )} */}
       </div>
     </DndContext>
   );

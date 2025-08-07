@@ -19,7 +19,7 @@ const StepNavigation = ({
   return (
     <div className="flex w-full gap-x-5 py-6 px-2">
       <Button format="Button2" color="secondary" onClick={onPrev}>
-        이전
+        {prevText}
       </Button>
       <Button
         format="Button2"
@@ -27,7 +27,7 @@ const StepNavigation = ({
         onClick={onNext}
         disabled={isNextDisabled}
       >
-        다음
+        {nextText}
       </Button>
     </div>
   );

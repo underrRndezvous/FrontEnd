@@ -141,6 +141,7 @@ const Step1_4Page = () => {
         onNext={handleNext}
         onPrev={handlePrev}
         isNextDisabled={isNextDisabled}
+        contentAlignment="start"
       >
         <div className="flex h-full w-full flex-col justify-start pt-4">
           <PlaceTypeForm
