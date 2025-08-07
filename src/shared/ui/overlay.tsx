@@ -22,7 +22,6 @@ const Overlay = ({ isOpen, onClose, children }: OverlayProps) => {
             }
           }}
         >
-          {/* ✅ 너비(w), 높이(h), 배경색(bg)을 수정했습니다. */}
           <motion.div
             initial={{ y: 50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}

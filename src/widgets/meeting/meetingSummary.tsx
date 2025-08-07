@@ -4,8 +4,19 @@ import IconCrown from "@/shared/asset/icon/crown.svg?react";
 import IconPerson from "@/shared/asset/icon/person.svg?react";
 import type { Place } from "@/store/meetingStore";
 
+const purposeMap: { [key: string]: string } = {
+  date: "데이트",
+  business: "비즈니스",
+  study: "스터디",
+  social: "친목",
+};
+const timeMap: { [key: string]: string } = {
+  morning: "오전",
+  lunch: "점심",
+  afternoon: "오후",
+  dinner: "저녁",
+};
 const MeetingSummary = () => {
-  // Zustand 스토어에서 필요한 모든 데이터를 가져옵니다.
   const { groupName, selectedTimes, groupPurpose, places, departures } =
     useMeetingStore();
 
@@ -17,6 +28,7 @@ const MeetingSummary = () => {
       activity: "액티비티",
       bar: "술집",
     };
+
     const subTypeMap: { [key: string]: string } = {
       western: "양식",
       chinese: "중식",
@@ -35,29 +47,32 @@ const MeetingSummary = () => {
   return (
     <div className="w-full rounded-lg bg-white p-4 text-left shadow-md">
       {/* 모임 시간 */}
-      <div className="flex justify-between border-b py-3">
-        <span className="body-02 text-gray-500">모임 시간</span>
-        <span className="body-02 text-black font-semibold">
-          {selectedTimes.join(", ")}
+      {/* 받아오는 값 가운데 정렬 추가해야함 */}
+      <div className="w-full flex justify-between items-center border-b py-3">
+        <span className="title-03 text-black">모임 시간</span>
+        <span className="body-02 text-gray4 ">
+          {selectedTimes.map((time) => timeMap[time] || time).join(", ")}
         </span>
       </div>
 
       {/* 모임 목적 */}
       <div className="flex justify-between border-b py-3">
-        <span className="body-02 text-gray-500">모임 목적</span>
-        <span className="body-02 text-black font-semibold">{groupPurpose}</span>
+        <span className="title-03 text-black">모임 목적</span>
+        <span className="body-02 text-gray4">
+          {groupPurpose ? purposeMap[groupPurpose] : ""}
+        </span>
       </div>
 
       {/* 장소 유형 */}
       <div className="flex justify-between border-b py-3">
-        <span className="body-02 text-gray-500 flex-shrink-0 mr-4">
+        <span className="title-03 text-black flex-shrink-0 mr-4">
           장소 유형
         </span>
         <div className="text-right">
           {places
             .filter((p) => p.type)
             .map((place, index) => (
-              <p key={place.id} className="body-02 text-black font-semibold">
+              <p key={place.id} className="body-02 text-gray4">
                 {index + 1}. {getPlaceTypeText(place)}
               </p>
             ))}
@@ -66,7 +81,7 @@ const MeetingSummary = () => {
 
       {/* 출발 위치 */}
       <div className="flex justify-between py-3">
-        <span className="body-02 text-gray-500 flex-shrink-0 mr-4">
+        <span className="title-03 text-black flex-shrink-0 mr-4">
           출발 위치
         </span>
         <div className="text-right space-y-2">
@@ -79,9 +94,7 @@ const MeetingSummary = () => {
                 ) : (
                   <IconPerson className="h-5 w-5 mr-1" />
                 )}
-                <span className="body-02 text-black font-semibold">
-                  {departure.value}
-                </span>
+                <span className="body-02 text-gray4">{departure.value}</span>
               </div>
             ))}
         </div>

@@ -10,7 +10,6 @@ const Step1_5Page = () => {
   const { departures, setDepartures } = useMeetingStore();
 
   useEffect(() => {
-    // 페이지 로드 시 출발지가 없으면 초기값(모임장1, 모임원1)을 설정합니다.
     if (departures.length === 0) {
       setDepartures([
         { id: Date.now(), value: "", type: "leader" },
@@ -66,7 +65,8 @@ const Step1_5Page = () => {
     }
   };
 
-  const isNextDisabled = departures.some((dep) => dep.value.trim() === "");
+  const isNextDisabled =
+    departures.filter((d) => d.value.trim() !== "").length === 0;
 
   return (
     <StepFormLayout

@@ -6,23 +6,21 @@ import SelectionOverlay from "@/widgets/common/selectionOverlay";
 import type { SelectionOption } from "@/shared/ui/selection";
 import { useMeetingStore } from "@/store/meetingStore";
 import React, { useState, useEffect } from "react";
-// 장소 유형 아이콘
 import IconRestaurant from "@/shared/asset/icon/restaurant.svg?react";
 import IconCafe from "@/shared/asset/icon/cafe.svg?react";
 import IconActivity from "@/shared/asset/icon/activity.svg?react";
 import IconBar from "@/shared/asset/icon/bar.svg?react";
-// 음식점 유형 아이콘
+
 import IconPasta from "@/shared/asset/icon/pasta.svg?react";
 import IconChinaFood from "@/shared/asset/icon/chinafood.svg?react";
 import IconJapanFood from "@/shared/asset/icon/japanfood.svg?react";
 import IconKoreaFood from "@/shared/asset/icon/koreafood.svg?react";
-// 술집 유형 아이콘
+
 import IconIzakaya from "@/shared/asset/icon/izakaya.svg?react";
 import IconKor from "@/shared/asset/icon/kor.svg?react";
 import IconBeer from "@/shared/asset/icon/beer.svg?react";
 import IconWine from "@/shared/asset/icon/wine.svg?react";
 
-// --- 데이터 정의 ---
 const placeTypeOptions: SelectionOption[] = [
   { id: "restaurant", label: "음식점", IconComponent: IconRestaurant },
   { id: "cafe", label: "카페", IconComponent: IconCafe },
@@ -143,6 +141,7 @@ const Step1_4Page = () => {
         onNext={handleNext}
         onPrev={handlePrev}
         isNextDisabled={isNextDisabled}
+        contentAlignment="start"
       >
         <div className="flex h-full w-full flex-col justify-start pt-4">
           <PlaceTypeForm

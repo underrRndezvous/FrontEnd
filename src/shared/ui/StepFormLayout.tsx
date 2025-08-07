@@ -11,6 +11,8 @@ interface StepFormLayoutProps {
   isNextDisabled?: boolean;
   isScrollable?: boolean;
   contentAlignment?: "center" | "start";
+  prevButtonText?: string;
+  nextButtonText?: string;
 }
 
 const StepFormLayout = ({
@@ -22,6 +24,8 @@ const StepFormLayout = ({
   isNextDisabled,
   isScrollable = false,
   contentAlignment = "center",
+  prevButtonText = "이전",
+  nextButtonText = "다음",
 }: StepFormLayoutProps) => {
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100">
@@ -32,7 +36,8 @@ const StepFormLayout = ({
         </div>
         <main
           className={clsx(
-            "flex flex-1 flex-col items-center justify-center py-4",
+            "flex flex-1 flex-col items-center py-4",
+            contentAlignment === "center" ? "justify-center" : "justify-start",
             isScrollable && "overflow-y-auto"
           )}
         >
@@ -43,6 +48,8 @@ const StepFormLayout = ({
             onNext={onNext}
             onPrev={onPrev}
             isNextDisabled={isNextDisabled}
+            prevText={prevButtonText}
+            nextText={nextButtonText}
           />
         </div>
       </div>
