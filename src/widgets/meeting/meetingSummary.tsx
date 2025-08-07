@@ -5,7 +5,6 @@ import IconPerson from "@/shared/asset/icon/person.svg?react";
 import type { Place } from "@/store/meetingStore";
 
 const MeetingSummary = () => {
-  // Zustand 스토어에서 필요한 모든 데이터를 가져옵니다.
   const { groupName, selectedTimes, groupPurpose, places, departures } =
     useMeetingStore();
 

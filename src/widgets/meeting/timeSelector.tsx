@@ -1,15 +1,12 @@
 import React from "react";
 import clsx from "clsx";
 
-// 1. 페이지로부터 받을 props 타입을 정의합니다.
 interface TimeSelectorProps {
   selectedTimes: string[];
   onSelect: (id: string) => void;
 }
 
 const TimeSelector = ({ selectedTimes, onSelect }: TimeSelectorProps) => {
-  // 2. 위젯이 직접 관리하던 useState는 제거합니다.
-
   const timeSlots = {
     lunch: "점심",
     afternoon: "오후",
@@ -23,7 +20,6 @@ const TimeSelector = ({ selectedTimes, onSelect }: TimeSelectorProps) => {
     <div className="flex w-full flex-col items-center">
       <div className="relative h-64 w-64">
         <div className="grid h-full w-full grid-cols-2 grid-rows-2 gap-2 transform rotate-45">
-          {/* 3. props로 받은 selectedTimes와 onSelect를 사용합니다. */}
           <button
             onClick={() => onSelect("morning")}
             className={clsx(

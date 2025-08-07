@@ -9,12 +9,11 @@ const Step1_6Page = () => {
   const { groupName } = useMeetingStore();
 
   const handleRecommend = () => {
-    // TODO: 백엔드에 데이터 POST 요청 보내기
-    navigate("/loading"); // 로딩 페이지로 이동
+    navigate("/loading");
   };
 
   const handleEdit = () => {
-    navigate("/Plaza/editMeetingPage"); // 첫 단계로 이동
+    navigate("/Plaza/editMeetingPage");
   };
 
   return (
@@ -24,8 +23,6 @@ const Step1_6Page = () => {
       onNext={handleRecommend}
       onPrev={handleEdit}
       isNextDisabled={false}
-      // StepFormLayout에 버튼 텍스트를 props로 전달할 수 있도록 수정이 필요합니다.
-      // 예: nextButtonText="추천받기" prevButtonText="수정하기"
     >
       <MeetingSummary />
     </StepFormLayout>

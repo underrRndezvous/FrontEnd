@@ -1,18 +1,15 @@
 import React from "react";
 import clsx from "clsx";
 import { useMeetingStore } from "@/store/meetingStore";
-
-// 각 스텝의 폼 위젯들을 모두 import 합니다.
 import PlaceTypeForm from "@/widgets/meeting/placeTypeForm";
 import DepartureInputForm from "@/widgets/meeting/departureInputForm";
 
 const EditMeetingForm = () => {
-  // Zustand 스토어에서 모든 상태와 상태 변경 함수를 가져옵니다.
   const {
     groupPurpose,
     setGroupPurpose,
     selectedTimes,
-    setSelectedTimes, // 배열을 다루도록 수정
+    setSelectedTimes,
     places,
     setPlaces,
     departures,
@@ -28,15 +25,12 @@ const EditMeetingForm = () => {
   const timeOptions = ["오전", "점심", "오후", "저녁"];
 
   const handleTimeSelect = (time: string) => {
-    // 다중 선택을 위한 토글 로직
     const newTimes = selectedTimes.includes(time)
       ? selectedTimes.filter((t) => t !== time)
       : [...selectedTimes, time];
     setSelectedTimes(newTimes);
   };
 
-  // PlaceTypeForm, DepartureInputForm에 필요한 핸들러 함수들
-  // 수정 페이지에서는 오버레이를 띄우지 않으므로, 간단한 핸들러만 필요
   const handleItemClick = (id: number) => {
     console.log("수정할 장소 ID:", id, "(오버레이 로직은 페이지에 있습니다)");
   };
@@ -69,7 +63,6 @@ const EditMeetingForm = () => {
 
   return (
     <div className="w-full space-y-8">
-      {/* 모임 목적 (드롭다운) */}
       <section className="flex items-center justify-between">
         <h3 className="body-01 font-semibold text-gray-800">모임 목적</h3>
         <select
@@ -85,7 +78,6 @@ const EditMeetingForm = () => {
         </select>
       </section>
 
-      {/* 모임 시간 (토글 버튼) */}
       <section className="space-y-2">
         <h3 className="body-01 font-semibold text-left text-gray-800">
           모임 시간
@@ -108,7 +100,6 @@ const EditMeetingForm = () => {
         </div>
       </section>
 
-      {/* 장소 유형 */}
       <section>
         <h3 className="body-01 font-semibold text-left mb-2 text-gray-800">
           장소 유형
@@ -122,7 +113,6 @@ const EditMeetingForm = () => {
         />
       </section>
 
-      {/* 출발 위치 */}
       <section>
         <h3 className="body-01 font-semibold text-left mb-2 text-gray-800">
           출발 위치

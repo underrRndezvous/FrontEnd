@@ -1,13 +1,13 @@
 import { create } from 'zustand';
 
-// STEP 1-4: 장소 유형 데이터 타입
+// STEP 1_4: 장소 유형 데이터 타입
 export interface Place {
   id: number;
   type: string | null;
   subType: string | null;
 }
 
-// STEP 1-5: 출발지 데이터 타입
+// STEP 1_5: 출발지 데이터 타입
 export interface Departure {
   id: number;
   value: string;
