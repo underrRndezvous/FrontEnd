@@ -4,6 +4,18 @@ import IconCrown from "@/shared/asset/icon/crown.svg?react";
 import IconPerson from "@/shared/asset/icon/person.svg?react";
 import type { Place } from "@/store/meetingStore";
 
+const purposeMap: { [key: string]: string } = {
+  date: "데이트",
+  business: "비즈니스",
+  study: "스터디",
+  social: "친목",
+};
+const timeMap: { [key: string]: string } = {
+  morning: "오전",
+  lunch: "점심",
+  afternoon: "오후",
+  dinner: "저녁",
+};
 const MeetingSummary = () => {
   const { groupName, selectedTimes, groupPurpose, places, departures } =
     useMeetingStore();
@@ -16,6 +28,7 @@ const MeetingSummary = () => {
       activity: "액티비티",
       bar: "술집",
     };
+
     const subTypeMap: { [key: string]: string } = {
       western: "양식",
       chinese: "중식",
@@ -37,13 +50,17 @@ const MeetingSummary = () => {
       {/* 받아오는 값 가운데 정렬 추가해야함 */}
       <div className="w-full flex justify-between items-center border-b py-3">
         <span className="title-03 text-black">모임 시간</span>
-        <span className="body-02 text-gray4 ">{selectedTimes.join(", ")}</span>
+        <span className="body-02 text-gray4 ">
+          {selectedTimes.map((time) => timeMap[time] || time).join(", ")}
+        </span>
       </div>
 
       {/* 모임 목적 */}
       <div className="flex justify-between border-b py-3">
         <span className="title-03 text-black">모임 목적</span>
-        <span className="body-02 text-gray4">{groupPurpose}</span>
+        <span className="body-02 text-gray4">
+          {groupPurpose ? purposeMap[groupPurpose] : ""}
+        </span>
       </div>
 
       {/* 장소 유형 */}

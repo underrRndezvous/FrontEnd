@@ -65,7 +65,8 @@ const Step1_5Page = () => {
     }
   };
 
-  const isNextDisabled = departures.some((dep) => dep.value.trim() === "");
+  const isNextDisabled =
+    departures.filter((d) => d.value.trim() !== "").length === 0;
 
   return (
     <StepFormLayout

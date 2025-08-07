@@ -17,6 +17,7 @@ const EditMeetingForm = () => {
   } = useMeetingStore();
 
   const purposeOptions = [
+    { id: "", label: "선택", disabled: true },
     { id: "date", label: "데이트" },
     { id: "business", label: "비즈니스" },
     { id: "study", label: "스터디" },
@@ -62,36 +63,38 @@ const EditMeetingForm = () => {
   };
 
   return (
-    <div className="w-full space-y-8">
-      <section className="flex items-center justify-between">
-        <h3 className="body-01 font-semibold text-gray-800">모임 목적</h3>
-        <select
-          value={groupPurpose || ""}
-          onChange={(e) => setGroupPurpose(e.target.value)}
-          className="rounded-md border border-gray-300 p-2 body-02"
-        >
-          {purposeOptions.map((opt) => (
-            <option key={opt.id} value={opt.id}>
-              {opt.label}
-            </option>
-          ))}
-        </select>
+    <div className="w-full max-w-md mx-auto bg-white rounded-lg border-2 border-gray-300 shadow-lg p-0 overflow-hidden">
+      {/* 모임 목적 */}
+      <section className="p-4 border-b-2 border-gray-200 bg-white">
+        <div className="flex items-center justify-between">
+          <h3 className="text-sm font-semibold text-gray-800">모임 목적</h3>
+          <select
+            value={groupPurpose || ""}
+            onChange={(e) => setGroupPurpose(e.target.value)}
+            className="min-w-[100px] px-3 py-1 text-sm border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            {purposeOptions.map((opt) => (
+              <option key={opt.id} value={opt.id}>
+                {opt.label}
+              </option>
+            ))}
+          </select>
+        </div>
       </section>
 
-      <section className="space-y-2">
-        <h3 className="body-01 font-semibold text-left text-gray-800">
-          모임 시간
-        </h3>
-        <div className="flex gap-x-2">
+      {/* 모임 시간 */}
+      <section className="p-4 border-b-2 border-gray-200 bg-white">
+        <h3 className="text-sm font-semibold text-gray-800 mb-3">모임 시간</h3>
+        <div className="grid grid-cols-4 gap-2">
           {timeOptions.map((time) => (
             <button
               key={time}
               onClick={() => handleTimeSelect(time)}
               className={clsx(
-                "flex-1 rounded-md px-3 py-1 body-02 transition-colors",
+                "px-3 py-2 text-sm rounded-md border transition-colors",
                 selectedTimes.includes(time)
-                  ? "bg-main text-black"
-                  : "bg-gray-200 text-gray-500"
+                  ? "bg-green-400 text-black border-green-400"
+                  : "bg-gray-100 text-gray-600 border-gray-200 hover:bg-gray-200"
               )}
             >
               {time}
@@ -100,10 +103,17 @@ const EditMeetingForm = () => {
         </div>
       </section>
 
-      <section>
-        <h3 className="body-01 font-semibold text-left mb-2 text-gray-800">
-          장소 유형
-        </h3>
+      {/* 장소 유형 */}
+      <section className="p-4 border-b-2 border-gray-200 bg-white">
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="text-sm font-semibold text-gray-800">장소 유형</h3>
+          <button
+            onClick={handleAddPlace}
+            className="text-sm text-blue-500 font-medium hover:text-blue-600"
+          >
+            추가
+          </button>
+        </div>
         <PlaceTypeForm
           places={places}
           setPlaces={setPlaces}
@@ -113,10 +123,17 @@ const EditMeetingForm = () => {
         />
       </section>
 
-      <section>
-        <h3 className="body-01 font-semibold text-left mb-2 text-gray-800">
-          출발 위치
-        </h3>
+      {/* 출발 위치 */}
+      <section className="p-4 bg-white">
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="text-sm font-semibold text-gray-800">출발 위치</h3>
+          <button
+            onClick={handleAddDeparture}
+            className="text-sm text-blue-500 font-medium hover:text-blue-600"
+          >
+            추가
+          </button>
+        </div>
         <DepartureInputForm
           departures={departures}
           onAdd={handleAddDeparture}

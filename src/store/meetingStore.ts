@@ -1,20 +1,18 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
-// STEP 1_4: 장소 유형 데이터 타입
 export interface Place {
   id: number;
   type: string | null;
   subType: string | null;
 }
 
-// STEP 1_5: 출발지 데이터 타입
 export interface Departure {
   id: number;
   value: string;
   type: 'leader' | 'member';
 }
 
-// 스토어의 전체 상태 타입
 interface MeetingState {
   groupName: string;
   groupPurpose: string | null;
@@ -23,7 +21,6 @@ interface MeetingState {
   departures: Departure[];
 }
 
-// 스토어의 상태를 변경할 함수(액션)들의 타입
 interface MeetingActions {
   setGroupName: (name: string) => void;
   setGroupPurpose: (purpose: string | null) => void;
@@ -33,7 +30,6 @@ interface MeetingActions {
   reset: () => void;
 }
 
-// 스토어의 초기 상태값
 const initialState: MeetingState = {
   groupName: '',
   groupPurpose: null,
@@ -42,15 +38,21 @@ const initialState: MeetingState = {
   departures: [],
 };
 
-// --- Zustand 스토어 생성 ---
-export const useMeetingStore = create<MeetingState & MeetingActions>((set) => ({
-  ...initialState, // 초기 상태 적용
+export const useMeetingStore = create<MeetingState & MeetingActions>()(
+  
+  persist(
+    (set) => ({
+      ...initialState, 
 
-  // 상태를 변경하는 함수들 (액션)
-  setGroupName: (name) => set({ groupName: name }),
-  setGroupPurpose: (purpose) => set({ groupPurpose: purpose }),
-  setSelectedTimes: (times) => set({ selectedTimes: times }),
-  setPlaces: (places) => set({ places }),
-  setDepartures: (departures) => set({ departures }),
-  reset: () => set(initialState),
-}));
+      setGroupName: (name) => set({ groupName: name }),
+      setGroupPurpose: (purpose) => set({ groupPurpose: purpose }),
+      setSelectedTimes: (times) => set({ selectedTimes: times }),
+      setPlaces: (places) => set({ places }),
+      setDepartures: (departures) => set({ departures }),
+      reset: () => set(initialState),
+    }),
+    {
+      name: 'meeting-storage', 
+    }
+  )
+);

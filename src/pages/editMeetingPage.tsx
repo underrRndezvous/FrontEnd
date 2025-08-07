@@ -4,14 +4,13 @@ import StepFormLayout from "@/shared/ui/StepFormLayout";
 import { useMeetingStore } from "@/store/meetingStore";
 import clsx from "clsx";
 
-// 각 스텝의 위젯들을 모두 import 합니다.
 import GroupNameForm from "@/widgets/meeting/groupNameForm";
 import PlaceTypeForm from "@/widgets/meeting/placeTypeForm";
 import DepartureInputForm from "@/widgets/meeting/departureInputForm";
 
 const EditMeetingPage = () => {
   const navigate = useNavigate();
-  // Zustand 스토어에서 모든 상태와 상태 변경 함수를 가져옵니다.
+
   const {
     groupName,
     setGroupName,
@@ -40,8 +39,6 @@ const EditMeetingPage = () => {
     setSelectedTimes(newTimes);
   };
 
-  // PlaceTypeForm과 DepartureInputForm에 필요한 핸들러 함수들
-  // (이 페이지에서는 오버레이를 띄우지 않으므로, 간단한 핸들러만 필요)
   const handleItemClick = () => {};
   const handleAddPlace = () =>
     setPlaces([...places, { id: Date.now(), type: null, subType: null }]);
@@ -58,12 +55,10 @@ const EditMeetingPage = () => {
     setDepartures(departures.map((d) => (d.id === id ? { ...d, value } : d)));
 
   const handleSave = () => {
-    // TODO: 백엔드에 수정된 데이터 전송
-    navigate("/Plaza/step1_6"); // 저장 후 요약 페이지로 돌아가기
+    navigate("/Plaza/step1_6");
   };
 
   const handleCancel = () => {
-    // TODO: 변경사항을 저장하지 않고 되돌리는 로직 (필요 시)
     navigate(-1); // 이전 페이지로 돌아가기
   };
 

@@ -18,7 +18,7 @@ const Step1_6Page = () => {
 
   return (
     <StepFormLayout
-      title={`${groupName}의\n모임 장소를 추천해드릴게요`}
+      title={`{ ${groupName} } 의\n모임 장소를 추천해드릴게요`}
       subtitle="정보가 맞는지 한 번 더 확인해주세요"
       onNext={handleRecommend}
       onPrev={handleEdit}
