@@ -1,6 +1,7 @@
 import React from "react";
 import clsx from "clsx";
 import { useMeetingStore } from "@/store/meetingStore";
+
 import PlaceTypeForm from "@/widgets/meeting/placeTypeForm";
 import DepartureInputForm from "@/widgets/meeting/departureInputForm";
 
@@ -23,6 +24,7 @@ const EditMeetingForm = () => {
     { id: "study", label: "스터디" },
     { id: "social", label: "친목" },
   ];
+
   const timeOptions = ["오전", "점심", "오후", "저녁"];
 
   const handleTimeSelect = (time: string) => {
@@ -32,8 +34,10 @@ const EditMeetingForm = () => {
     setSelectedTimes(newTimes);
   };
 
+  // PlaceTypeForm과 DepartureInputForm에 필요한 핸들러 함수들
   const handleItemClick = (id: number) => {
-    console.log("수정할 장소 ID:", id, "(오버레이 로직은 페이지에 있습니다)");
+    // 수정 페이지에서는 오버레이를 띄우지 않으므로, 페이지에서 다시 구현해야 합니다.
+    console.log("Edit item:", id);
   };
   const handleAddPlace = () => {
     if (places.length < 5) {
@@ -63,38 +67,39 @@ const EditMeetingForm = () => {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto bg-white rounded-lg border-2 border-gray-300 shadow-lg p-0 overflow-hidden">
-      {/* 모임 목적 */}
-      <section className="p-4 border-b-2 border-gray-200 bg-white">
-        <div className="flex items-center justify-between">
-          <h3 className="text-sm font-semibold text-gray-800">모임 목적</h3>
-          <select
-            value={groupPurpose || ""}
-            onChange={(e) => setGroupPurpose(e.target.value)}
-            className="min-w-[100px] px-3 py-1 text-sm border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            {purposeOptions.map((opt) => (
-              <option key={opt.id} value={opt.id}>
-                {opt.label}
-              </option>
-            ))}
-          </select>
-        </div>
+    <div className="w-full space-y-6 rounded-lg border border-main bg-white p-6">
+      <section className="flex items-center gap-x-4">
+        <h3 className="title-03 text-black">모임 목적</h3>
+        <div className="flex-grow" />
+        <select
+          value={groupPurpose || ""}
+          onChange={(e) => setGroupPurpose(e.target.value)}
+          className="w-24 rounded-md border border-gray2 p-2 body-02 text-center text-gray3"
+        >
+          {purposeOptions.map((opt) => (
+            <option key={opt.id} value={opt.id} disabled={opt.disabled}>
+              {opt.label}
+            </option>
+          ))}
+        </select>
       </section>
 
+      <hr className="border-gray-100" />
+
       {/* 모임 시간 */}
-      <section className="p-4 border-b-2 border-gray-200 bg-white">
-        <h3 className="text-sm font-semibold text-gray-800 mb-3">모임 시간</h3>
-        <div className="grid grid-cols-4 gap-2">
+      <section className="flex flex-col items-start gap-y-3">
+        <h3 className="title-03 text-left">모임 시간</h3>
+        <div className="w-full flex gap-x-2">
           {timeOptions.map((time) => (
             <button
               key={time}
               onClick={() => handleTimeSelect(time)}
               className={clsx(
-                "px-3 py-2 text-sm rounded-md border transition-colors",
+                "flex-1 rounded-md px-3 py-1 body-02 transition-colors",
                 selectedTimes.includes(time)
-                  ? "bg-green-400 text-black border-green-400"
-                  : "bg-gray-100 text-gray-600 border-gray-200 hover:bg-gray-200"
+                  ? "bg-main text-black"
+                  : "bg-gray-200 text-gray-500"
+                // 수정
               )}
             >
               {time}
@@ -103,16 +108,12 @@ const EditMeetingForm = () => {
         </div>
       </section>
 
+      <hr className="border-gray-100" />
+
       {/* 장소 유형 */}
-      <section className="p-4 border-b-2 border-gray-200 bg-white">
-        <div className="flex items-center justify-between mb-3">
-          <h3 className="text-sm font-semibold text-gray-800">장소 유형</h3>
-          <button
-            onClick={handleAddPlace}
-            className="text-sm text-blue-500 font-medium hover:text-blue-600"
-          >
-            추가
-          </button>
+      <section>
+        <div className="flex items-center justify-between mb-2">
+          <h3 className="title-03 text-left">장소 유형</h3>
         </div>
         <PlaceTypeForm
           places={places}
@@ -120,22 +121,20 @@ const EditMeetingForm = () => {
           onItemClick={handleItemClick}
           onAdd={handleAddPlace}
           onRemove={handleRemovePlace}
+          isEditPage={true}
         />
       </section>
 
+      <hr className="border-gray-100" />
+
       {/* 출발 위치 */}
-      <section className="p-4 bg-white">
-        <div className="flex items-center justify-between mb-3">
-          <h3 className="text-sm font-semibold text-gray-800">출발 위치</h3>
-          <button
-            onClick={handleAddDeparture}
-            className="text-sm text-blue-500 font-medium hover:text-blue-600"
-          >
-            추가
-          </button>
+      <section>
+        <div className="flex items-center justify-between mb-2">
+          <h3 className="title-03 text-left ">출발 위치</h3>
         </div>
         <DepartureInputForm
           departures={departures}
+          setDepartures={setDepartures}
           onAdd={handleAddDeparture}
           onRemove={handleRemoveDeparture}
           onChange={handleChangeDeparture}

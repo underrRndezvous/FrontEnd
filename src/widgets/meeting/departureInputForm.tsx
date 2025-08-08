@@ -5,6 +5,7 @@ import { IconPlus } from "@/shared/ui/svg";
 
 interface DepartureInputFormProps {
   departures: Departure[];
+  setDepartures: (departures: Departure[]) => void;
   onAdd: () => void;
   onRemove: (id: number) => void;
   onChange: (id: number, value: string) => void;
@@ -13,6 +14,7 @@ interface DepartureInputFormProps {
 
 const DepartureInputForm = ({
   departures,
+  setDepartures,
   onAdd,
   onRemove,
   onChange,

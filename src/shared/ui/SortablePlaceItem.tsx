@@ -17,6 +17,7 @@ interface SortablePlaceItemProps {
   onItemClick: (id: number) => void;
   onRemove: (id: number) => void;
   isOnlyItem: boolean;
+  isEditPage?: boolean;
 }
 
 const SortablePlaceItem = ({
@@ -26,6 +27,7 @@ const SortablePlaceItem = ({
   onItemClick,
   onRemove,
   isOnlyItem,
+  isEditPage,
 }: SortablePlaceItemProps) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: place.id });
@@ -48,18 +50,20 @@ const SortablePlaceItem = ({
       >
         <IconDragHandle />
       </button>
-      {/* ✅ 1. 테두리 스타일을 수정합니다. */}
       <div
         className={clsx(
-          "flex flex-grow items-center rounded-md border-[2px] bg-white p-3 text-left",
-          place.type ? "border-main" : "border-gray-200"
+          "flex flex-grow items-center rounded-md border-[1px] bg-white p-3 text-left",
+          isEditPage || !place.type ? "border-gray2" : "border-main"
         )}
       >
-        {/* ✅ 2. 숫자 박스의 배경색을 조건부로 변경합니다. */}
         <div
           className={clsx(
             "mr-3 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-md text-sm",
-            place.type ? "bg-main text-white" : "bg-gray1 text-black"
+            isEditPage
+              ? "bg-gray2 text-white"
+              : place.type
+              ? "bg-main text-black"
+              : "bg-gray2 text-white"
           )}
         >
           {index + 1}
@@ -71,7 +75,11 @@ const SortablePlaceItem = ({
           <span
             className={clsx(
               "body-02",
-              place.type ? "text-black" : "text-gray3"
+              isEditPage
+                ? "text-gray3"
+                : place.type
+                ? "text-black"
+                : "text-gray3"
             )}
           >
             {displayText}
