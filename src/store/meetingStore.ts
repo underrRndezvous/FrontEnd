@@ -13,7 +13,7 @@ export interface Departure {
   type: 'leader' | 'member';
 }
 
-interface MeetingState {
+export interface MeetingState {
   groupName: string;
   groupPurpose: string | null;
   selectedTimes: string[];
@@ -46,13 +46,33 @@ export const useMeetingStore = create<MeetingState & MeetingActions>()(
 
       setGroupName: (name) => set({ groupName: name }),
       setGroupPurpose: (purpose) => set({ groupPurpose: purpose }),
-      setSelectedTimes: (times) => set({ selectedTimes: times }),
+       setSelectedTimes: (times) => {
+      
+        const koreanToEnglish: { [key: string]: string } = {
+          '오전': 'morning',
+          '점심': 'lunch', 
+          '오후': 'afternoon',
+          '저녁': 'dinner'
+        };
+        
+  
+        const normalizedTimes = times.map(time => koreanToEnglish[time] || time);
+        
+    
+        const uniqueTimes = [...new Set(normalizedTimes)];
+        
+        set({ selectedTimes: uniqueTimes });
+      },
+      // setSelectedTimes: (times) => set({ selectedTimes: times }),
+      
       setPlaces: (places) => set({ places }),
       setDepartures: (departures) => set({ departures }),
       reset: () => set(initialState),
     }),
+
     {
-      name: 'meeting-storage', 
+      name: 'meeting-storage',
     }
   )
 );
+

@@ -85,7 +85,6 @@ const PlaceTypeForm = ({
           items={filledPlaces.map((p) => p.id)}
           strategy={verticalListSortingStrategy}
         >
-          {/* {filledPlaces.map((place, index) => ( */}
           {places.map((place, index) => (
             <SortablePlaceItem
               key={place.id}

@@ -53,17 +53,13 @@ const SortablePlaceItem = ({
       <div
         className={clsx(
           "flex flex-grow items-center rounded-md border-[1px] bg-white p-3 text-left",
-          isEditPage || !place.type ? "border-gray2" : "border-main"
+          place.type ? "border-main" : "border-gray2"
         )}
       >
         <div
           className={clsx(
             "mr-3 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-md text-sm",
-            isEditPage
-              ? "bg-gray2 text-white"
-              : place.type
-              ? "bg-main text-black"
-              : "bg-gray2 text-white"
+            place.type ? "bg-main text-black" : "bg-gray2 text-white"
           )}
         >
           {index + 1}
@@ -75,11 +71,7 @@ const SortablePlaceItem = ({
           <span
             className={clsx(
               "body-02",
-              isEditPage
-                ? "text-gray3"
-                : place.type
-                ? "text-black"
-                : "text-gray3"
+              place.type ? "text-black" : "text-gray3"
             )}
           >
             {displayText}
