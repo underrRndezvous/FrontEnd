@@ -46,16 +46,16 @@ const MeetingSummary = () => {
 
   return (
     <div className="w-full rounded-lg bg-white p-4 text-left shadow-md">
-      {/* 모임 시간 */}
       {/* 받아오는 값 가운데 정렬 추가해야함 */}
       <div className="w-full flex justify-between items-center border-b py-3">
         <span className="title-03 text-black">모임 시간</span>
         <span className="body-02 text-gray4 ">
-          {selectedTimes.map((time) => timeMap[time] || time).join(", ")}
+          {[...new Set(selectedTimes)]
+            .map((time) => timeMap[time] || time)
+            .join(", ")}
         </span>
       </div>
 
-      {/* 모임 목적 */}
       <div className="flex justify-between border-b py-3">
         <span className="title-03 text-black">모임 목적</span>
         <span className="body-02 text-gray4">
@@ -63,7 +63,6 @@ const MeetingSummary = () => {
         </span>
       </div>
 
-      {/* 장소 유형 */}
       <div className="flex justify-between border-b py-3">
         <span className="title-03 text-black flex-shrink-0 mr-4">
           장소 유형
@@ -79,7 +78,6 @@ const MeetingSummary = () => {
         </div>
       </div>
 
-      {/* 출발 위치 */}
       <div className="flex justify-between py-3">
         <span className="title-03 text-black flex-shrink-0 mr-4">
           출발 위치

@@ -7,6 +7,8 @@ import Step1_4Page from "@/pages/step1_4";
 import Step1_5Page from "@/pages/step1_5";
 import Step1_6Page from "@/pages/step1_6";
 import EditMeetingPage from "@/pages/editMeetingPage";
+import LoadingPage from "@/pages/loading";
+
 const routes: RouteObject[] = [
   {
     path: "/",
@@ -39,6 +41,10 @@ const routes: RouteObject[] = [
   {
     path: "/Plaza/editMeetingPage",
     element: <EditMeetingPage />,
+  },
+  {
+    path: "plaza/loading",
+    element: <LoadingPage />,
   },
 ];
 

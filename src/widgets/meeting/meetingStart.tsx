@@ -17,7 +17,11 @@ const MeetingStart = ({ onStart }: MeetingStartProps) => {
         <p className="title-03 mb-12 text-gray4">
           모임에 딱 맞는 장소, 컨텐츠를 찾을 수 있어요!
         </p>
-        <img src={characterImage} alt="캐릭터" className="w-60" />
+        <img
+          src={characterImage}
+          alt="캐릭터"
+          className="w-60 animate-bounce"
+        />
       </div>
       <div className="w-full px-4 pt-6">
         <Button format="Button1" color="primary" onClick={onStart}>

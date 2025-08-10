@@ -22,6 +22,7 @@ interface PlaceTypeFormProps {
   onItemClick: (id: number) => void;
   onRemove: (id: number) => void;
   onAdd: () => void;
+  isEditPage?: boolean;
 }
 
 const PlaceTypeForm = ({
@@ -30,6 +31,7 @@ const PlaceTypeForm = ({
   onItemClick,
   onRemove,
   onAdd,
+  isEditPage = false,
 }: PlaceTypeFormProps) => {
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 8 } })
@@ -83,7 +85,6 @@ const PlaceTypeForm = ({
           items={filledPlaces.map((p) => p.id)}
           strategy={verticalListSortingStrategy}
         >
-          {/* {filledPlaces.map((place, index) => ( */}
           {places.map((place, index) => (
             <SortablePlaceItem
               key={place.id}
@@ -93,6 +94,7 @@ const PlaceTypeForm = ({
               onItemClick={onItemClick}
               onRemove={onRemove}
               isOnlyItem={filledPlaces.length === 1 && !emptyPlace}
+              isEditPage={isEditPage}
             />
           ))}
         </SortableContext>
