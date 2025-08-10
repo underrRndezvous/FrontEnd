@@ -80,6 +80,7 @@ const Step1_5Page = () => {
     >
       <DepartureInputForm
         departures={departures}
+        setDepartures={setDepartures}
         onAdd={handleAdd}
         onRemove={handleRemove}
         onChange={handleChange}
