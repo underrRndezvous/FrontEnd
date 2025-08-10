@@ -78,6 +78,7 @@ const Step1_5Page = () => {
       isScrollable={true}
       contentAlignment="start"
     >
+      {/* 오류 수정 */}
       <DepartureInputForm
         departures={departures}
         setDepartures={setDepartures}
