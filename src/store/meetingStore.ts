@@ -16,6 +16,7 @@ export interface Departure {
 export interface MeetingState {
   groupName: string;
   groupPurpose: string | null;
+  selectedDays: string[]
   selectedTimes: string[];
   places: Place[];
   departures: Departure[];
@@ -24,6 +25,7 @@ export interface MeetingState {
 interface MeetingActions {
   setGroupName: (name: string) => void;
   setGroupPurpose: (purpose: string | null) => void;
+  setSelectedDays: (days: string[]) => void;
   setSelectedTimes: (times: string[]) => void;
   setPlaces: (places: Place[]) => void;
   setDepartures: (departures: Departure[]) => void;
@@ -35,6 +37,7 @@ const initialState: MeetingState = {
   groupPurpose: null,
   selectedTimes: [],
   places: [],
+  selectedDays: [],
   departures: [],
 };
 
@@ -46,6 +49,7 @@ export const useMeetingStore = create<MeetingState & MeetingActions>()(
 
       setGroupName: (name) => set({ groupName: name }),
       setGroupPurpose: (purpose) => set({ groupPurpose: purpose }),
+      setSelectedDays: (days) => set({ selectedDays: days }),
        setSelectedTimes: (times) => {
       
         const koreanToEnglish: { [key: string]: string } = {

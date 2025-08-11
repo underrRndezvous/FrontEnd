@@ -9,6 +9,8 @@ const EditMeetingForm = () => {
   const {
     groupPurpose,
     setGroupPurpose,
+    selectedDays,
+    setSelectedDays,
     selectedTimes,
     setSelectedTimes,
     places,
@@ -24,13 +26,20 @@ const EditMeetingForm = () => {
     { id: "study", label: "스터디" },
     { id: "social", label: "친목" },
   ];
-
+  const dayOptions = ["월", "화", "수", "목", "금", "토", "일"];
   const timeOptions = [
     { key: "morning", label: "오전" },
     { key: "lunch", label: "점심" },
     { key: "afternoon", label: "오후" },
     { key: "dinner", label: "저녁" },
   ];
+  const handleDaySelect = (day: string) => {
+    // ✅ 요일 선택 핸들러
+    const newDays = selectedDays.includes(day)
+      ? selectedDays.filter((d) => d !== day)
+      : [...selectedDays, day];
+    setSelectedDays(newDays);
+  };
 
   const handleTimeSelect = (timeKey: string) => {
     const isAlreadySelected = selectedTimes.includes(timeKey);
@@ -75,9 +84,7 @@ const EditMeetingForm = () => {
   return (
     <div className="w-full space-y-6 rounded-lg border border-main bg-white p-6">
       <section className="flex flex-col items-start gap-y-3">
-        <h3 className="body-01 font-semibold text-left text-gray-800">
-          모임 목적
-        </h3>
+        <h3 className="title-03  text-left text-black">모임 목적</h3>
         <div className="w-full grid grid-cols-4 gap-x-2">
           {purposeOptions.map((opt) => (
             <button
@@ -86,7 +93,7 @@ const EditMeetingForm = () => {
               className={clsx(
                 "rounded-md border py-1 body-02 transition-colors whitespace-nowrap",
                 groupPurpose === opt.id
-                  ? "border-main bg-sub02 text-black"
+                  ? "border-main bg-sub02 text-black shadow-glow-main"
                   : "border-gray2 bg-white text-gray3"
               )}
             >
@@ -98,9 +105,33 @@ const EditMeetingForm = () => {
       <hr className="border-gray-100" />
 
       <section className="flex flex-col items-start gap-y-3">
-        <h3 className="body-01 font-semibold text-left text-gray-800">
-          모임 시간
-        </h3>
+        <h3 className="title-03 text-left text-black">모임 요일</h3>
+
+        {/* 🔄 변경: 모든 요일을 한 줄로 배치 */}
+        <div className="w-full flex justify-center">
+          <div className="flex justify-center gap-x-1.5">
+            {dayOptions.map((day) => (
+              <button
+                key={day}
+                onClick={() => handleDaySelect(day)}
+                className={clsx(
+                  "rounded-md border py-1.5 px-2 text-body-02 transition-colors whitespace-nowrap min-w-[36px]",
+                  selectedDays.includes(day)
+                    ? "border-main bg-sub02 text-black shadow-glow-main"
+                    : "border-gray2 bg-white text-gray3"
+                )}
+              >
+                {day}
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <hr className="border-gray-100" />
+
+      <section className="flex flex-col items-start gap-y-3">
+        <h3 className="title-03  text-left text-black">모임 시간</h3>
         <div className="w-full grid grid-cols-4 gap-x-2">
           {timeOptions.map((time) => (
             <button
@@ -109,7 +140,7 @@ const EditMeetingForm = () => {
               className={clsx(
                 "rounded-md border py-1 body-02 transition-colors",
                 selectedTimes.includes(time.key)
-                  ? "border-main bg-sub02 text-black"
+                  ? "border-main bg-sub02 text-black shadow-glow-main"
                   : "border-gray2 bg-white text-gray3"
               )}
             >

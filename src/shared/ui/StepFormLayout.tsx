@@ -36,7 +36,7 @@ const StepFormLayout = ({
         </div>
         <main
           className={clsx(
-            "flex flex-1 flex-col items-center py-4",
+            "flex flex-1 flex-col items-center py-4 mt-2",
             contentAlignment === "center" ? "justify-center" : "justify-start",
             isScrollable && "overflow-y-auto"
           )}
