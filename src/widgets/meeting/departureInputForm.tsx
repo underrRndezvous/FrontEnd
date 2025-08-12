@@ -1,11 +1,11 @@
 import React from "react";
 import DepartureInput from "@/shared/ui/departureUi";
 import type { Departure } from "@/store/meetingStore";
+import type { RegionItem } from "@/shared/hooks/useRegionSearch";
 import { IconPlus } from "@/shared/ui/svg";
 
 interface DepartureInputFormProps {
   departures: Departure[];
-  setDepartures: (departures: Departure[]) => void;
   onAdd: () => void;
   onRemove: (id: number) => void;
   onChange: (id: number, value: string) => void;
@@ -14,12 +14,15 @@ interface DepartureInputFormProps {
 
 const DepartureInputForm = ({
   departures,
-  setDepartures,
   onAdd,
   onRemove,
   onChange,
   onKeyDown,
 }: DepartureInputFormProps) => {
+  const handleRegionSelect = (id: number, region: RegionItem) => {
+    onChange(id, region.fullAddress);
+  };
+
   return (
     <div className="flex w-full flex-col items-center gap-y-3">
       <div className="w-full flex flex-col gap-y-3 max-h-60 overflow-y-auto pr-2">
@@ -31,6 +34,7 @@ const DepartureInputForm = ({
             placeholder="출발지 입력"
             onChange={(e) => onChange(departure.id, e.target.value)}
             onKeyDown={(e) => onKeyDown(e, departure.id)}
+            onRegionSelect={(region) => handleRegionSelect(departure.id, region)}
             onRemove={
               departure.type === "member"
                 ? () => onRemove(departure.id)
