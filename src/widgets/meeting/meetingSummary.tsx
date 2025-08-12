@@ -2,7 +2,7 @@ import React from "react";
 import { useMeetingStore } from "@/store/meetingStore";
 import IconCrown from "@/shared/asset/icon/crown.svg?react";
 import IconPerson from "@/shared/asset/icon/person.svg?react";
-import type { Place } from "@/store/meetingStore";
+import type { PlaceRequest } from "@/store/meetingStore";
 
 const purposeMap: { [key: string]: string } = {
   date: "데이트",
@@ -31,7 +31,7 @@ const MeetingSummary = () => {
     (a, b) => dayOrder.indexOf(a) - dayOrder.indexOf(b)
   );
 
-  const getPlaceTypeText = (place: Place) => {
+  const getPlaceTypeText = (place: PlaceRequest) => {
     if (!place.type) return "";
     const typeMap: { [key: string]: string } = {
       restaurant: "음식점",

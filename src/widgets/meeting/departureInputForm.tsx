@@ -1,11 +1,11 @@
 import React from "react";
 import DepartureInput from "@/shared/ui/departureUi";
-import type { Departure } from "@/store/meetingStore";
+import type { StartPointRequest } from "@/store/meetingStore";
 import { IconPlus } from "@/shared/ui/svg";
 
 interface DepartureInputFormProps {
-  departures: Departure[];
-  setDepartures: (departures: Departure[]) => void;
+  departures: StartPointRequest[];
+  setDepartures: (departures: StartPointRequest[]) => void;
   onAdd: () => void;
   onRemove: (id: number) => void;
   onChange: (id: number, value: string) => void;

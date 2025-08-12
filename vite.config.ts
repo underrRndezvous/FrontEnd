@@ -8,7 +8,18 @@ export default defineConfig({
   plugins: [react(), svgr()],
   resolve: {
     alias: {
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       '@': path.resolve(__dirname, './src'),
     },
   },
+   server: {
+    proxy: {
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      '/api': {
+        target: 'https://swp.hoydev.com', 
+        changeOrigin: true,
+      },
+    },
+  },
+  
 })

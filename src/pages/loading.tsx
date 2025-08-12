@@ -2,8 +2,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useMeetingStore } from "@/store/meetingStore";
-import { useMutation } from "@tanstack/react-query";
-import { postMeetingInfo } from "@/shared/api/meetingApi";
+import { useRecommendPlaces } from "@/shared/api/meetingApi";
 import characterImg from "@/shared/asset/images/character.png";
 
 const IconClose = () => (
@@ -23,41 +22,28 @@ const IconClose = () => (
 
 const LoadingPage = () => {
   const navigate = useNavigate();
-  const meetingData = useMeetingStore.getState(); // API에 전송할 전체 데이터
-
-  // const { mutate } = useMutation({
-  //   mutationFn: postMeetingInfo,
-  //   onSuccess: (data) => {
-  //     // 성공 시 추천 ID를 가지고 STEP2 결과 페이지로 이동
-  //     navigate(`/step2-result/${data.recommendationId}`);
-  //   },
-  //   onError: (error) => {
-  //     console.error('추천 장소 조회 실패:', error);
-  //     alert('추천 장소 찾기에 실패했어요. 이전 페이지로 돌아갑니다.');
-  //     navigate(-1);
-  //   },
-  // });
+  const { groupName } = useMeetingStore.getState();
+  const { mutate, data, isSuccess, isError, error } = useRecommendPlaces();
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      navigate(`/step2-result/dummy-id`, {
-        state: {
-          recommendations: [
-            {
-              id: 1,
-              name: "성수",
-              imageUrl:
-                "https://images.unsplash.com/photo-1585123334904-9b35f991a3b5", // 더미 이미지
-              description: "서울 성수동의 멋진 카페 거리",
-              contents: [],
-            },
-          ],
-        },
-      });
-    }, 1000);
+    mutate();
+  }, [mutate]);
 
-    return () => clearTimeout(timer);
-  }, []);
+  useEffect(() => {
+    if (isSuccess && data) {
+      // 결과 데이터(data.regions)를 state로 넘겨주며 결과 페이지로 이동합니다.
+      navigate("/Plaza/step2", { state: { recommendations: data.regions } });
+    }
+  }, [isSuccess, data, navigate]);
+
+  // 4. API 호출 실패 시 에러를 처리합니다.
+  useEffect(() => {
+    if (isError) {
+      console.error("추천 장소 조회 실패:", error);
+      alert("추천 장소를 찾는 데 실패했어요. 이전 페이지로 돌아갑니다.");
+      navigate(-1); // 이전 페이지로 이동
+    }
+  }, [isError, error, navigate]);
 
   return (
     <motion.div
@@ -73,7 +59,7 @@ const LoadingPage = () => {
 
         <div className="flex flex-1 flex-col items-center justify-center">
           <h1 className="title-02 text-black mb-2">
-            <span className="text-main">{meetingData.groupName || "모임"}</span>
+            <span className="text-main">{groupName || "모임"}</span>
             의
             <br />
             모임 장소와 컨텐츠를 찾고 있어요!

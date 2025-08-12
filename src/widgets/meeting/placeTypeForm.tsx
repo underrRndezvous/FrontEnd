@@ -14,11 +14,11 @@ import {
 } from "@dnd-kit/sortable";
 import SortablePlaceItem from "@/shared/ui/SortablePlaceItem";
 import { IconPlus } from "@/shared/ui/svg";
-import type { Place } from "@/store/meetingStore";
+import type { PlaceRequest } from "@/store/meetingStore";
 
 interface PlaceTypeFormProps {
-  places: Place[];
-  setPlaces: (places: Place[]) => void;
+  places: PlaceRequest[];
+  setPlaces: (places: PlaceRequest[]) => void;
   onItemClick: (id: number) => void;
   onRemove: (id: number) => void;
   onAdd: () => void;
@@ -37,7 +37,7 @@ const PlaceTypeForm = ({
     useSensor(PointerSensor, { activationConstraint: { distance: 8 } })
   );
 
-  const getPlaceTypeText = (place: Place): string => {
+  const getPlaceTypeText = (place: PlaceRequest): string => {
     if (!place.type) return "장소 유형 추가";
     const typeMap: { [key: string]: string } = {
       restaurant: "음식점",

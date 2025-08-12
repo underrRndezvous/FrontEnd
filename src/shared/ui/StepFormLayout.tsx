@@ -13,6 +13,7 @@ interface StepFormLayoutProps {
   contentAlignment?: "center" | "start";
   prevButtonText?: string;
   nextButtonText?: string;
+  isPrevDisabled?: boolean;
 }
 
 const StepFormLayout = ({
@@ -23,6 +24,7 @@ const StepFormLayout = ({
   onPrev,
   isNextDisabled,
   isScrollable = false,
+  isPrevDisabled = false,
   contentAlignment = "center",
   prevButtonText = "이전",
   nextButtonText = "다음",
@@ -50,6 +52,7 @@ const StepFormLayout = ({
             isNextDisabled={isNextDisabled}
             prevText={prevButtonText}
             nextText={nextButtonText}
+            isPrevDisabled={isPrevDisabled}
           />
         </div>
       </div>

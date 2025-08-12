@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import StepFormLayout from "@/shared/ui/StepFormLayout";
 import DepartureInputForm from "@/widgets/meeting/departureInputForm";
 import { useMeetingStore } from "@/store/meetingStore";
-import type { Departure } from "@/store/meetingStore";
+import type { StartPointRequest } from "@/store/meetingStore";
 
 const Step1_5Page = () => {
   const navigate = useNavigate();
@@ -28,7 +28,7 @@ const Step1_5Page = () => {
 
   const handleAdd = () => {
     if (departures.length >= 5) return;
-    const newDeparture: Departure = {
+    const newDeparture: StartPointRequest = {
       id: Date.now(),
       value: "",
       type: "member",

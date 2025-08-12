@@ -1,58 +1,28 @@
-import React from "react";
-import { useMeetingStore } from "@/store/meetingStore";
-import glassImage from "@/shared/asset/images/glass.png";
-
-interface Recommendation {
-  placeName: string;
-  imageUrl: string;
-}
+import type { Region } from "@/shared/api/meetingApi";
 
 interface PlaceRecommendationProps {
-  recommendation: Recommendation;
+  recommendation: Region;
 }
 
 const PlaceRecommendation = ({ recommendation }: PlaceRecommendationProps) => {
-  const groupName = useMeetingStore((state) => state.groupName) || "모임명";
-
   return (
     <div className="flex w-full flex-col items-center">
-      <div className="relative mb-4 w-full flex items-center justify-center rounded-lg bg-white p-4 shadow-md">
-        <img
-          src={glassImage}
-          alt="돋보기 캐릭터"
-          className="absolute -left-4 -top-8 h-20 w-20"
-        />
-
-        <p className="title-03 text-black leading-snug">
-          {" "}
-          <span>{groupName}</span>에 <br /> 딱 맞는 장소를 찾았어요!
-        </p>
-      </div>
+      {/* 제목 부분은 StepFormLayout으로 옮겨졌으므로 여기서는 제거해도 됩니다. 
+          디자인에 따라 유지할 수도 있습니다. */}
 
       <div className="w-full rounded-lg bg-white p-3 shadow-md">
+        {/* 2. Region 타입에 맞는 필드명을 사용합니다. */}
         <h3 className="title-02 text-center text-black">
-          {recommendation.placeName}
+          {recommendation.hotPlace}
         </h3>
 
         <img
-          src={recommendation.imageUrl}
-          alt={recommendation.placeName}
+          src={recommendation.hotPlaceImage}
+          alt={recommendation.hotPlace}
           className="mt-2 h-48 w-full rounded-md object-cover bg-gray-200"
         />
         <button className="mt-3 flex w-full items-center justify-center rounded-md bg-sub01 py-2 body-02 text-black">
-          <svg
-            className="mr-1 h-4 w-4"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M19 9l-7 7-7-7"
-            />
-          </svg>
+          <svg /* ... */>{/* ... */}</svg>
           컨텐츠 미리보기
         </button>
       </div>
