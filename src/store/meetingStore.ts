@@ -16,29 +16,29 @@ export interface Departure {
 export interface MeetingState {
   groupName: string;
   groupPurpose: string | null;
-  selectedDays: string[]
-  selectedTimes: string[];
-  places: Place[];
-  departures: Departure[];
+  meetDays: string[]
+  meetTime: string[];
+  place: Place[];
+  startPoint: Departure[];
 }
 
 interface MeetingActions {
   setGroupName: (name: string) => void;
   setGroupPurpose: (purpose: string | null) => void;
-  setSelectedDays: (days: string[]) => void;
-  setSelectedTimes: (times: string[]) => void;
-  setPlaces: (places: Place[]) => void;
-  setDepartures: (departures: Departure[]) => void;
+  setMeetDays: (days: string[]) => void;
+  setMeetTime: (times: string[]) => void;
+  setPlace: (places: Place[]) => void;
+  setStartPoint: (departures: Departure[]) => void;
   reset: () => void;
 }
 
 const initialState: MeetingState = {
   groupName: '',
   groupPurpose: null,
-  selectedTimes: [],
-  places: [],
-  selectedDays: [],
-  departures: [],
+  meetTime: [],
+  place: [],
+  meetDays: [],
+  startPoint: [],
 };
 
 export const useMeetingStore = create<MeetingState & MeetingActions>()(
@@ -49,8 +49,8 @@ export const useMeetingStore = create<MeetingState & MeetingActions>()(
 
       setGroupName: (name) => set({ groupName: name }),
       setGroupPurpose: (purpose) => set({ groupPurpose: purpose }),
-      setSelectedDays: (days) => set({ selectedDays: days }),
-       setSelectedTimes: (times) => {
+      setMeetDays: (days) => set({ meetDays: days }),
+       setMeetTime: (times) => {
       
         const koreanToEnglish: { [key: string]: string } = {
           '오전': 'morning',
@@ -65,12 +65,12 @@ export const useMeetingStore = create<MeetingState & MeetingActions>()(
     
         const uniqueTimes = [...new Set(normalizedTimes)];
         
-        set({ selectedTimes: uniqueTimes });
+        set({ meetTime: uniqueTimes });
       },
       // setSelectedTimes: (times) => set({ selectedTimes: times }),
       
-      setPlaces: (places) => set({ places }),
-      setDepartures: (departures) => set({ departures }),
+      setPlace: (places) => set({ place: places }),
+      setStartPoint: (departures) => set({ startPoint: departures }),
       reset: () => set(initialState),
     }),
 

@@ -9,14 +9,14 @@ const EditMeetingForm = () => {
   const {
     groupPurpose,
     setGroupPurpose,
-    selectedDays,
-    setSelectedDays,
-    selectedTimes,
-    setSelectedTimes,
-    places,
-    setPlaces,
-    departures,
-    setDepartures,
+    meetDays: selectedDays,
+    setMeetDays: setSelectedDays,
+    meetTime: selectedTimes,
+    setMeetTime: setSelectedTimes,
+    place: places,
+    setPlace: setPlaces,
+    startPoint: departures,
+    setStartPoint: setDepartures,
   } = useMeetingStore();
 
   const purposeOptions = [

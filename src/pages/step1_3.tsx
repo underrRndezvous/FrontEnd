@@ -6,7 +6,8 @@ import { useMeetingStore } from "@/store/meetingStore";
 
 const Step1_3Page = () => {
   const navigate = useNavigate();
-  const { selectedTimes, setSelectedTimes } = useMeetingStore();
+  const { meetTime: selectedTimes, setMeetTime: setSelectedTimes } =
+    useMeetingStore();
 
   const handleNext = () => {
     navigate("/Plaza/step1_4");

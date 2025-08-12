@@ -51,7 +51,7 @@ const cafeTypeOptions: SelectionOption[] = [
 
 const Step1_4Page = () => {
   const navigate = useNavigate();
-  const { places, setPlaces } = useMeetingStore();
+  const { place: places, setPlace: setPlaces } = useMeetingStore();
   const [editingPlaceId, setEditingPlaceId] = useState<number | null>(null);
   const [overlayData, setOverlayData] = useState<{
     title: string;
@@ -96,7 +96,7 @@ const Step1_4Page = () => {
   const handleConfirm = (selectedId: string) => {
     const isMainStep = overlayData?.step === "main";
 
-    const currentPlaces = useMeetingStore.getState().places;
+    const currentPlaces = useMeetingStore.getState().place;
     const wasLastAndEmpty =
       !currentPlaces.find((p) => p.id === editingPlaceId)?.type &&
       currentPlaces.length - 1 ===

@@ -19,11 +19,11 @@ const timeMap: { [key: string]: string } = {
 const MeetingSummary = () => {
   const {
     groupName,
-    selectedDays,
-    selectedTimes,
+    meetDays: selectedDays,
+    meetTime: selectedTimes,
     groupPurpose,
-    places,
-    departures,
+    place: places,
+    startPoint: departures,
   } = useMeetingStore();
 
   const dayOrder = ["월", "화", "수", "목", "금", "토", "일"];
