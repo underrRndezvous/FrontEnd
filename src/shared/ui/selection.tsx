@@ -21,13 +21,13 @@ const Selection = ({ options, selectedId, onSelect }: SelectionProps) => {
           key={option.id}
           onClick={() => onSelect(option.id)}
           className={clsx(
-            "flex flex-col items-center justify-center rounded-lg bg-white p-4 transition-all",
+            "flex flex-col items-center justify-center rounded-lg bg-white p-4 transition-all aspect-square",
             selectedId === option.id
               ? "ring-2 ring-main shadow-glow-main"
               : "ring-1 ring-gray1"
           )}
         >
-          <span className="body-02 text-gray3">{option.label}</span>
+          <span className="body-02 text-gray3 truncate">{option.label}</span>
           <option.IconComponent className="mb-2 h-16 w-16" />
         </button>
       ))}

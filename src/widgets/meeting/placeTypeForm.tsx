@@ -45,6 +45,7 @@ const PlaceTypeForm = ({
       activity: "액티비티",
       bar: "술집",
     };
+
     const subTypeMap: { [key: string]: string } = {
       western: "양식",
       chinese: "중식",
@@ -54,6 +55,10 @@ const PlaceTypeForm = ({
       "kor-bar": "한식주점",
       beer: "맥주",
       wine: "와인/위스키",
+      note: "작업하기 좋은",
+      photo: "사진찍기 좋은",
+      talk: "대화하기 좋은",
+      desert: "디저트가 맛있는",
     };
 
     const mainText = typeMap[place.type];

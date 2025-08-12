@@ -1,75 +1,96 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import { useMeetingStore } from "@/store/meetingStore";
 import { useMutation } from "@tanstack/react-query";
 import { postMeetingInfo } from "@/shared/api/meetingApi";
 import characterImg from "@/shared/asset/images/character.png";
 
+const IconClose = () => (
+  <svg
+    className="h-6 w-6 stroke-current text-gray-500"
+    fill="none"
+    viewBox="0 0 24 24"
+    strokeWidth={2}
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M6 18L18 6M6 6l12 12"
+    />
+  </svg>
+);
+
 const LoadingPage = () => {
   const navigate = useNavigate();
-  const groupName = useMeetingStore((state) => state.groupName);
-  // ✅ 1. 스토어에서 필요한 '데이터'만 명시적으로 가져옵니다.
-  // const meetingData = useMeetingStore((state) => ({
-  //   groupName: state.groupName,
-  //   groupPurpose: state.groupPurpose,
-  //   selectedTimes: state.selectedTimes,
-  //   places: state.places,
-  //   departures: state.departures,
-  // }));
+  const meetingData = useMeetingStore.getState(); // API에 전송할 전체 데이터
 
-  // ✅ 2. useMutation 사용법을 최신 방식으로 수정합니다.
-  // const { mutate, isPending } = useMutation({
-  //   mutationFn: postMeetingInfo, // API 함수를 mutationFn으로 전달
+  // const { mutate } = useMutation({
+  //   mutationFn: postMeetingInfo,
   //   onSuccess: (data) => {
-  //     navigate("/step2", { state: { recommendations: data } });
+  //     // 성공 시 추천 ID를 가지고 STEP2 결과 페이지로 이동
+  //     navigate(`/step2-result/${data.recommendationId}`);
   //   },
   //   onError: (error) => {
-  //     console.error("추천 장소 조회 실패:", error);
-  //     // TODO: 실패 페이지나 재시도 로직 처리
+  //     console.error('추천 장소 조회 실패:', error);
+  //     alert('추천 장소 찾기에 실패했어요. 이전 페이지로 돌아갑니다.');
+  //     navigate(-1);
   //   },
   // });
 
-  // useEffect(() => {
-  //   const meetingData = useMeetingStore.getState();
-  //   mutate({
-  //       groupName: meetingData.groupName,
-  //       groupPurpose: meetingData.groupPurpose,
-  //       selectedTimes: meetingData.selectedTimes,
-  //       places: meeting.places,
-  //       departures: meetingData.departures,
-  //   });
-  // }, []);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      navigate(`/step2-result/dummy-id`, {
+        state: {
+          recommendations: [
+            {
+              id: 1,
+              name: "성수",
+              imageUrl:
+                "https://images.unsplash.com/photo-1585123334904-9b35f991a3b5", // 더미 이미지
+              description: "서울 성수동의 멋진 카페 거리",
+              contents: [],
+            },
+          ],
+        },
+      });
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen px-6 text-center">
-      <div
-        className=" bg-white w-full flex flex-col items-center text-center "
-        style={{ width: "375px", height: "645px" }}
-      >
-        <button
-          className="absolute top-4 right-4 text-gray-400"
-          onClick={() => navigate(-1)}
-        >
-          ✕
+    <motion.div
+      className="flex min-h-screen items-center justify-center bg-gray-100 p-4"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
+      <div className="relative flex w-screen flex-col items-center justify-center rounded-lg bg-gradient-to-b from-sub01 to-sub02 p-6 text-center h-screen sm:w-[375px] sm:h-[645px]">
+        <button onClick={() => navigate(-1)} className="absolute top-6 right-6">
+          <IconClose />
         </button>
-        <div className="mt-24">
-          <h1 className="text-lg font-bold">
-            <span className="text-black">{groupName || "모임명"}</span>
+
+        <div className="flex flex-1 flex-col items-center justify-center">
+          <h1 className="title-02 text-black mb-2">
+            <span className="text-main">{meetingData.groupName || "모임"}</span>
             의
             <br />
             모임 장소와 컨텐츠를 찾고 있어요!
           </h1>
-          <p className="text-sm text-gray-500 mt-2">
-            최대 3개까지 모임 장소를 추천 받을 수 있어요
-          </p>
+
           <img
             src={characterImg}
             alt="캐릭터"
-            className="w-40 h-40 mt-20 animate-bounce mx-auto"
+            className="my-8 w-48 animate-bounce"
           />
+
+          <p className="body-02 text-gray3">
+            최대 3개까지 장소를 추천 받을 수 있어요
+          </p>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

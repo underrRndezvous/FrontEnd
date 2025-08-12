@@ -2,14 +2,14 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import GroupPurposeForm from "@/widgets/meeting/groupPurposeForm";
 import StepFormLayout from "@/shared/ui/StepFormLayout";
-import { useMeetingStore } from "@/store/meetingStore"; // ✅ 1. Zustand 스토어를 import 합니다.
+import { useMeetingStore } from "@/store/meetingStore";
 
 const Step1_2Page = () => {
   const navigate = useNavigate();
   const { groupPurpose, setGroupPurpose } = useMeetingStore();
 
   const handleNext = () => {
-    navigate("/Plaza/step1_3");
+    navigate("/Plaza/step1_2_2");
   };
 
   const handlePrev = () => {

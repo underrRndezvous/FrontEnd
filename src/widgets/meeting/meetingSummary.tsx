@@ -17,8 +17,19 @@ const timeMap: { [key: string]: string } = {
   dinner: "저녁",
 };
 const MeetingSummary = () => {
-  const { groupName, selectedTimes, groupPurpose, places, departures } =
-    useMeetingStore();
+  const {
+    groupName,
+    meetDays: selectedDays,
+    meetTime: selectedTimes,
+    groupPurpose,
+    place: places,
+    startPoint: departures,
+  } = useMeetingStore();
+
+  const dayOrder = ["월", "화", "수", "목", "금", "토", "일"];
+  const sortedSelectedDays = [...selectedDays].sort(
+    (a, b) => dayOrder.indexOf(a) - dayOrder.indexOf(b)
+  );
 
   const getPlaceTypeText = (place: Place) => {
     if (!place.type) return "";
@@ -45,7 +56,7 @@ const MeetingSummary = () => {
   };
 
   return (
-    <div className="w-full rounded-lg bg-white p-4 text-left shadow-md">
+    <div className="w-full rounded-lg bg-white p-4 text-left shadow-md overflow-y-auto max-h-[310px]">
       {/* 받아오는 값 가운데 정렬 추가해야함 */}
       <div className="w-full flex justify-between items-center border-b py-3">
         <span className="title-03 text-black">모임 시간</span>
@@ -53,6 +64,13 @@ const MeetingSummary = () => {
           {[...new Set(selectedTimes)]
             .map((time) => timeMap[time] || time)
             .join(", ")}
+        </span>
+      </div>
+
+      <div className="w-full flex justify-between items-center border-b py-3">
+        <span className="title-03 text-black">모임 요일</span>
+        <span className="body-02 text-gray4">
+          {sortedSelectedDays.join(", ")}
         </span>
       </div>
 

@@ -7,7 +7,8 @@ import type { Departure } from "@/store/meetingStore";
 
 const Step1_5Page = () => {
   const navigate = useNavigate();
-  const { departures, setDepartures } = useMeetingStore();
+  const { startPoint: departures, setStartPoint: setDepartures } =
+    useMeetingStore();
 
   useEffect(() => {
     if (departures.length === 0) {

@@ -20,7 +20,10 @@ import IconIzakaya from "@/shared/asset/icon/izakaya.svg?react";
 import IconKor from "@/shared/asset/icon/kor.svg?react";
 import IconBeer from "@/shared/asset/icon/beer.svg?react";
 import IconWine from "@/shared/asset/icon/wine.svg?react";
-
+import IconNote from "@/shared/asset/icon/note.svg?react";
+import IconPhoto from "@/shared/asset/icon/photo.svg?react";
+import IconTalk from "@/shared/asset/icon/talk.svg?react";
+import IconDesert from "@/shared/asset/icon/desert.svg?react";
 const placeTypeOptions: SelectionOption[] = [
   { id: "restaurant", label: "음식점", IconComponent: IconRestaurant },
   { id: "cafe", label: "카페", IconComponent: IconCafe },
@@ -39,10 +42,16 @@ const barTypeOptions: SelectionOption[] = [
   { id: "beer", label: "맥주", IconComponent: IconBeer },
   { id: "wine", label: "와인/위스키", IconComponent: IconWine },
 ];
+const cafeTypeOptions: SelectionOption[] = [
+  { id: "note", label: "작업하기 좋은", IconComponent: IconNote },
+  { id: "photo", label: "사진찍기 좋은", IconComponent: IconPhoto },
+  { id: "talk", label: "대화하기 좋은", IconComponent: IconTalk },
+  { id: "desert", label: "디저트가 맛있는", IconComponent: IconDesert },
+];
 
 const Step1_4Page = () => {
   const navigate = useNavigate();
-  const { places, setPlaces } = useMeetingStore();
+  const { place: places, setPlace: setPlaces } = useMeetingStore();
   const [editingPlaceId, setEditingPlaceId] = useState<number | null>(null);
   const [overlayData, setOverlayData] = useState<{
     title: string;
@@ -87,7 +96,7 @@ const Step1_4Page = () => {
   const handleConfirm = (selectedId: string) => {
     const isMainStep = overlayData?.step === "main";
 
-    const currentPlaces = useMeetingStore.getState().places;
+    const currentPlaces = useMeetingStore.getState().place;
     const wasLastAndEmpty =
       !currentPlaces.find((p) => p.id === editingPlaceId)?.type &&
       currentPlaces.length - 1 ===
@@ -121,6 +130,13 @@ const Step1_4Page = () => {
           title: "술집 유형을 선택해주세요",
           buttonText: "선택하기",
           options: barTypeOptions,
+          step: "sub",
+        });
+      } else if (selectedId === "cafe") {
+        setOverlayData({
+          title: "카페 유형을 선택해주세요",
+          buttonText: "선택하기",
+          options: cafeTypeOptions,
           step: "sub",
         });
       } else {
