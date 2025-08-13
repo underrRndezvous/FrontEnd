@@ -4,7 +4,7 @@ import clsx from "clsx";
 
 interface StepFormLayoutProps {
   children: React.ReactNode;
-  title: string;
+  title: string | React.ReactNode;
   subtitle: string;
   onNext: () => void;
   onPrev: () => void;

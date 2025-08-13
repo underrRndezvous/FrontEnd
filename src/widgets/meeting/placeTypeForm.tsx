@@ -14,7 +14,11 @@ import {
 } from "@dnd-kit/sortable";
 import SortablePlaceItem from "@/shared/ui/SortablePlaceItem";
 import { IconPlus } from "@/shared/ui/svg";
-import type { PlaceRequest } from "@/store/meetingStore";
+import type {
+  PlaceRequest,
+  PlaceType,
+  AtmosphereType,
+} from "@/store/meetingStore";
 
 interface PlaceTypeFormProps {
   places: PlaceRequest[];
@@ -23,6 +27,8 @@ interface PlaceTypeFormProps {
   onRemove: (id: number) => void;
   onAdd: () => void;
   isEditPage?: boolean;
+  // displaySubTypes를 optional로 만들어서 더 안전하게 처리
+  displaySubTypes?: { [key: number]: string };
 }
 
 const PlaceTypeForm = ({
@@ -32,21 +38,31 @@ const PlaceTypeForm = ({
   onRemove,
   onAdd,
   isEditPage = false,
+  displaySubTypes = {}, // 기본값으로 빈 객체 설정
 }: PlaceTypeFormProps) => {
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 8 } })
   );
 
   const getPlaceTypeText = (place: PlaceRequest): string => {
-    if (!place.type) return "장소 유형 추가";
-    const typeMap: { [key: string]: string } = {
-      restaurant: "음식점",
-      cafe: "카페",
-      activity: "액티비티",
-      bar: "술집",
+    if (!place.placeType) return "장소 유형 추가";
+
+    const typeMap: { [key in PlaceType]: string } = {
+      RESTAURANT: "음식점",
+      CAFE: "카페",
+      ACTIVITY: "액티비티",
+      BAR: "술집",
     };
 
-    const subTypeMap: { [key: string]: string } = {
+    const atmosphereMap: { [key in AtmosphereType]: string } = {
+      PRODUCTIVE: "작업하기 좋은",
+      AESTHETIC: "사진찍기 좋은",
+      SOCIABLE: "대화하기 좋은",
+      INDULGENT: "디저트가 맛있는",
+    };
+
+    // API에 없는 UI 전용 세부 타입 맵
+    const displaySubTypeMap: { [key: string]: string } = {
       western: "양식",
       chinese: "중식",
       japanese: "일식",
@@ -55,14 +71,20 @@ const PlaceTypeForm = ({
       "kor-bar": "한식주점",
       beer: "맥주",
       wine: "와인/위스키",
-      note: "작업하기 좋은",
-      photo: "사진찍기 좋은",
-      talk: "대화하기 좋은",
-      desert: "디저트가 맛있는",
     };
 
-    const mainText = typeMap[place.type];
-    const subText = place.subType ? ` - ${subTypeMap[place.subType]}` : "";
+    const mainText = typeMap[place.placeType];
+    let subText = "";
+
+    if (place.placeType === "CAFE" && place.atmosphere) {
+      subText = ` - ${atmosphereMap[place.atmosphere]}`;
+    } else {
+      const displaySubTypeKey = displaySubTypes[place.id];
+      if (displaySubTypeKey && displaySubTypeMap[displaySubTypeKey]) {
+        subText = ` - ${displaySubTypeMap[displaySubTypeKey]}`;
+      }
+    }
+
     return `${mainText}${subText}`;
   };
 
@@ -76,8 +98,8 @@ const PlaceTypeForm = ({
     }
   };
 
-  const filledPlaces = places.filter((p) => p.type !== null);
-  const emptyPlace = places.find((p) => p.type === null);
+  const filledPlaces = places.filter((p) => p.placeType !== null);
+  const emptyPlace = places.find((p) => p.placeType === null);
 
   return (
     <DndContext
@@ -103,21 +125,6 @@ const PlaceTypeForm = ({
             />
           ))}
         </SortableContext>
-
-        {/* {emptyPlace && places.length < 5 && (
-          <div className="flex w-full items-center">
-            <div className="w-[32px] flex-shrink-0" />
-            <button
-              onClick={onAdd}
-              className="flex flex-grow items-center rounded-md border border-dashed border-gray-300 bg-white bg-opacity-50 p-3 text-left"
-            >
-              <div className="mr-3 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-md bg-gray1 text-sm">
-                <IconPlus />
-              </div>
-              <span className="body-02 text-gray3">장소 유형 추가</span>
-            </button>
-          </div>
-        )} */}
       </div>
     </DndContext>
   );

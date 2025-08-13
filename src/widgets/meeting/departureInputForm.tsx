@@ -1,11 +1,11 @@
 import React from "react";
 import DepartureInput from "@/shared/ui/departureUi";
-import type { StartPointRequest } from "@/store/meetingStore";
+import type { Departure } from "@/store/meetingStore";
 import { IconPlus } from "@/shared/ui/svg";
 
 interface DepartureInputFormProps {
-  departures: StartPointRequest[];
-  setDepartures: (departures: StartPointRequest[]) => void;
+  departures: Departure[];
+  setDepartures: (departures: Departure[]) => void;
   onAdd: () => void;
   onRemove: (id: number) => void;
   onChange: (id: number, value: string) => void;
@@ -28,7 +28,7 @@ const DepartureInputForm = ({
             key={departure.id}
             variant={departure.type}
             value={departure.value}
-            placeholder="출발지 입력"
+            placeholder="출발지 입력 (예: 서울시 서초구 서초동)"
             onChange={(e) => onChange(departure.id, e.target.value)}
             onKeyDown={(e) => onKeyDown(e, departure.id)}
             onRemove={

@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import StepFormLayout from "@/shared/ui/StepFormLayout";
 import PlaceRecommendation from "@/widgets/meeting/recommendPlace";
 import { useMeetingStore } from "@/store/meetingStore";
+import glassIcon from "@/shared/asset/images/glass.png"; // 실제 경로에 맞게 수정
 
 const Step2_Page = () => {
   const navigate = useNavigate();
@@ -22,22 +23,33 @@ const Step2_Page = () => {
       state: { selectedRegion: currentRecommendation },
     });
   };
+
   const handleFindAnotherPlace = () => {
-    // 다음 인덱스로 상태를 업데이트합니다.
     setCurrentIndex((prevIndex) => prevIndex + 1);
   };
+
   const currentRecommendation = recommendationData[currentIndex];
   const isLastRecommendation = currentIndex === recommendationData.length - 1;
 
+  // 안경 캐릭터와 텍스트를 가로로 배치
+  const titleWithIcon = (
+    <div className="flex items-center justify-center">
+      <img src={glassIcon} alt="검색 캐릭터" className="w-16 h-16 mr-3" />
+      <span className="text-left">{`{${groupName}}에\n딱 맞는 장소를 찾았어요!`}</span>
+    </div>
+  );
+
   return (
     <StepFormLayout
-      title={`{${groupName}}에\n딱 맞는 장소를 찾았어요!`}
+      title={titleWithIcon}
       subtitle=""
       onNext={handleSelect}
       onPrev={handleFindAnotherPlace}
       nextButtonText="이 장소 선택하기"
       prevButtonText="다른 장소 찾기"
       isPrevDisabled={isLastRecommendation}
+      contentAlignment="start"
+      isScrollable={false}
     >
       <PlaceRecommendation recommendation={currentRecommendation} />
     </StepFormLayout>

@@ -2,49 +2,71 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import StepFormLayout from "@/shared/ui/StepFormLayout";
 import DepartureInputForm from "@/widgets/meeting/departureInputForm";
-import { useMeetingStore } from "@/store/meetingStore";
-import type { StartPointRequest } from "@/store/meetingStore";
+import { useMeetingStore, type Departure } from "@/store/meetingStore";
 
 const Step1_5Page = () => {
   const navigate = useNavigate();
-  const { startPoint: departures, setStartPoint: setDepartures } =
-    useMeetingStore();
+  const { startPoint, setStartPoint } = useMeetingStore();
+
+  // API 형태(StartPointRequest[])를 UI 형태(Departure[])로 변환
+  const departures: Departure[] = startPoint.map((sp, index) => ({
+    id: sp.id || Date.now() + index,
+    type: index === 0 ? "leader" : "member",
+    // filter(Boolean) 제거 → 공백 보존
+    value: [sp.first, sp.second, sp.third].join(" "),
+  }));
 
   useEffect(() => {
-    if (departures.length === 0) {
-      setDepartures([
-        { id: Date.now(), value: "", type: "leader" },
-        { id: Date.now() + 1, value: "", type: "member" },
+    if (startPoint.length === 0) {
+      setStartPoint([
+        { id: Date.now(), type: "leader", first: "", second: "", third: "" },
       ]);
     }
-  }, [departures, setDepartures]);
+  }, [startPoint, setStartPoint]);
 
-  const handleNext = () => {
-    navigate("/Plaza/step1_6");
-  };
-  const handlePrev = () => {
-    navigate(-1);
-  };
+  const handleNext = () => navigate("/Plaza/step1_6");
+  const handlePrev = () => navigate(-1);
 
   const handleAdd = () => {
-    if (departures.length >= 5) return;
-    const newDeparture: StartPointRequest = {
+    if (startPoint.length >= 5) return;
+    const newStartPoint = {
       id: Date.now(),
-      value: "",
-      type: "member",
+      type: "member" as const,
+      first: "",
+      second: "",
+      third: "",
     };
-    setDepartures([...departures, newDeparture]);
+    setStartPoint([...startPoint, newStartPoint]);
   };
 
-  const handleRemove = (idToRemove: number) => {
-    if (departures.length <= 1) return;
-    setDepartures(departures.filter((dep) => dep.id !== idToRemove));
+  const handleRemove = (id: number) => {
+    if (startPoint.length <= 1) return;
+    setStartPoint(startPoint.filter((sp) => (sp.id || 0) !== id));
+  };
+
+  // 주소 문자열을 파싱해서 first, second, third로 분리 (공백 보존)
+  const parseAddress = (address: string) => {
+    const firstSpaceIndex = address.indexOf(" ");
+    const secondSpaceIndex =
+      firstSpaceIndex >= 0 ? address.indexOf(" ", firstSpaceIndex + 1) : -1;
+
+    return {
+      first: firstSpaceIndex >= 0 ? address.slice(0, firstSpaceIndex) : address,
+      second:
+        secondSpaceIndex >= 0
+          ? address.slice(firstSpaceIndex + 1, secondSpaceIndex)
+          : firstSpaceIndex >= 0
+          ? address.slice(firstSpaceIndex + 1)
+          : "",
+      third: secondSpaceIndex >= 0 ? address.slice(secondSpaceIndex + 1) : "",
+    };
   };
 
   const handleChange = (id: number, newValue: string) => {
-    setDepartures(
-      departures.map((dep) =>
-        dep.id === id ? { ...dep, value: newValue } : dep
+    const parsedAddress = parseAddress(newValue);
+    setStartPoint(
+      startPoint.map((sp) =>
+        (sp.id || 0) === id ? { ...sp, ...parsedAddress } : sp
       )
     );
   };
@@ -54,12 +76,14 @@ const Step1_5Page = () => {
     id: number
   ) => {
     if (e.key === "Enter") {
-      const currentInput = departures.find((d) => d.id === id);
+      e.preventDefault();
+      const currentDeparture = departures.find((d) => d.id === id);
       const isLastInput = departures[departures.length - 1].id === id;
+
       if (
-        currentInput?.type === "member" &&
+        currentDeparture?.type === "member" &&
         isLastInput &&
-        currentInput.value !== ""
+        currentDeparture.value.trim() !== ""
       ) {
         handleAdd();
       }
@@ -68,6 +92,18 @@ const Step1_5Page = () => {
 
   const isNextDisabled =
     departures.filter((d) => d.value.trim() !== "").length === 0;
+
+  const setDepartures = (newDepartures: Departure[]) => {
+    const newStartPoint = newDepartures.map((dep, index) => {
+      const parsed = parseAddress(dep.value);
+      return {
+        id: dep.id,
+        type: index === 0 ? ("leader" as const) : ("member" as const),
+        ...parsed,
+      };
+    });
+    setStartPoint(newStartPoint);
+  };
 
   return (
     <StepFormLayout
@@ -79,7 +115,6 @@ const Step1_5Page = () => {
       isScrollable={true}
       contentAlignment="start"
     >
-      {/* 오류 수정 */}
       <DepartureInputForm
         departures={departures}
         setDepartures={setDepartures}

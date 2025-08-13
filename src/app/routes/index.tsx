@@ -10,6 +10,7 @@ import Step1_6Page from "@/pages/step1_6";
 import EditMeetingPage from "@/pages/editMeetingPage";
 import LoadingPage from "@/pages/loading";
 import Step2_Page from "@/pages/step2";
+import Step3_Page from "@/pages/step3";
 
 const routes: RouteObject[] = [
   {
@@ -53,8 +54,12 @@ const routes: RouteObject[] = [
     element: <LoadingPage />,
   },
   {
-    path: "/step2-result/:recommendationId",
+    path: "/plaza/step2",
     element: <Step2_Page />,
+  },
+  {
+    path: "/plaza/step3",
+    element: <Step3_Page />,
   },
 ];
 

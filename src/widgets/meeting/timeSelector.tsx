@@ -1,30 +1,39 @@
 import React from "react";
 import clsx from "clsx";
-
+import type { TimeType } from "@/store/meetingStore";
 interface TimeSelectorProps {
-  selectedTimes: string[];
+  selectedTimes: TimeType[];
   onSelect: (id: string) => void;
 }
+
+const timeTypeToId: { [key in TimeType]?: string } = {
+  MORNING: "morning",
+  LUNCH: "lunch",
+  AFTERNOON: "afternoon",
+  EVENING: "evening",
+};
 
 const TimeSelector = ({ selectedTimes, onSelect }: TimeSelectorProps) => {
   const timeSlots = {
     lunch: "점심",
     afternoon: "오후",
-    dinner: "저녁",
+    // API 명세와 일치시키기 위해 dinner -> evening으로 변경하는 것을 권장합니다.
+    evening: "저녁",
     morning: "오전",
   };
-
+  const selectedIds = selectedTimes.map((type) => timeTypeToId[type]);
   const textBaseStyle = "body-02 block transform -rotate-45";
 
   return (
     <div className="flex w-full flex-col items-center">
       <div className="relative h-64 w-64">
         <div className="grid h-full w-full grid-cols-2 grid-rows-2 gap-2 transform rotate-45">
+          {/* 5. includes() 검사를 변환된 selectedIds 배열로 수행합니다. */}
           <button
             onClick={() => onSelect("morning")}
             className={clsx(
               "relative rounded-tl-full bg-white border-2 transition-all",
-              selectedTimes.includes("morning")
+              selectedIds.includes("morning")
                 ? "shadow-glow-main border-main"
                 : "border-gray1"
             )}
@@ -33,7 +42,7 @@ const TimeSelector = ({ selectedTimes, onSelect }: TimeSelectorProps) => {
               className={clsx(
                 textBaseStyle,
                 "absolute bottom-5 right-5",
-                selectedTimes.includes("morning") ? "text-black" : "text-gray3"
+                selectedIds.includes("morning") ? "text-black" : "text-gray3"
               )}
             >
               {timeSlots.morning}
@@ -44,7 +53,7 @@ const TimeSelector = ({ selectedTimes, onSelect }: TimeSelectorProps) => {
             onClick={() => onSelect("lunch")}
             className={clsx(
               "relative rounded-tr-full bg-white border-2 transition-all",
-              selectedTimes.includes("lunch")
+              selectedIds.includes("lunch")
                 ? "shadow-glow-main border-main"
                 : "border-gray1"
             )}
@@ -53,18 +62,19 @@ const TimeSelector = ({ selectedTimes, onSelect }: TimeSelectorProps) => {
               className={clsx(
                 textBaseStyle,
                 "absolute bottom-5 left-5",
-                selectedTimes.includes("lunch") ? "text-black" : "text-gray3"
+                selectedIds.includes("lunch") ? "text-black" : "text-gray3"
               )}
             >
               {timeSlots.lunch}
             </span>
           </button>
 
+          {/* API 명세서의 'EVENING'과 맞추기 위해 onClick 인자를 'dinner'에서 'evening'으로 변경합니다. */}
           <button
-            onClick={() => onSelect("dinner")}
+            onClick={() => onSelect("evening")}
             className={clsx(
               "relative rounded-bl-full bg-white border-2 transition-all",
-              selectedTimes.includes("dinner")
+              selectedIds.includes("evening")
                 ? "shadow-glow-main border-main"
                 : "border-gray1"
             )}
@@ -73,10 +83,10 @@ const TimeSelector = ({ selectedTimes, onSelect }: TimeSelectorProps) => {
               className={clsx(
                 textBaseStyle,
                 "absolute top-5 right-5",
-                selectedTimes.includes("dinner") ? "text-black" : "text-gray3"
+                selectedIds.includes("evening") ? "text-black" : "text-gray3"
               )}
             >
-              {timeSlots.dinner}
+              {timeSlots.evening}
             </span>
           </button>
 
@@ -84,7 +94,7 @@ const TimeSelector = ({ selectedTimes, onSelect }: TimeSelectorProps) => {
             onClick={() => onSelect("afternoon")}
             className={clsx(
               "relative rounded-br-full bg-white border-2 transition-all",
-              selectedTimes.includes("afternoon")
+              selectedIds.includes("afternoon")
                 ? "shadow-glow-main border-main"
                 : "border-gray1"
             )}
@@ -93,9 +103,7 @@ const TimeSelector = ({ selectedTimes, onSelect }: TimeSelectorProps) => {
               className={clsx(
                 textBaseStyle,
                 "absolute top-5 left-5",
-                selectedTimes.includes("afternoon")
-                  ? "text-black"
-                  : "text-gray3"
+                selectedIds.includes("afternoon") ? "text-black" : "text-gray3"
               )}
             >
               {timeSlots.afternoon}

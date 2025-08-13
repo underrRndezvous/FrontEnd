@@ -27,10 +27,71 @@ const DepartureInput = ({
   value,
   onRemove,
   onKeyDown,
+  onChange,
   ...props
 }: DepartureInputProps) => {
   const Icon = variant === "leader" ? IconCrown : IconPerson;
   const hasValue = value && String(value).length > 0;
+
+  // IME 상태 추적
+  const [isComposing, setIsComposing] = React.useState(false);
+
+  // 키 이벤트 핸들러
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    console.log("🔍 Key:", e.key, "Code:", e.code, "isComposing:", isComposing);
+
+    // IME 조합 중이 아닐 때만 스페이스바 처리
+    if ((e.key === " " || e.code === "Space") && !isComposing) {
+      console.log("✅ Spacebar - not composing, allowing");
+
+      // 현재 값에 스페이스 추가 (더 간단한 방법)
+      const currentValue = String(value || "");
+      const newValue = currentValue + " ";
+
+      console.log("🔍 Old value:", currentValue);
+      console.log("🔍 New value:", newValue);
+
+      // 직접 onChange 호출
+      if (onChange) {
+        const target = e.target as HTMLInputElement;
+        const fakeEvent = {
+          target: { ...target, value: newValue },
+          currentTarget: target,
+          type: "change",
+        } as React.ChangeEvent<HTMLInputElement>;
+        onChange(fakeEvent);
+      }
+
+      // 기본 동작 막기
+      e.preventDefault();
+      return;
+    }
+
+    // 부모에서 전달된 onKeyDown이 있으면 실행
+    if (onKeyDown) {
+      onKeyDown(e);
+    }
+  };
+
+  // IME 조합 시작
+  const handleCompositionStart = () => {
+    console.log("🔍 Composition started");
+    setIsComposing(true);
+  };
+
+  // IME 조합 끝
+  const handleCompositionEnd = () => {
+    console.log("🔍 Composition ended");
+    setIsComposing(false);
+  };
+
+  // onChange 이벤트
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("🔍 Input changed:", e.target.value);
+    if (onChange) {
+      onChange(e);
+    }
+  };
 
   return (
     <div
@@ -53,7 +114,10 @@ const DepartureInput = ({
           hasValue ? "text-black" : "text-gray3"
         )}
         value={value}
-        onKeyDown={onKeyDown}
+        onKeyDown={handleKeyDown}
+        onChange={handleChange}
+        onCompositionStart={handleCompositionStart}
+        onCompositionEnd={handleCompositionEnd}
         {...props}
       />
       {variant === "member" && hasValue && onRemove && (

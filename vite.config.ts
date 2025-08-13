@@ -18,6 +18,7 @@ export default defineConfig({
       '/api': {
         target: 'https://swp.hoydev.com', 
         changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
       },
     },
   },

@@ -8,32 +8,38 @@ export type AtmosphereType = 'PRODUCTIVE' | 'AESTHETIC' | 'INDULGENT' | 'SOCIABL
 
 export interface PlaceRequest {
   id: number;
-  placeType: PlaceType | null; // type -> placeType, 타입 구체화
-  atmosphere: AtmosphereType | null; // subType -> atmosphere, 타입 구체화
+  placeType: PlaceType | null;
+  atmosphere: AtmosphereType | null;
 }
 
 export interface StartPointRequest {
   id: number;
   type: 'leader' | 'member';
-  first: string; // 시/도
-  second: string; // 시/군/구
-  third: string; // 동/면/읍
+  first: string;
+  second: string;
+  third: string;
 }
-
+export interface Departure {
+  id: number;
+  type: 'leader' | 'member';
+  value: string;
+}
+// ▼▼▼▼▼ 바로 이 부분의 타입이 가장 중요합니다! ▼▼▼▼▼
 export interface MeetingState {
   groupName: string;
   groupPurpose: string | null;
-  meetDays: string[]
-  meetTime: string[];
+  meetDays: DayType[]; // string[] -> DayType[]
+  meetTime: TimeType[]; // string[] -> TimeType[]
   place: PlaceRequest[];
   startPoint: StartPointRequest[];
 }
+// ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
 
 interface MeetingActions {
   setGroupName: (name: string) => void;
   setGroupPurpose: (purpose: string | null) => void;
-  setMeetDays: (days: string[]) => void;
-  setMeetTime: (times: string[]) => void;
+  setMeetDays: (days: DayType[]) => void; // 받는 타입도 DayType[]으로 변경
+  setMeetTime: (times: TimeType[]) => void; // 받는 타입도 TimeType[]으로 변경
   setPlace: (places: PlaceRequest[]) => void;
   setStartPoint: (departures: StartPointRequest[]) => void;
   reset: () => void;
@@ -45,44 +51,28 @@ const initialState: MeetingState = {
   meetTime: [],
   place: [],
   meetDays: [],
-  startPoint: [{ id: 1, type: 'leader', first: '', second: '', third: '' }],
+  startPoint: [],
 };
+
 export const useMeetingStore = create<MeetingState & MeetingActions>()(
-  
   persist(
     (set) => ({
-      ...initialState, 
+      ...initialState,
 
       setGroupName: (name) => set({ groupName: name }),
       setGroupPurpose: (purpose) => set({ groupPurpose: purpose }),
-      setMeetDays: (days) => set({ meetDays: days }),
-       setMeetTime: (times) => {
       
-        const koreanToEnglish: { [key: string]: TimeType } = {
-          '오전': 'MORNING',
-          '점심': 'LUNCH',
-          '오후': 'AFTERNOON',
-          '저녁': 'EVENING' // API 명세서에 'dinner'가 아닌 'EVENING'일 가능성이 높습니다. 확인 필요
-        };
-        
-  
-        const normalizedTimes = times.map(time => koreanToEnglish[time] || time) as TimeType[];
-        
-    
-        const uniqueTimes = [...new Set(normalizedTimes)];
-        
-        set({ meetTime: uniqueTimes });
-      },
-      // setSelectedTimes: (times) => set({ selectedTimes: times }),
+      // 이제 setMeetDays와 setMeetTime은 변환 로직이 필요 없습니다.
+      // 변환은 이 함수를 호출하는 UI 컴포넌트에서 미리 해서 넘겨줘야 합니다.
+      setMeetDays: (days) => set({ meetDays: days }),
+      setMeetTime: (times) => set({ meetTime: [...new Set(times)] }), // 중복만 제거
       
       setPlace: (places) => set({ place: places }),
       setStartPoint: (departures) => set({ startPoint: departures }),
       reset: () => set(initialState),
     }),
-
     {
       name: 'meeting-storage',
     }
   )
 );
-
