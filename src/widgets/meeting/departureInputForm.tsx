@@ -39,7 +39,7 @@ const DepartureInputForm = ({
           />
         ))}
       </div>
-      {departures.length < 5 && (
+      {departures.length < 8 && (
         <button
           onClick={onAdd}
           className="flex w-11/12 mx-auto items-center rounded-lg border-2 border-dashed border-gray-300 bg-white bg-opacity-50 p-3 text-left"

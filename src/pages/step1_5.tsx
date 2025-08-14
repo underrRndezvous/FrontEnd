@@ -13,7 +13,10 @@ const Step1_5Page = () => {
     id: sp.id || Date.now() + index,
     type: index === 0 ? "leader" : "member",
     // filter(Boolean) 제거 → 공백 보존
-    value: [sp.first, sp.second, sp.third].join(" "),
+    value: [sp.first, sp.second, sp.third]
+      .map((s) => s || "") // null이나 undefined를 빈 문자열로 통일
+      .join(" ")
+      .replace(/\s+$/, ""), // 마지막에 있는 공백만 제거
   }));
 
   useEffect(() => {
@@ -77,16 +80,16 @@ const Step1_5Page = () => {
   ) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      const currentDeparture = departures.find((d) => d.id === id);
-      const isLastInput = departures[departures.length - 1].id === id;
+      // const currentDeparture = departures.find((d) => d.id === id);
+      // const isLastInput = departures[departures.length - 1].id === id;
 
-      if (
-        currentDeparture?.type === "member" &&
-        isLastInput &&
-        currentDeparture.value.trim() !== ""
-      ) {
-        handleAdd();
-      }
+      // if (
+      //   currentDeparture?.type === "member" &&
+      //   isLastInput &&
+      //   currentDeparture.value.trim() !== ""
+      // ) {
+      //   handleAdd();
+      // }
     }
   };
 

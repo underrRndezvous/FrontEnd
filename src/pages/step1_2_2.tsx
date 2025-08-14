@@ -23,6 +23,7 @@ const Step1_2_2Page = () => {
   const navigate = useNavigate();
   // 3. 스토어에서 직접 meetDays와 setMeetDays를 가져와 사용합니다.
   const { meetDays, setMeetDays } = useMeetingStore();
+  const selectedDay = meetDays[0] || null;
 
   const handleNext = () => {
     navigate("/Plaza/step1_3");
@@ -34,19 +35,16 @@ const Step1_2_2Page = () => {
 
   // 4. DaySelector에서 클릭된 한글 요일(dayInKorean)을 받아 처리하는 로직으로 수정합니다.
   const handleSelectDay = (dayInKorean: string) => {
-    // 클릭된 한글 요일을 DayType(영문)으로 변환합니다.
     const dayInEnglish = dayKoreanToEnglish[dayInKorean];
 
-    // 이미 선택된 요일인지 DayType 배열(meetDays)에서 확인합니다.
-    const newSelectedDays = meetDays.includes(dayInEnglish)
-      ? meetDays.filter((d) => d !== dayInEnglish)
-      : [...meetDays, dayInEnglish];
+    // 이미 선택된 요일을 다시 클릭하면 선택 해제, 다른 요일을 클릭하면 교체
+    const newSelectedDay = selectedDay === dayInEnglish ? null : dayInEnglish;
 
-    // 변환된 DayType 배열을 전역 스토어에 저장합니다.
-    setMeetDays(newSelectedDays);
+    // 스토어에는 배열 형태로 저장
+    setMeetDays(newSelectedDay ? [newSelectedDay] : []);
   };
 
-  const isNextDisabled = meetDays.length === 0;
+  const isNextDisabled = !selectedDay;
 
   return (
     <StepFormLayout
@@ -57,7 +55,7 @@ const Step1_2_2Page = () => {
       isNextDisabled={isNextDisabled}
     >
       {/* DaySelector에는 DayType 배열(meetDays)을 그대로 넘겨줍니다. */}
-      <DaySelector selectedDays={meetDays} onSelect={handleSelectDay} />
+      <DaySelector selectedDay={selectedDay} onSelect={handleSelectDay} />
     </StepFormLayout>
   );
 };

@@ -20,7 +20,7 @@ const Step2_Page = () => {
 
   const handleSelect = () => {
     navigate("/plaza/step3", {
-      state: { selectedRegion: currentRecommendation },
+      state: { allRecommendedRegions: recommendationData },
     });
   };
 

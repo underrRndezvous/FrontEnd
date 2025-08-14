@@ -83,66 +83,81 @@ const MeetingSummary = () => {
   }));
 
   return (
-    <div className="w-full rounded-lg bg-white p-4 text-left shadow-md overflow-y-auto max-h-[310px]">
-      <div className="w-full flex justify-between items-center border-b py-3">
-        <span className="title-03 text-black">모임 시간</span>
-        <span className="body-02 text-gray4">
-          {[...new Set(selectedTimes)]
-            .map((time) => timeMap[time] || time)
-            .join(", ")}
-        </span>
-      </div>
-
-      <div className="w-full flex justify-between items-center border-b py-3">
-        <span className="title-03 text-black">모임 요일</span>
-        <span className="body-02 text-gray4">
-          {sortedSelectedDays.join(", ")}
-        </span>
-      </div>
-
-      <div className="flex justify-between border-b py-3">
-        <span className="title-03 text-black">모임 목적</span>
-        <span className="body-02 text-gray4">
-          {groupPurpose ? purposeMap[groupPurpose] : ""}
-        </span>
-      </div>
-
-      <div className="flex justify-between border-b py-3">
-        <span className="title-03 text-black flex-shrink-0 mr-4">
-          장소 유형
-        </span>
-        <div className="text-right">
-          {places
-            .filter((p) => p.placeType)
-            .map((place, index) => (
-              <p key={place.id} className="body-02 text-gray4">
-                {index + 1}. {getPlaceTypeText(place)}
-              </p>
-            ))}
+    <div className="w-full">
+      <div
+        className="w-full rounded-lg bg-white p-4 text-left shadow-md overflow-y-auto max-h-[310px] scrollbar-hide"
+        style={{
+          scrollbarWidth: "none",
+          msOverflowStyle: "none",
+          overflowX: "hidden", // 가로 스크롤 완전 차단
+        }}
+      >
+        {/* ▼▼▼ grid-cols-[auto,1fr] -> grid-cols-[100px,1fr] 로 변경 ▼▼▼ */}
+        <div className="w-full grid grid-cols-[100px,1fr] items-center gap-x-4 border-b py-3">
+          <span className="title-03 text-black whitespace-nowrap">
+            모임 시간
+          </span>
+          <span className="body-02 text-gray4">
+            {[...new Set(selectedTimes)]
+              .map((time) => timeMap[time] || time)
+              .join(", ")}
+          </span>
         </div>
-      </div>
 
-      <div className="flex justify-between py-3">
-        <span className="title-03 text-black flex-shrink-0 mr-4">
-          출발 위치
-        </span>
-        <div className="text-right space-y-2">
-          {convertedDepartures
-            .filter((d) => d.value.trim() !== "")
-            .map((departure) => (
-              <div key={departure.id} className="flex items-center justify-end">
-                {departure.type === "leader" ? (
-                  <IconCrown className="h-5 w-5 mr-1" />
-                ) : (
-                  <IconPerson className="h-5 w-5 mr-1" />
-                )}
-                <span className="body-02 text-gray4">{departure.value}</span>
-              </div>
-            ))}
+        <div className="w-full grid grid-cols-[100px,1fr] items-center gap-x-4 border-b py-3">
+          <span className="title-03 text-black whitespace-nowrap">
+            모임 요일
+          </span>
+          <span className="body-02 text-gray4">
+            {sortedSelectedDays.join(", ")}
+          </span>
+        </div>
+
+        <div className="w-full grid grid-cols-[100px,1fr] items-center gap-x-4 border-b py-3">
+          <span className="title-03 text-black whitespace-nowrap">
+            모임 목적
+          </span>
+          <span className="body-02 text-gray4">
+            {groupPurpose ? purposeMap[groupPurpose] : ""}
+          </span>
+        </div>
+
+        <div className="w-full grid grid-cols-[100px,1fr] items-start gap-x-4 border-b py-3">
+          <span className="title-03 text-black whitespace-nowrap">
+            장소 유형
+          </span>
+          <div className="space-y-1">
+            {places
+              .filter((p) => p.placeType)
+              .map((place, index) => (
+                <p key={place.id} className="body-02 text-gray4">
+                  {index + 1}. {getPlaceTypeText(place)}
+                </p>
+              ))}
+          </div>
+        </div>
+
+        <div className="w-full grid grid-cols-[auto,1fr] items-start gap-x-4 py-3">
+          <span className="title-03 text-black whitespace-nowrap">
+            출발 위치
+          </span>
+          <div className="text-left space-y-2">
+            {convertedDepartures
+              .filter((d) => d.value.trim() !== "")
+              .map((departure) => (
+                <div key={departure.id} className="flex items-center">
+                  {departure.type === "leader" ? (
+                    <IconCrown className="h-5 w-5 mr-1" />
+                  ) : (
+                    <IconPerson className="h-5 w-5 mr-1" />
+                  )}
+                  <span className="body-02 text-gray4">{departure.value}</span>
+                </div>
+              ))}
+          </div>
         </div>
       </div>
     </div>
   );
 };
-
 export default MeetingSummary;

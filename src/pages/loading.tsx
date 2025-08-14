@@ -59,7 +59,7 @@ const LoadingPage = () => {
 
         <div className="flex flex-1 flex-col items-center justify-center">
           <h1 className="title-02 text-black mb-2">
-            <span className="text-main">{groupName || "모임"}</span>
+            <span className="text-white">{groupName || "모임"}</span>
             의
             <br />
             모임 장소와 컨텐츠를 찾고 있어요!
