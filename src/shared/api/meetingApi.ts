@@ -19,7 +19,6 @@ export interface Region {
   recommendPlace: RecommendedPlace[];
 }
 
-// 1. 서버로 보낼 Request Body 타입 정의
 interface MeetingRequestBody {
   groupName: string;
   meetTime: TimeType[];
@@ -28,18 +27,17 @@ interface MeetingRequestBody {
   startPoint: Omit<StartPointRequest, 'id' | 'type'>[];
 }
 
-// 2. 서버로부터 받을 Response Body 타입 정의
 interface MeetingResponseBody {
   regions: Region[];
 }
 export interface StoreDetail {
   storeId: number;
   storeType: string;
-  storeDetail: string | null; // null이 올 수 있음을 명시
+  storeDetail: string | null; 
   storeName: string;
   rating: number;
-  reviewCount: number | null; // 리뷰 수도 null일 수 있음
-  address: string; // 대문자 Address -> 소문자 address로 변경
+  reviewCount: number | null;
+  address: string; 
   businessHours: string;
   image: string;
 }
@@ -47,7 +45,6 @@ export interface StoreDetail {
 const postMeetingInfo = async (): Promise<MeetingResponseBody> => {
   const { groupName, meetTime, meetDays, place, startPoint } = useMeetingStore.getState();
 
-  // 요일을 한글에서 영문 DayType으로 변환하는 로직
   const dayKoreanToEnglish: { [key: string]: DayType } = {
     '월': 'MONDAY', '화': 'TUESDAY', '수': 'WEDNESDAY', '목': 'THURSDAY',
     '금': 'FRIDAY', '토': 'SATURDAY', '일': 'SUNDAY',
@@ -73,7 +70,7 @@ const postMeetingInfo = async (): Promise<MeetingResponseBody> => {
   return data;
 };
 
-// 🔥 수정: 템플릿 리터럴 문법 오류 수정
+
 const getStoreDetail = async (storeId: number): Promise<StoreDetail> => {
   try {
     const { data } = await axios.get<StoreDetail>(`/api/meet/store/detail?storeId=${storeId}`);
@@ -94,9 +91,9 @@ export const useStoreDetail = (storeId: number) => {
   return useQuery<StoreDetail, Error>({
     queryKey: ['storeDetail', storeId],
     queryFn: () => getStoreDetail(storeId),
-    enabled: !!storeId, // storeId가 있을 때만 쿼리 실행
-    retry: 1, // 실패시 1번만 재시도
-    staleTime: 5 * 60 * 1000, // 5분간 캐시 유지
+    enabled: !!storeId, 
+    retry: 1,
+    staleTime: 5 * 60 * 1000,
   });
 };
 
@@ -113,5 +110,5 @@ export const useMultipleStoreDetails = (storeIds: number[]) => {
   });
 };
 
-// 직접 API 함수 내보내기
+
 export { getStoreDetail };

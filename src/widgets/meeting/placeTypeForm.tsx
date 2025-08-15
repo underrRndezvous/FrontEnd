@@ -27,7 +27,6 @@ interface PlaceTypeFormProps {
   onRemove: (id: number) => void;
   onAdd: () => void;
   isEditPage?: boolean;
-  // displaySubTypes를 optional로 만들어서 더 안전하게 처리
   displaySubTypes?: { [key: number]: string };
 }
 
@@ -38,7 +37,7 @@ const PlaceTypeForm = ({
   onRemove,
   onAdd,
   isEditPage = false,
-  displaySubTypes = {}, // 기본값으로 빈 객체 설정
+  displaySubTypes = {},
 }: PlaceTypeFormProps) => {
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 8 } })
@@ -61,7 +60,6 @@ const PlaceTypeForm = ({
       INDULGENT: "디저트가 맛있는",
     };
 
-    // API에 없는 UI 전용 세부 타입 맵
     const displaySubTypeMap: { [key: string]: string } = {
       western: "양식",
       chinese: "중식",

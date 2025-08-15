@@ -17,7 +17,7 @@ const TimeSelector = ({ selectedTimes, onSelect }: TimeSelectorProps) => {
   const timeSlots = {
     lunch: "점심",
     afternoon: "오후",
-    // API 명세와 일치시키기 위해 dinner -> evening으로 변경하는 것을 권장합니다.
+
     evening: "저녁",
     morning: "오전",
   };
@@ -28,7 +28,6 @@ const TimeSelector = ({ selectedTimes, onSelect }: TimeSelectorProps) => {
     <div className="flex w-full flex-col items-center">
       <div className="relative h-64 w-64">
         <div className="grid h-full w-full grid-cols-2 grid-rows-2 gap-2 transform rotate-45">
-          {/* 5. includes() 검사를 변환된 selectedIds 배열로 수행합니다. */}
           <button
             onClick={() => onSelect("morning")}
             className={clsx(
@@ -69,7 +68,6 @@ const TimeSelector = ({ selectedTimes, onSelect }: TimeSelectorProps) => {
             </span>
           </button>
 
-          {/* API 명세서의 'EVENING'과 맞추기 위해 onClick 인자를 'dinner'에서 'evening'으로 변경합니다. */}
           <button
             onClick={() => onSelect("evening")}
             className={clsx(

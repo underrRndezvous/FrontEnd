@@ -33,30 +33,24 @@ const DepartureInput = ({
   const Icon = variant === "leader" ? IconCrown : IconPerson;
   const hasValue = value && String(value).length > 0;
 
-  // IME 상태 추적
   const [isComposing, setIsComposing] = React.useState(false);
 
-  // 키 이벤트 핸들러
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    // 부모에서 전달된 onKeyDown이 있으면 실행
     if (onKeyDown) {
       onKeyDown(e);
     }
   };
 
-  // IME 조합 시작
   const handleCompositionStart = () => {
     console.log("🔍 Composition started");
     setIsComposing(true);
   };
 
-  // IME 조합 끝
   const handleCompositionEnd = () => {
     console.log("🔍 Composition ended");
     setIsComposing(false);
   };
 
-  // onChange 이벤트
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log("🔍 Input changed:", e.target.value);
     if (onChange) {

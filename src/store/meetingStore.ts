@@ -24,22 +24,22 @@ export interface Departure {
   type: 'leader' | 'member';
   value: string;
 }
-// ▼▼▼▼▼ 바로 이 부분의 타입이 가장 중요합니다! ▼▼▼▼▼
+
 export interface MeetingState {
   groupName: string;
   groupPurpose: string | null;
-  meetDays: DayType[]; // string[] -> DayType[]
-  meetTime: TimeType[]; // string[] -> TimeType[]
+  meetDays: DayType[]; 
+  meetTime: TimeType[]; 
   place: PlaceRequest[];
   startPoint: StartPointRequest[];
 }
-// ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
+
 
 interface MeetingActions {
   setGroupName: (name: string) => void;
   setGroupPurpose: (purpose: string | null) => void;
-  setMeetDays: (days: DayType[]) => void; // 받는 타입도 DayType[]으로 변경
-  setMeetTime: (times: TimeType[]) => void; // 받는 타입도 TimeType[]으로 변경
+  setMeetDays: (days: DayType[]) => void; 
+  setMeetTime: (times: TimeType[]) => void; 
   setPlace: (places: PlaceRequest[]) => void;
   setStartPoint: (departures: StartPointRequest[]) => void;
   reset: () => void;
@@ -62,10 +62,8 @@ export const useMeetingStore = create<MeetingState & MeetingActions>()(
       setGroupName: (name) => set({ groupName: name }),
       setGroupPurpose: (purpose) => set({ groupPurpose: purpose }),
       
-      // 이제 setMeetDays와 setMeetTime은 변환 로직이 필요 없습니다.
-      // 변환은 이 함수를 호출하는 UI 컴포넌트에서 미리 해서 넘겨줘야 합니다.
       setMeetDays: (days) => set({ meetDays: days }),
-      setMeetTime: (times) => set({ meetTime: [...new Set(times)] }), // 중복만 제거
+      setMeetTime: (times) => set({ meetTime: [...new Set(times)] }), 
       
       setPlace: (places) => set({ place: places }),
       setStartPoint: (departures) => set({ startPoint: departures }),

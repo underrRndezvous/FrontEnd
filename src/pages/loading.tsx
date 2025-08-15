@@ -31,17 +31,15 @@ const LoadingPage = () => {
 
   useEffect(() => {
     if (isSuccess && data) {
-      // 결과 데이터(data.regions)를 state로 넘겨주며 결과 페이지로 이동합니다.
       navigate("/Plaza/step2", { state: { recommendations: data.regions } });
     }
   }, [isSuccess, data, navigate]);
 
-  // 4. API 호출 실패 시 에러를 처리합니다.
   useEffect(() => {
     if (isError) {
       console.error("추천 장소 조회 실패:", error);
       alert("추천 장소를 찾는 데 실패했어요. 이전 페이지로 돌아갑니다.");
-      navigate(-1); // 이전 페이지로 이동
+      navigate(-1);
     }
   }, [isError, error, navigate]);
 

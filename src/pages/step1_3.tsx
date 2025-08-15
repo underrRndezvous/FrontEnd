@@ -25,16 +25,13 @@ const Step1_3Page = () => {
   };
 
   const handleSelectTime = (id: string) => {
-    // 클릭된 ID를 TimeType으로 변환합니다.
     const timeType = timeIdToType[id];
-    if (!timeType) return; // 변환할 수 없는 ID는 무시
+    if (!timeType) return;
 
-    // 변환된 TimeType 값으로 선택 여부를 처리합니다.
     const newSelectedTimes = selectedTimes.includes(timeType)
       ? selectedTimes.filter((item) => item !== timeType)
       : [...selectedTimes, timeType];
 
-    // 변환된 TimeType 배열을 전역 스토어에 저장합니다.
     setSelectedTimes(newSelectedTimes);
   };
 

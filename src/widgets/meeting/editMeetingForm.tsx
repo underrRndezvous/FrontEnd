@@ -16,7 +16,6 @@ import Overlay from "@/shared/ui/overlay";
 import SelectionOverlay from "@/widgets/common/selectionOverlay";
 import type { SelectionOption } from "@/shared/ui/selection";
 
-// 아이콘 import
 import IconRestaurant from "@/shared/asset/icon/restaurant.svg?react";
 import IconCafe from "@/shared/asset/icon/cafe.svg?react";
 import IconActivity from "@/shared/asset/icon/activity.svg?react";
@@ -36,7 +35,6 @@ import IconPhoto from "@/shared/asset/icon/photo.svg?react";
 import IconTalk from "@/shared/asset/icon/talk.svg?react";
 import IconDesert from "@/shared/asset/icon/desert.svg?react";
 
-// 장소 유형 옵션
 const placeTypeOptions: SelectionOption[] = [
   { id: "RESTAURANT", label: "음식점", IconComponent: IconRestaurant },
   { id: "CAFE", label: "카페", IconComponent: IconCafe },
@@ -76,7 +74,6 @@ const EditMeetingForm = () => {
     setStartPoint: setDepartures,
   } = useMeetingStore();
 
-  // step1_4에서 가져온 오버레이 관련 상태
   const [editingPlaceId, setEditingPlaceId] = useState<number | null>(null);
   const [overlayData, setOverlayData] = useState<any>(null);
   const [displaySubTypes, setDisplaySubTypes] = useState<{
@@ -119,7 +116,6 @@ const EditMeetingForm = () => {
     );
   };
 
-  // step1_4 오버레이 띄우는 로직
   const handleItemClick = (id: number) => {
     setEditingPlaceId(id);
     setOverlayData({
@@ -248,7 +244,6 @@ const EditMeetingForm = () => {
   return (
     <>
       <div className="w-full space-y-6 rounded-lg border border-main bg-white p-6 ">
-        {/* 모임 목적 */}
         <section className="flex flex-col items-start gap-y-3">
           <h3 className="title-03 text-left text-black">모임 목적</h3>
           <div className="w-full grid grid-cols-4 gap-x-2">
@@ -271,7 +266,6 @@ const EditMeetingForm = () => {
 
         <hr className="border-gray-100" />
 
-        {/* 모임 요일 */}
         <section className="flex flex-col items-start gap-y-3">
           <h3 className="title-03 text-left text-black">모임 요일</h3>
           <div className="w-full grid grid-cols-7 gap-x-1.5 justify-items-center">
@@ -294,7 +288,6 @@ const EditMeetingForm = () => {
 
         <hr className="border-gray-100" />
 
-        {/* 모임 시간 */}
         <section className="flex flex-col items-start gap-y-3">
           <h3 className="title-03 text-left text-black">모임 시간</h3>
           <div className="w-full grid grid-cols-4 gap-x-2">
@@ -317,7 +310,6 @@ const EditMeetingForm = () => {
 
         <hr className="border-gray-100" />
 
-        {/* 장소 유형 */}
         <section>
           <h3 className="title-03 text-left mb-2">장소 유형</h3>
           <PlaceTypeForm
@@ -333,7 +325,6 @@ const EditMeetingForm = () => {
 
         <hr className="border-gray-100" />
 
-        {/* 출발 위치 */}
         <section>
           <h3 className="title-03 text-left mb-2">출발 위치</h3>
           <DepartureInputForm
@@ -349,7 +340,6 @@ const EditMeetingForm = () => {
         </section>
       </div>
 
-      {/* Overlay */}
       <Overlay
         isOpen={overlayData !== null}
         onClose={() => setOverlayData(null)}

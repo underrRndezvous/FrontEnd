@@ -12,7 +12,6 @@ const Step1_5Page = () => {
     {}
   );
 
-  // API 형태(StartPointRequest[])를 UI 형태(Departure[])로 변환
   const departures: Departure[] = startPoint.map((sp, index) => ({
     id: sp.id || Date.now() + index,
     type: index === 0 ? "leader" : "member",
@@ -27,7 +26,7 @@ const Step1_5Page = () => {
       newDisplayValues[sp.id || 0] = combined;
     });
     setDisplayValues(newDisplayValues);
-  }, []); // 한 번만 실행
+  }, []);
   const handleNext = () => {
     console.log("=== BEFORE CONVERSION ===");
     console.log("Current startPoint:", startPoint);
@@ -52,7 +51,6 @@ const Step1_5Page = () => {
 
     setStartPoint(newStartPoint);
 
-    // ✅ setStartPoint가 비동기이므로 잠시 후 확인
     setTimeout(() => {
       console.log("=== FINAL STORE STATE ===");
       console.log("Store startPoint:", useMeetingStore.getState().startPoint);
@@ -73,30 +71,26 @@ const Step1_5Page = () => {
       third: "",
     };
     setStartPoint([...startPoint, newStartPoint]);
-
-    // ✅ 새로 추가된 항목도 localInputs에 반영
   };
   const handleRemove = (id: number) => {
     if (startPoint.length <= 1) return;
     setStartPoint(startPoint.filter((sp) => (sp.id || 0) !== id));
   };
 
-  // 주소 문자열을 파싱해서 first, second, third로 분리 (공백 보존)
   const parseAddress = (address: string) => {
     if (!address || address.trim() === "") {
       return { first: "", second: "", third: "" };
     }
 
-    const parts = address.trim().split(/\s+/); // 연속된 공백을 하나로 처리
+    const parts = address.trim().split(/\s+/);
     return {
       first: parts[0] || "",
       second: parts[1] || "",
-      third: parts.slice(2).join(" ") || "", // 3번째부터는 모두 합쳐서
+      third: parts.slice(2).join(" ") || "",
     };
   };
 
   const handleChange = (id: number, newValue: string) => {
-    // 1. UI 즉시 업데이트
     setDisplayValues((prev) => ({ ...prev, [id]: newValue }));
   };
 

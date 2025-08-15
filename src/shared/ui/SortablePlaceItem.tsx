@@ -27,7 +27,7 @@ const SortablePlaceItem = ({
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({
       id: place.id,
-      disabled: isEditPage, // 편집 페이지에서는 드래그 비활성화
+      disabled: isEditPage,
     });
 
   const style = {
@@ -47,7 +47,6 @@ const SortablePlaceItem = ({
       style={style}
       className="flex w-full items-center gap-x-2 touch-none"
     >
-      {/* 편집 페이지가 아닐 때만 드래그 핸들 표시 */}
       {!isEditPage && (
         <button
           {...attributes}
@@ -62,7 +61,7 @@ const SortablePlaceItem = ({
         className={clsx(
           "flex flex-grow items-center rounded-md border-[1px] bg-white p-3 text-left",
           place.placeType ? "border-main" : "border-gray2",
-          // 편집 페이지에서는 좌측 여백 조정
+
           isEditPage && "ml-0"
         )}
       >
@@ -89,7 +88,6 @@ const SortablePlaceItem = ({
           </span>
         </button>
 
-        {/* 삭제 버튼: 장소가 선택되어 있고, 유일한 아이템이 아닐 때만 표시 */}
         {place.placeType && !isOnlyItem && (
           <button
             onClick={(e) => {

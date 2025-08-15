@@ -3,7 +3,6 @@ import clsx from "clsx";
 import type { DayType } from "@/store/meetingStore";
 
 interface DaySelectorProps {
-  // 1. props를 DayType 배열이 아닌, 단일 DayType 또는 null로 받도록 변경
   selectedDay: DayType | null;
   onSelect: (day: string) => void;
 }
@@ -31,7 +30,6 @@ const DaySelector = ({ selectedDay, onSelect }: DaySelectorProps) => {
   return (
     <div className="w-full flex flex-col items-center gap-y-8">
       {" "}
-      {/* gap-y-8 -> gap-y-4로 줄여서 간격 조정 */}
       <div className="flex justify-center gap-x-2">
         {weekdays.map((day) => (
           <button
@@ -39,7 +37,7 @@ const DaySelector = ({ selectedDay, onSelect }: DaySelectorProps) => {
             onClick={() => onSelect(day)}
             className={clsx(
               buttonStyle,
-              // 5. 변환된 한글 배열과 비교하여 선택 상태를 결정합니다.
+
               selectedKoreanDay === day
                 ? "border-2 border-main bg-white text-black shadow-glow-main"
                 : "border border-gray1 bg-white text-gray3"

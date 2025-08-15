@@ -2,11 +2,9 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import StepFormLayout from "@/shared/ui/StepFormLayout";
 import DaySelector from "@/widgets/meeting/daySelector";
-// 1. DayType과 useMeetingStore를 import 합니다.
 import { useMeetingStore } from "@/store/meetingStore";
 import type { DayType } from "@/store/meetingStore";
 
-// 2. 한글 요일을 DayType으로 변환하기 위한 객체를 정의합니다.
 const dayKoreanToEnglish: { [key: string]: DayType } = {
   월: "MONDAY",
   화: "TUESDAY",
@@ -21,7 +19,6 @@ const dayKoreanToEnglish: { [key: string]: DayType } = {
 
 const Step1_2_2Page = () => {
   const navigate = useNavigate();
-  // 3. 스토어에서 직접 meetDays와 setMeetDays를 가져와 사용합니다.
   const { meetDays, setMeetDays } = useMeetingStore();
   const selectedDay = meetDays[0] || null;
 
@@ -33,14 +30,11 @@ const Step1_2_2Page = () => {
     navigate(-1);
   };
 
-  // 4. DaySelector에서 클릭된 한글 요일(dayInKorean)을 받아 처리하는 로직으로 수정합니다.
   const handleSelectDay = (dayInKorean: string) => {
     const dayInEnglish = dayKoreanToEnglish[dayInKorean];
 
-    // 이미 선택된 요일을 다시 클릭하면 선택 해제, 다른 요일을 클릭하면 교체
     const newSelectedDay = selectedDay === dayInEnglish ? null : dayInEnglish;
 
-    // 스토어에는 배열 형태로 저장
     setMeetDays(newSelectedDay ? [newSelectedDay] : []);
   };
 
@@ -54,7 +48,6 @@ const Step1_2_2Page = () => {
       onPrev={handlePrev}
       isNextDisabled={isNextDisabled}
     >
-      {/* DaySelector에는 DayType 배열(meetDays)을 그대로 넘겨줍니다. */}
       <DaySelector selectedDay={selectedDay} onSelect={handleSelectDay} />
     </StepFormLayout>
   );

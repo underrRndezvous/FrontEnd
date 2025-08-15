@@ -58,7 +58,6 @@ const PlaceRecommendation = ({ recommendation }: PlaceRecommendationProps) => {
   );
 };
 
-// 모달 컴포넌트
 interface PlaceDetailModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -75,7 +74,6 @@ const PlaceDetailModal = ({
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-lg w-full max-w-sm max-h-96 overflow-hidden">
-        {/* 헤더 */}
         <div className="bg-sub01 p-4 text-center relative">
           <button
             onClick={onClose}
@@ -86,7 +84,6 @@ const PlaceDetailModal = ({
           <h2 className="text-lg font-semibold">컨텐츠 미리보기</h2>
         </div>
 
-        {/* 장소 리스트 */}
         <div className="p-4 max-h-80 overflow-y-auto">
           {placeData.recommendPlace && placeData.recommendPlace.length > 0 ? (
             placeData.recommendPlace
@@ -96,9 +93,7 @@ const PlaceDetailModal = ({
                   key={place.storeId}
                   className="flex items-center p-3 mb-2 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
                 >
-                  <div className="w-12 h-12 rounded-full bg-sub01 flex items-center justify-center mr-3">
-                    {/* 아이콘 자리 - 나중에 추가 */}
-                  </div>
+                  <div className="w-12 h-12 rounded-full bg-sub01 flex items-center justify-center mr-3"></div>
                   <div className="flex-1 min-w-0">
                     <h3 className="font-medium text-sm text-gray-900 truncate">
                       {place.storeName}

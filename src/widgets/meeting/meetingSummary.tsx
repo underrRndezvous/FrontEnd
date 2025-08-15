@@ -42,7 +42,6 @@ const MeetingSummary = () => {
 
   const dayOrder = ["월", "화", "수", "목", "금", "토", "일"];
 
-  // API 형태의 요일을 한글로 변환
   const convertedDays = selectedDays.map((day) => dayMap[day] || day);
   const sortedSelectedDays = [...convertedDays].sort(
     (a, b) => dayOrder.indexOf(a) - dayOrder.indexOf(b)
@@ -59,7 +58,6 @@ const MeetingSummary = () => {
 
     const mainText = typeMap[place.placeType] || "장소 유형";
 
-    // atmosphere가 있는 경우 (카페만)
     if (place.atmosphere && place.placeType === "CAFE") {
       const atmosphereMap: { [key: string]: string } = {
         PRODUCTIVE: "생산적인",
@@ -74,7 +72,6 @@ const MeetingSummary = () => {
     return mainText;
   };
 
-  // startPoint를 UI에서 사용할 수 있는 형태로 변환
   const convertedDepartures = departures.map((departure) => ({
     ...departure,
     value: [departure.first, departure.second, departure.third]
@@ -89,10 +86,9 @@ const MeetingSummary = () => {
         style={{
           scrollbarWidth: "none",
           msOverflowStyle: "none",
-          overflowX: "hidden", // 가로 스크롤 완전 차단
+          overflowX: "hidden",
         }}
       >
-        {/* ▼▼▼ grid-cols-[auto,1fr] -> grid-cols-[100px,1fr] 로 변경 ▼▼▼ */}
         <div className="w-full grid grid-cols-[100px,1fr] items-center gap-x-4 border-b py-3">
           <span className="title-03 text-black whitespace-nowrap">
             모임 시간

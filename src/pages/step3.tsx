@@ -26,15 +26,13 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { motion, AnimatePresence } from "framer-motion";
 
-// 직접 만드신 재사용 컴포넌트들을 가져옵니다.
-import Button from "@/shared/ui/Button"; // 원래대로 default import
+import Button from "@/shared/ui/Button";
 import type {
   Region,
   RecommendedPlace,
   StoreDetail,
 } from "@/shared/api/meetingApi";
 
-// useStoreDetail import 추가
 import { useStoreDetail } from "@/shared/api/meetingApi";
 import IconRestaurant from "/src/shared/asset/icon/restaurant.svg?react";
 import IconCafe from "/src/shared/asset/icon/cafe.svg?react";
@@ -43,7 +41,6 @@ import IconBar from "/src/shared/asset/icon/bar.svg?react";
 import { IconMinus, IconDragHandle } from "@/shared/ui/svg";
 import clsx from "clsx";
 
-// 가게 상세 정보 모달 컴포넌트
 const StoreDetailModal = ({
   storeId,
   isOpen,
@@ -55,7 +52,6 @@ const StoreDetailModal = ({
 }) => {
   const { data: storeDetail, isLoading, error } = useStoreDetail(storeId || 0);
 
-  // 🔍 디버깅용 로그 추가
   React.useEffect(() => {
     if (storeId) {
       console.log("🔍 Modal opened with storeId:", storeId);
@@ -78,16 +74,14 @@ const StoreDetailModal = ({
 
   const handleNaverSearch = () => {
     if (storeDetail) {
-      // 네이버 지도에서 가게 검색
       const query = encodeURIComponent(
-        `${storeDetail.storeName} ${storeDetail.Address}`
+        `${storeDetail.storeName} ${storeDetail.address}`
       );
       const naverMapUrl = `https://map.naver.com/v5/search/${query}`;
       window.open(naverMapUrl, "_blank");
     }
   };
 
-  // 영업시간을 파싱해서 현재 영업중인지 확인하는 함수
   const checkIsOpen = (businessHours: string): boolean => {
     try {
       const now = new Date();
@@ -95,7 +89,6 @@ const StoreDetailModal = ({
       const currentMinute = now.getMinutes();
       const currentTime = currentHour * 60 + currentMinute;
 
-      // 간단한 파싱 로직 (예: "11:00 ~ 21:00")
       const timeMatch = businessHours.match(
         /(\d{1,2}):(\d{2})\s*~\s*(\d{1,2}):(\d{2})/
       );
@@ -120,7 +113,6 @@ const StoreDetailModal = ({
     <AnimatePresence>
       {isOpen && storeId && (
         <>
-          {/* 배경 오버레이 - Step3 페이지 내에서만 */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -130,7 +122,6 @@ const StoreDetailModal = ({
             onClick={onClose}
           />
 
-          {/* 모달 컨텐츠 - Step3 페이지 하단에서 올라옴 */}
           <motion.div
             initial={{ y: "100%" }}
             animate={{ y: 0 }}
@@ -138,7 +129,6 @@ const StoreDetailModal = ({
             transition={{ type: "spring", damping: 25, stiffness: 200 }}
             className="absolute bottom-0 left-0 right-0 bg-white rounded-t-2xl p-4 z-50 pointer-events-auto max-h-[60vh] overflow-y-auto"
           >
-            {/* 상단 핸들 */}
             <div className="w-12 h-1 bg-gray-300 rounded-full mx-auto mb-4" />
 
             {isLoading && (
@@ -166,12 +156,10 @@ const StoreDetailModal = ({
 
             {storeDetail && (
               <div className="space-y-3">
-                {/* 가게명 */}
                 <h2 className="text-lg font-bold text-gray-900">
                   {storeDetail.storeName}
                 </h2>
 
-                {/* storeDetail과 rating */}
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-gray-600">
                     {storeDetail.storeDetail}
@@ -187,14 +175,12 @@ const StoreDetailModal = ({
                   </div>
                 </div>
 
-                {/* 가게 타입 표시 */}
                 <div className="flex items-center gap-2">
                   <span className="text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded-full">
                     {storeDetail.storeType}
                   </span>
                 </div>
 
-                {/* 영업중 여부와 주소 */}
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <span
@@ -213,7 +199,6 @@ const StoreDetailModal = ({
                     </span>
                   </div>
 
-                  {/* 네이버 보러가기 버튼 */}
                   <button
                     onClick={handleNaverSearch}
                     className="text-xs bg-main text-black px-3 py-1 rounded-full font-medium hover:bg-opacity-80 transition-colors whitespace-nowrap ml-2"
@@ -222,13 +207,11 @@ const StoreDetailModal = ({
                   </button>
                 </div>
 
-                {/* 영업시간 */}
                 <div className="text-sm text-gray-600">
                   <span className="font-medium">영업시간:</span>{" "}
                   {storeDetail.businessHours}
                 </div>
 
-                {/* 이미지가 있다면 표시 */}
                 {storeDetail.image && (
                   <div className="mt-3">
                     <img
@@ -251,7 +234,6 @@ const StoreDetailModal = ({
   );
 };
 
-// 드래그 가능한 장소 아이템 컴포넌트
 const SortablePlaceItem = ({
   place,
   index,
@@ -323,7 +305,6 @@ const SortablePlaceItem = ({
   );
 };
 
-// 지도와 마커들을 관리하는 자식 컴포넌트
 const MapComponent = ({
   places,
   selectedCategory,
@@ -347,14 +328,12 @@ const MapComponent = ({
     return new navermaps.LatLng(latSum / places.length, lngSum / places.length);
   };
 
-  // 마커 아이콘 생성 함수
   const createMarkerIcon = (place: RecommendedPlace, index: number) => {
     const koreanCategory = categoryMapping[place.category.toLowerCase()];
     const isSelectedCategory =
       selectedCategory && koreanCategory === selectedCategory;
 
     if (isSelectedCategory) {
-      // 선택된 카테고리인 경우 해당 카테고리 아이콘 표시
       const iconPath = categoryIconPaths[selectedCategory];
       return {
         content: `<div style="
@@ -383,7 +362,6 @@ const MapComponent = ({
         </div>`,
       };
     } else {
-      // 기본 핀 모양
       return {
         content: `<div style="
           position: relative;
@@ -460,18 +438,15 @@ const Step3_Page = () => {
     selectedRegion?.recommendPlace || []
   );
 
-  // 🔍 디버깅: selectedRegion 데이터 확인
   React.useEffect(() => {
     console.log("📋 Step3 Page loaded with selectedRegion:", selectedRegion);
     console.log("📋 Places:", selectedRegion?.recommendPlace);
   }, [selectedRegion]);
 
-  // 선택된 카테고리 상태
   const [selectedCategory, setSelectedCategory] = React.useState<string | null>(
     null
   );
 
-  // 선택된 가게 상태 (모달용)
   const [selectedStoreId, setSelectedStoreId] = React.useState<number | null>(
     null
   );
@@ -484,7 +459,6 @@ const Step3_Page = () => {
     })
   );
 
-  // 카테고리별 아이콘 매핑
   const categoryIcons = {
     음식점: IconRestaurant,
     카페: IconCafe,
@@ -492,7 +466,6 @@ const Step3_Page = () => {
     술집: IconBar,
   };
 
-  // 카테고리별 SVG 파일 경로 매핑
   const categoryIconPaths = {
     음식점: "/src/shared/asset/icon/restaurant.svg",
     카페: "/src/shared/asset/icon/cafe.svg",
@@ -500,7 +473,6 @@ const Step3_Page = () => {
     술집: "/src/shared/asset/icon/bar.svg",
   };
 
-  // 카테고리별 영문명 매핑 (백엔드 데이터와 매칭)
   const categoryMapping: { [key: string]: string } = {
     restaurant: "음식점",
     cafe: "카페",
@@ -513,7 +485,6 @@ const Step3_Page = () => {
   };
 
   if (!selectedRegion || selectedRegion.recommendPlace.length === 0) {
-    // 페이지 접근 오류 시 홈으로 보내는 로직
     React.useEffect(() => {
       console.warn("⚠️ No selectedRegion data, redirecting to home");
       alert("추천 장소 정보가 없습니다. 홈으로 이동합니다.");
@@ -548,27 +519,23 @@ const Step3_Page = () => {
     alert("공유하기 기능은 구현 예정입니다.");
   };
 
-  // 카테고리 버튼 클릭 핸들러
   const handleCategoryClick = (category: string) => {
     console.log("🏷️ Category clicked:", category);
     setSelectedCategory(selectedCategory === category ? null : category);
   };
 
-  // 마커 클릭 핸들러
   const handleMarkerClick = (storeId: number) => {
     console.log("📍 Marker click handler called with storeId:", storeId);
     setSelectedStoreId(storeId);
     setIsModalOpen(true);
   };
 
-  // 장소 아이템 클릭 핸들러
   const handlePlaceClick = (storeId: number) => {
     console.log("🖱️ Place click handler called with storeId:", storeId);
     setSelectedStoreId(storeId);
     setIsModalOpen(true);
   };
 
-  // 모달 닫기 핸들러
   const handleCloseModal = () => {
     console.log("❌ Modal closing");
     setIsModalOpen(false);
@@ -582,7 +549,6 @@ const Step3_Page = () => {
           ncpClientId={import.meta.env.VITE_NAVER_MAP_CLIENT_ID || ""}
         >
           <div className="relative w-screen h-screen sm:w-[375px] sm:h-full">
-            {/* 지도 컴포넌트 */}
             <MapComponent
               places={places}
               selectedCategory={selectedCategory}
@@ -591,9 +557,7 @@ const Step3_Page = () => {
               onMarkerClick={handleMarkerClick}
             />
 
-            {/* UI 오버레이 */}
             <div className="absolute top-0 left-0 p-4 w-full h-full flex flex-col pointer-events-none">
-              {/* 상단 장소 목록 */}
               <div className="bg-white bg-opacity-90 p-2 rounded-lg shadow-lg pointer-events-auto mb-3 max-h-48 overflow-y-auto">
                 <DndContext
                   sensors={sensors}
@@ -620,7 +584,6 @@ const Step3_Page = () => {
                 </DndContext>
               </div>
 
-              {/* 카테고리 버튼들 */}
               <div className="flex justify-center gap-x-2 pointer-events-auto mb-auto">
                 {Object.entries(categoryIcons).map(
                   ([category, IconComponent]) => (
@@ -643,7 +606,6 @@ const Step3_Page = () => {
                 )}
               </div>
 
-              {/* 하단 공유하기 버튼 */}
               <div className="pointer-events-auto mt-auto px-8">
                 <Button format="Button1" color="primary" onClick={handleShare}>
                   모임 컨텐츠 공유하기
@@ -653,7 +615,6 @@ const Step3_Page = () => {
           </div>
         </NavermapsProvider>
 
-        {/* 가게 상세 정보 모달 */}
         <StoreDetailModal
           storeId={selectedStoreId}
           isOpen={isModalOpen}

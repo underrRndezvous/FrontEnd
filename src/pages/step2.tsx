@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import StepFormLayout from "@/shared/ui/StepFormLayout";
 import PlaceRecommendation from "@/widgets/meeting/recommendPlace";
 import { useMeetingStore } from "@/store/meetingStore";
-import glassIcon from "@/shared/asset/images/glass.png"; // 실제 경로에 맞게 수정
+import glassIcon from "@/shared/asset/images/glass.png";
 
 const Step2_Page = () => {
   const navigate = useNavigate();
@@ -31,7 +31,6 @@ const Step2_Page = () => {
   const currentRecommendation = recommendationData[currentIndex];
   const isLastRecommendation = currentIndex === recommendationData.length - 1;
 
-  // 안경 캐릭터와 텍스트를 가로로 배치
   const titleWithIcon = (
     <div className="flex items-center justify-center">
       <img src={glassIcon} alt="검색 캐릭터" className="w-16 h-16 mr-3" />

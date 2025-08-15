@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import GroupNameForm from "@/widgets/meeting/groupNameForm";
 import StepFormLayout from "@/shared/ui/StepFormLayout";
-import { useMeetingStore } from "@/store/meetingStore"; // ✅ Zustand 스토어를 import 합니다.
+import { useMeetingStore } from "@/store/meetingStore";
 
 const Step1_1Page = () => {
   const navigate = useNavigate();

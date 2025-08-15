@@ -63,23 +63,21 @@ const Step1_4Page = () => {
     [key: number]: string;
   }>({});
 
-  // ▼▼▼ "자동으로 새 창 추가"를 전담하는 useEffect 로직 ▼▼▼
   useEffect(() => {
-    // places가 없거나 비어있으면 초기화
     if (!places || places.length === 0) {
       setPlaces([{ id: Date.now(), placeType: null, atmosphere: null }]);
       return;
     }
-    // 배열에 빈 칸이 있는지 확인
+
     const hasEmptySlot = places.some((p) => p.placeType === null);
-    // 빈 칸이 없고, 전체 개수가 5개 미만이면 새 빈칸을 추가
+
     if (!hasEmptySlot && places.length < 5) {
       setPlaces([
         ...places,
         { id: Date.now(), placeType: null, atmosphere: null },
       ]);
     }
-  }, [places, setPlaces]); // places 배열이 변경될 때마다 이 로직이 실행됩니다.
+  }, [places, setPlaces]);
 
   const handleNext = () => navigate("/Plaza/step1_5");
   const handlePrev = () => navigate(-1);
@@ -117,7 +115,6 @@ const Step1_4Page = () => {
     });
   };
 
-  // ▼▼▼ 매우 단순해진 handleConfirm 함수 ▼▼▼
   const handleConfirm = (selectedId: string) => {
     const isMainStep = overlayData?.step === "main";
     const editingId = editingPlaceId!;
