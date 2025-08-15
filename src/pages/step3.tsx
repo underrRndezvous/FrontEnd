@@ -16,6 +16,7 @@ import {
   useSensors,
   type DragEndEvent,
 } from "@dnd-kit/core";
+import AnimatedPageLayout from "@/shared/layout";
 import {
   arrayMove,
   SortableContext,
@@ -543,85 +544,91 @@ const Step3_Page = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100 p-4">
-      <div className="relative flex w-screen flex-col bg-gradient-to-b from-sub01 to-sub02 h-screen sm:w-[375px] sm:h-[645px] rounded-lg overflow-hidden">
-        <NavermapsProvider
-          ncpClientId={import.meta.env.VITE_NAVER_MAP_CLIENT_ID || ""}
-        >
-          <div className="relative w-screen h-screen sm:w-[375px] sm:h-full">
-            <MapComponent
-              places={places}
-              selectedCategory={selectedCategory}
-              categoryMapping={categoryMapping}
-              categoryIconPaths={categoryIconPaths}
-              onMarkerClick={handleMarkerClick}
-            />
+    <AnimatedPageLayout>
+      <div className="flex min-h-screen items-center justify-center bg-gray-100 p-4">
+        <div className="relative flex w-screen flex-col bg-gradient-to-b from-sub01 to-sub02 h-screen sm:w-[375px] sm:h-[645px] rounded-lg overflow-hidden">
+          <NavermapsProvider
+            ncpClientId={import.meta.env.VITE_NAVER_MAP_CLIENT_ID || ""}
+          >
+            <div className="relative w-screen h-screen sm:w-[375px] sm:h-full">
+              <MapComponent
+                places={places}
+                selectedCategory={selectedCategory}
+                categoryMapping={categoryMapping}
+                categoryIconPaths={categoryIconPaths}
+                onMarkerClick={handleMarkerClick}
+              />
 
-            <div className="absolute top-0 left-0 p-4 w-full h-full flex flex-col pointer-events-none">
-              <div className="bg-white bg-opacity-90 p-2 rounded-lg shadow-lg pointer-events-auto mb-3 max-h-48 overflow-y-auto">
-                <DndContext
-                  sensors={sensors}
-                  collisionDetection={closestCenter}
-                  onDragEnd={handleDragEnd}
-                >
-                  <SortableContext
-                    items={places.map((place) => place.storeId)}
-                    strategy={verticalListSortingStrategy}
+              <div className="absolute top-0 left-0 p-4 w-full h-full flex flex-col pointer-events-none">
+                <div className="bg-white bg-opacity-90 p-2 rounded-lg shadow-lg pointer-events-auto mb-3 max-h-48 overflow-y-auto">
+                  <DndContext
+                    sensors={sensors}
+                    collisionDetection={closestCenter}
+                    onDragEnd={handleDragEnd}
                   >
-                    <div className="space-y-1.5">
-                      {places.map((place, index) => (
-                        <SortablePlaceItem
-                          key={place.storeId}
-                          place={place}
-                          index={index}
-                          onRemove={handleRemove}
-                          isOnlyItem={places.length === 1}
-                          onPlaceClick={handlePlaceClick}
-                        />
-                      ))}
-                    </div>
-                  </SortableContext>
-                </DndContext>
-              </div>
-
-              <div className="flex justify-center gap-x-2 pointer-events-auto mb-auto">
-                {Object.entries(categoryIcons).map(
-                  ([category, IconComponent]) => (
-                    <button
-                      key={category}
-                      onClick={() => handleCategoryClick(category)}
-                      className={clsx(
-                        "flex items-center text-xs shadow-md px-3 py-2 rounded-full whitespace-nowrap transition-colors",
-                        selectedCategory === category
-                          ? "bg-main text-black font-semibold"
-                          : "bg-white text-gray-700"
-                      )}
+                    <SortableContext
+                      items={places.map((place) => place.storeId)}
+                      strategy={verticalListSortingStrategy}
                     >
-                      <IconComponent
-                        style={{ width: 12, height: 12, marginRight: 4 }}
-                      />
-                      {category}
-                    </button>
-                  )
-                )}
-              </div>
+                      <div className="space-y-1.5">
+                        {places.map((place, index) => (
+                          <SortablePlaceItem
+                            key={place.storeId}
+                            place={place}
+                            index={index}
+                            onRemove={handleRemove}
+                            isOnlyItem={places.length === 1}
+                            onPlaceClick={handlePlaceClick}
+                          />
+                        ))}
+                      </div>
+                    </SortableContext>
+                  </DndContext>
+                </div>
 
-              <div className="pointer-events-auto mt-auto px-8">
-                <Button format="Button1" color="primary" onClick={handleShare}>
-                  모임 컨텐츠 공유하기
-                </Button>
+                <div className="flex justify-center gap-x-2 pointer-events-auto mb-auto">
+                  {Object.entries(categoryIcons).map(
+                    ([category, IconComponent]) => (
+                      <button
+                        key={category}
+                        onClick={() => handleCategoryClick(category)}
+                        className={clsx(
+                          "flex items-center text-xs shadow-md px-3 py-2 rounded-full whitespace-nowrap transition-colors",
+                          selectedCategory === category
+                            ? "bg-main text-black font-semibold"
+                            : "bg-white text-gray-700"
+                        )}
+                      >
+                        <IconComponent
+                          style={{ width: 12, height: 12, marginRight: 4 }}
+                        />
+                        {category}
+                      </button>
+                    )
+                  )}
+                </div>
+
+                <div className="pointer-events-auto mt-auto px-8">
+                  <Button
+                    format="Button1"
+                    color="primary"
+                    onClick={handleShare}
+                  >
+                    모임 컨텐츠 공유하기
+                  </Button>
+                </div>
               </div>
             </div>
-          </div>
-        </NavermapsProvider>
+          </NavermapsProvider>
 
-        <StoreDetailModal
-          storeId={selectedStoreId}
-          isOpen={isModalOpen}
-          onClose={handleCloseModal}
-        />
+          <StoreDetailModal
+            storeId={selectedStoreId}
+            isOpen={isModalOpen}
+            onClose={handleCloseModal}
+          />
+        </div>
       </div>
-    </div>
+    </AnimatedPageLayout>
   );
 };
 

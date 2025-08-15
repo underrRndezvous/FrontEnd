@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import StepFormLayout from "@/shared/ui/StepFormLayout";
 import MeetingSummary from "@/widgets/meeting/meetingSummary";
 import { useMeetingStore } from "@/store/meetingStore";
-
+import AnimatedPageLayout from "@/shared/layout";
 const Step1_6Page = () => {
   const navigate = useNavigate();
   const meetingData = useMeetingStore();
@@ -17,17 +17,19 @@ const Step1_6Page = () => {
   };
 
   return (
-    <StepFormLayout
-      title={`{ ${meetingData.groupName} } 의\n모임 장소를 추천해드릴게요`}
-      subtitle="정보가 맞는지 한 번 더 확인해주세요"
-      onNext={handleRecommend}
-      onPrev={handleEdit}
-      nextButtonText="추천받기"
-      prevButtonText="수정하기"
-      // isNextDisabled={isPending}
-    >
-      <MeetingSummary />
-    </StepFormLayout>
+    <AnimatedPageLayout>
+      <StepFormLayout
+        title={`{ ${meetingData.groupName} } 의\n모임 장소를 추천해드릴게요`}
+        subtitle="정보가 맞는지 한 번 더 확인해주세요"
+        onNext={handleRecommend}
+        onPrev={handleEdit}
+        nextButtonText="추천받기"
+        prevButtonText="수정하기"
+        // isNextDisabled={isPending}
+      >
+        <MeetingSummary />
+      </StepFormLayout>
+    </AnimatedPageLayout>
   );
 };
 

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import StepFormLayout from "@/shared/ui/StepFormLayout";
 import DepartureInputForm from "@/widgets/meeting/departureInputForm";
 import { useMeetingStore, type Departure } from "@/store/meetingStore";
-
+import AnimatedPageLayout from "@/shared/layout";
 const Step1_5Page = () => {
   const navigate = useNavigate();
   const { startPoint, setStartPoint } = useMeetingStore();
@@ -125,24 +125,26 @@ const Step1_5Page = () => {
   };
 
   return (
-    <StepFormLayout
-      title="출발지를 입력해주세요"
-      subtitle="모임원의 출발지를 추가할 수 있어요"
-      onNext={handleNext}
-      onPrev={handlePrev}
-      isNextDisabled={isNextDisabled}
-      isScrollable={true}
-      contentAlignment="start"
-    >
-      <DepartureInputForm
-        departures={departures}
-        setDepartures={setDepartures}
-        onAdd={handleAdd}
-        onRemove={handleRemove}
-        onChange={handleChange}
-        onKeyDown={handleKeyDown}
-      />
-    </StepFormLayout>
+    <AnimatedPageLayout>
+      <StepFormLayout
+        title="출발지를 입력해주세요"
+        subtitle="모임원의 출발지를 추가할 수 있어요"
+        onNext={handleNext}
+        onPrev={handlePrev}
+        isNextDisabled={isNextDisabled}
+        isScrollable={true}
+        contentAlignment="start"
+      >
+        <DepartureInputForm
+          departures={departures}
+          setDepartures={setDepartures}
+          onAdd={handleAdd}
+          onRemove={handleRemove}
+          onChange={handleChange}
+          onKeyDown={handleKeyDown}
+        />
+      </StepFormLayout>
+    </AnimatedPageLayout>
   );
 };
 
