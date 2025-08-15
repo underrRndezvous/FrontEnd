@@ -8,6 +8,8 @@ interface StepNavigationProps {
   prevText?: string;
   nextText?: string;
   isPrevDisabled?: boolean;
+  isScrollable?: boolean;
+  contentAlignment?: "center" | "start";
 }
 
 const StepNavigation = ({
@@ -19,7 +21,7 @@ const StepNavigation = ({
   isPrevDisabled = false,
 }: StepNavigationProps) => {
   return (
-    <div className="flex w-full gap-x-5 py-6 px-2">
+    <div className="flex w-full gap-x-5 py-2 px-2">
       <Button
         format="Button2"
         color="secondary"

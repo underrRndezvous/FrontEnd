@@ -28,7 +28,7 @@ const DaySelector = ({ selectedDay, onSelect }: DaySelectorProps) => {
     : null;
 
   return (
-    <div className="w-full flex flex-col items-center gap-y-8">
+    <div className="w-full flex flex-col items-center gap-y-8 -mt-16">
       {" "}
       <div className="flex justify-center gap-x-2">
         {weekdays.map((day) => (

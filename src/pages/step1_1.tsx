@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import GroupNameForm from "@/widgets/meeting/groupNameForm";
 import StepFormLayout from "@/shared/ui/StepFormLayout";
 import { useMeetingStore } from "@/store/meetingStore";
-
+import AnimatedPageLayout from "@/shared/layout";
 const Step1_1Page = () => {
   const navigate = useNavigate();
   const { groupName, setGroupName } = useMeetingStore();
@@ -20,15 +20,17 @@ const Step1_1Page = () => {
   const isNextDisabled = groupName.trim() === "";
 
   return (
-    <StepFormLayout
-      title="모임 이름은 무엇인가요?"
-      subtitle="모임 이름을 입력해주세요"
-      onNext={handleNext}
-      onPrev={handlePrev}
-      isNextDisabled={isNextDisabled}
-    >
-      <GroupNameForm groupName={groupName} onGroupNameChange={setGroupName} />
-    </StepFormLayout>
+    <AnimatedPageLayout>
+      <StepFormLayout
+        title="모임 이름은 무엇인가요?"
+        subtitle="모임 이름을 입력해주세요"
+        onNext={handleNext}
+        onPrev={handlePrev}
+        isNextDisabled={isNextDisabled}
+      >
+        <GroupNameForm groupName={groupName} onGroupNameChange={setGroupName} />
+      </StepFormLayout>
+    </AnimatedPageLayout>
   );
 };
 

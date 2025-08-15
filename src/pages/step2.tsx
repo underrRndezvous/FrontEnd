@@ -4,7 +4,7 @@ import StepFormLayout from "@/shared/ui/StepFormLayout";
 import PlaceRecommendation from "@/widgets/meeting/recommendPlace";
 import { useMeetingStore } from "@/store/meetingStore";
 import glassIcon from "@/shared/asset/images/glass.png";
-
+import AnimatedPageLayout from "@/shared/layout";
 const Step2_Page = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -33,25 +33,32 @@ const Step2_Page = () => {
 
   const titleWithIcon = (
     <div className="flex items-center justify-center">
-      <img src={glassIcon} alt="검색 캐릭터" className="w-16 h-16 mr-3" />
+      <img
+        src={glassIcon}
+        alt="검색 캐릭터"
+        className="w-16 h-16 mr-3 transform scale-150"
+        style={{ transformOrigin: "center" }}
+      />
       <span className="text-left">{`{${groupName}}에\n딱 맞는 장소를 찾았어요!`}</span>
     </div>
   );
 
   return (
-    <StepFormLayout
-      title={titleWithIcon}
-      subtitle=""
-      onNext={handleSelect}
-      onPrev={handleFindAnotherPlace}
-      nextButtonText="이 장소 선택하기"
-      prevButtonText="다른 장소 찾기"
-      isPrevDisabled={isLastRecommendation}
-      contentAlignment="start"
-      isScrollable={false}
-    >
-      <PlaceRecommendation recommendation={currentRecommendation} />
-    </StepFormLayout>
+    <AnimatedPageLayout>
+      <StepFormLayout
+        title={titleWithIcon}
+        subtitle=""
+        onNext={handleSelect}
+        onPrev={handleFindAnotherPlace}
+        nextButtonText="이 장소 선택하기"
+        prevButtonText="다른 장소 찾기"
+        isPrevDisabled={isLastRecommendation}
+        contentAlignment="start"
+        isScrollable={false}
+      >
+        <PlaceRecommendation recommendation={currentRecommendation} />
+      </StepFormLayout>
+    </AnimatedPageLayout>
   );
 };
 

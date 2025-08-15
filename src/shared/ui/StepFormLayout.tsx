@@ -14,6 +14,7 @@ interface StepFormLayoutProps {
   prevButtonText?: string;
   nextButtonText?: string;
   isPrevDisabled?: boolean;
+  headerClassName?: string;
 }
 
 const StepFormLayout = ({
@@ -23,6 +24,7 @@ const StepFormLayout = ({
   onNext,
   onPrev,
   isNextDisabled,
+  headerClassName = "",
   isScrollable = false,
   isPrevDisabled = false,
   contentAlignment = "center",
@@ -32,7 +34,7 @@ const StepFormLayout = ({
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100">
       <div className="relative flex w-screen flex-col bg-gradient-to-b from-sub01 to-sub02 p-6 h-screen sm:w-[375px] sm:h-[645px] sm:rounded-lg">
-        <div className="text-center mt-12">
+        <div className="text-center mt-12 ${headerClassName}">
           <h1 className="title-02 text-black mb-2">{title}</h1>
           <p className="body-02 text-gray3">{subtitle}</p>
         </div>

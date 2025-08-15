@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useMeetingStore } from "@/store/meetingStore";
@@ -22,26 +22,38 @@ const IconClose = () => (
 
 const LoadingPage = () => {
   const navigate = useNavigate();
-  const { groupName } = useMeetingStore.getState();
+  const { groupName } = useMeetingStore();
   const { mutate, data, isSuccess, isError, error } = useRecommendPlaces();
+  const [startTime, setStartTime] = useState<number>(0);
 
   useEffect(() => {
+    setStartTime(Date.now());
     mutate();
   }, [mutate]);
 
   useEffect(() => {
     if (isSuccess && data) {
-      navigate("/Plaza/step2", { state: { recommendations: data.regions } });
+      const elapsed = Date.now() - startTime;
+      const remainingTime = Math.max(0, 2000 - elapsed);
+
+      setTimeout(() => {
+        navigate("/Plaza/step2", { state: { recommendations: data.regions } });
+      }, remainingTime);
     }
-  }, [isSuccess, data, navigate]);
+  }, [isSuccess, data, navigate, startTime]);
 
   useEffect(() => {
     if (isError) {
-      console.error("추천 장소 조회 실패:", error);
-      alert("추천 장소를 찾는 데 실패했어요. 이전 페이지로 돌아갑니다.");
-      navigate(-1);
+      const elapsed = Date.now() - startTime;
+      const remainingTime = Math.max(0, 2000 - elapsed);
+
+      setTimeout(() => {
+        console.error("추천 장소 조회 실패:", error);
+        alert("추천 장소를 찾는 데 실패했어요. 이전 페이지로 돌아갑니다.");
+        navigate(-1);
+      }, remainingTime);
     }
-  }, [isError, error, navigate]);
+  }, [isError, error, navigate, startTime]);
 
   return (
     <motion.div
@@ -50,14 +62,14 @@ const LoadingPage = () => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
-      <div className="relative flex w-screen flex-col items-center justify-center rounded-lg bg-gradient-to-b from-sub01 to-sub02 p-6 text-center h-screen sm:w-[375px] sm:h-[645px]">
+      <div className="relative flex w-screen flex-col items-center justify-center rounded-lg bg-white p-6 text-center h-screen sm:w-[375px] sm:h-[645px]">
         <button onClick={() => navigate(-1)} className="absolute top-6 right-6">
           <IconClose />
         </button>
 
-        <div className="flex flex-1 flex-col items-center justify-center">
+        <div className="flex flex-1 flex-col items-center justify-center -mt-32">
           <h1 className="title-02 text-black mb-2">
-            <span className="text-white">{groupName || "모임"}</span>
+            <span className="text-black">{groupName || "모임"}</span>
             의
             <br />
             모임 장소와 컨텐츠를 찾고 있어요!

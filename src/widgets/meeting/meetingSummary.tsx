@@ -80,9 +80,16 @@ const MeetingSummary = () => {
   }));
 
   return (
-    <div className="w-full">
+    <div className="relative w-full">
+      {/* <button
+        className="absolute right-4 top-4 text-gray-500 text-xl leading-none hover:text-gray-700"
+        onClick={onClose}
+        aria-label="닫기"
+      >
+        ×
+      </button> */}
       <div
-        className="w-full rounded-lg bg-white p-4 text-left shadow-md overflow-y-auto max-h-[310px] scrollbar-hide"
+        className="w-full rounded-lg  bg-white p-4 text-left overflow-y-auto max-h-[375px] scrollbar-hide border border-main"
         style={{
           scrollbarWidth: "none",
           msOverflowStyle: "none",

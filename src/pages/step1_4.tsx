@@ -9,7 +9,7 @@ import {
   type PlaceType,
   type AtmosphereType,
 } from "@/store/meetingStore";
-
+import AnimatedPageLayout from "@/shared/layout";
 import React, { useState, useEffect } from "react";
 import IconRestaurant from "@/shared/asset/icon/restaurant.svg?react";
 import IconCafe from "@/shared/asset/icon/cafe.svg?react";
@@ -173,41 +173,43 @@ const Step1_4Page = () => {
     places.filter((p) => p.placeType !== null).length === 0;
 
   return (
-    <>
-      <StepFormLayout
-        title="어떤 장소 유형이 필요한가요?"
-        subtitle="모임에 필요한 장소 유형과 순서를 정해주세요"
-        onNext={handleNext}
-        onPrev={handlePrev}
-        isNextDisabled={isNextDisabled}
-        contentAlignment="start"
-      >
-        <div className="flex h-full w-full flex-col justify-start pt-4">
-          <PlaceTypeForm
-            places={places || []}
-            setPlaces={setPlaces}
-            onItemClick={handleItemClick}
-            onAdd={handleAddPlace}
-            onRemove={handleRemovePlace}
-            displaySubTypes={displaySubTypes}
-          />
-        </div>
-      </StepFormLayout>
-      <Overlay
-        isOpen={overlayData !== null}
-        onClose={() => setOverlayData(null)}
-      >
-        {overlayData && (
-          <SelectionOverlay
-            title={overlayData.title}
-            buttonText={overlayData.buttonText}
-            options={overlayData.options}
-            onConfirm={handleConfirm}
-            onClose={() => setOverlayData(null)}
-          />
-        )}
-      </Overlay>
-    </>
+    <AnimatedPageLayout>
+      <>
+        <StepFormLayout
+          title="어떤 장소 유형이 필요한가요?"
+          subtitle="모임에 필요한 장소 유형과 순서를 정해주세요"
+          onNext={handleNext}
+          onPrev={handlePrev}
+          isNextDisabled={isNextDisabled}
+          contentAlignment="start"
+        >
+          <div className="flex h-full w-full flex-col justify-start pt-4">
+            <PlaceTypeForm
+              places={places || []}
+              setPlaces={setPlaces}
+              onItemClick={handleItemClick}
+              onAdd={handleAddPlace}
+              onRemove={handleRemovePlace}
+              displaySubTypes={displaySubTypes}
+            />
+          </div>
+        </StepFormLayout>
+        <Overlay
+          isOpen={overlayData !== null}
+          onClose={() => setOverlayData(null)}
+        >
+          {overlayData && (
+            <SelectionOverlay
+              title={overlayData.title}
+              buttonText={overlayData.buttonText}
+              options={overlayData.options}
+              onConfirm={handleConfirm}
+              onClose={() => setOverlayData(null)}
+            />
+          )}
+        </Overlay>
+      </>
+    </AnimatedPageLayout>
   );
 };
 
