@@ -59,8 +59,9 @@ const postMeetingInfo = async (): Promise<MeetingResponseBody> => {
     meetDays: transformedMeetDays[0], 
     place: place
       .filter(p => p.placeType !== null)
-      .map((p) => ({
+      .map((p, index) => ({
         ...p,
+        order: index + 1,
         typeDetail: null,
       })),
     startPoint: startPoint.map(({ id, type, ...rest }) => rest),
