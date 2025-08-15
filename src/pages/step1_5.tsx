@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import StepFormLayout from "@/shared/ui/StepFormLayout";
 import DepartureInputForm from "@/widgets/meeting/departureInputForm";
@@ -8,40 +8,74 @@ const Step1_5Page = () => {
   const navigate = useNavigate();
   const { startPoint, setStartPoint } = useMeetingStore();
 
+  const [displayValues, setDisplayValues] = useState<{ [id: number]: string }>(
+    {}
+  );
+
   // API 형태(StartPointRequest[])를 UI 형태(Departure[])로 변환
   const departures: Departure[] = startPoint.map((sp, index) => ({
     id: sp.id || Date.now() + index,
     type: index === 0 ? "leader" : "member",
-    // filter(Boolean) 제거 → 공백 보존
-    value: [sp.first, sp.second, sp.third]
-      .map((s) => s || "") // null이나 undefined를 빈 문자열로 통일
-      .join(" ")
-      .replace(/\s+$/, ""), // 마지막에 있는 공백만 제거
+    value: displayValues[sp.id || 0] || "",
   }));
-
   useEffect(() => {
-    if (startPoint.length === 0) {
-      setStartPoint([
-        { id: Date.now(), type: "leader", first: "", second: "", third: "" },
-      ]);
-    }
-  }, [startPoint, setStartPoint]);
+    const newDisplayValues: { [id: number]: string } = {};
+    startPoint.forEach((sp) => {
+      const combined = [sp.first, sp.second, sp.third]
+        .filter((part) => part && part.trim() !== "")
+        .join(" ");
+      newDisplayValues[sp.id || 0] = combined;
+    });
+    setDisplayValues(newDisplayValues);
+  }, []); // 한 번만 실행
+  const handleNext = () => {
+    console.log("=== BEFORE CONVERSION ===");
+    console.log("Current startPoint:", startPoint);
+    console.log("Current displayValues:", displayValues);
 
-  const handleNext = () => navigate("/Plaza/step1_6");
+    const newStartPoint = startPoint.map((sp) => {
+      const displayValue = displayValues[sp.id || 0] || "";
+      console.log(`Processing ID ${sp.id}: "${displayValue}"`);
+
+      if (displayValue.trim()) {
+        const parsed = parseAddress(displayValue);
+        console.log(
+          `Parsed: first:"${parsed.first}", second:"${parsed.second}", third:"${parsed.third}"`
+        );
+        return { ...sp, ...parsed };
+      }
+      return sp;
+    });
+
+    console.log("=== AFTER CONVERSION ===");
+    console.log("New startPoint:", newStartPoint);
+
+    setStartPoint(newStartPoint);
+
+    // ✅ setStartPoint가 비동기이므로 잠시 후 확인
+    setTimeout(() => {
+      console.log("=== FINAL STORE STATE ===");
+      console.log("Store startPoint:", useMeetingStore.getState().startPoint);
+    }, 100);
+
+    navigate("/Plaza/step1_6");
+  };
   const handlePrev = () => navigate(-1);
 
   const handleAdd = () => {
     if (startPoint.length >= 5) return;
+    const newId = Date.now();
     const newStartPoint = {
-      id: Date.now(),
+      id: newId,
       type: "member" as const,
       first: "",
       second: "",
       third: "",
     };
     setStartPoint([...startPoint, newStartPoint]);
-  };
 
+    // ✅ 새로 추가된 항목도 localInputs에 반영
+  };
   const handleRemove = (id: number) => {
     if (startPoint.length <= 1) return;
     setStartPoint(startPoint.filter((sp) => (sp.id || 0) !== id));
@@ -49,29 +83,21 @@ const Step1_5Page = () => {
 
   // 주소 문자열을 파싱해서 first, second, third로 분리 (공백 보존)
   const parseAddress = (address: string) => {
-    const firstSpaceIndex = address.indexOf(" ");
-    const secondSpaceIndex =
-      firstSpaceIndex >= 0 ? address.indexOf(" ", firstSpaceIndex + 1) : -1;
+    if (!address || address.trim() === "") {
+      return { first: "", second: "", third: "" };
+    }
 
+    const parts = address.trim().split(/\s+/); // 연속된 공백을 하나로 처리
     return {
-      first: firstSpaceIndex >= 0 ? address.slice(0, firstSpaceIndex) : address,
-      second:
-        secondSpaceIndex >= 0
-          ? address.slice(firstSpaceIndex + 1, secondSpaceIndex)
-          : firstSpaceIndex >= 0
-          ? address.slice(firstSpaceIndex + 1)
-          : "",
-      third: secondSpaceIndex >= 0 ? address.slice(secondSpaceIndex + 1) : "",
+      first: parts[0] || "",
+      second: parts[1] || "",
+      third: parts.slice(2).join(" ") || "", // 3번째부터는 모두 합쳐서
     };
   };
 
   const handleChange = (id: number, newValue: string) => {
-    const parsedAddress = parseAddress(newValue);
-    setStartPoint(
-      startPoint.map((sp) =>
-        (sp.id || 0) === id ? { ...sp, ...parsedAddress } : sp
-      )
-    );
+    // 1. UI 즉시 업데이트
+    setDisplayValues((prev) => ({ ...prev, [id]: newValue }));
   };
 
   const handleKeyDown = (
@@ -97,15 +123,11 @@ const Step1_5Page = () => {
     departures.filter((d) => d.value.trim() !== "").length === 0;
 
   const setDepartures = (newDepartures: Departure[]) => {
-    const newStartPoint = newDepartures.map((dep, index) => {
-      const parsed = parseAddress(dep.value);
-      return {
-        id: dep.id,
-        type: index === 0 ? ("leader" as const) : ("member" as const),
-        ...parsed,
-      };
+    const newDisplayValues: { [id: number]: string } = {};
+    newDepartures.forEach((dep) => {
+      newDisplayValues[dep.id] = dep.value;
     });
-    setStartPoint(newStartPoint);
+    setDisplayValues(newDisplayValues);
   };
 
   return (

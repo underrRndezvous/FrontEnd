@@ -38,35 +38,6 @@ const DepartureInput = ({
 
   // 키 이벤트 핸들러
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    console.log("🔍 Key:", e.key, "Code:", e.code, "isComposing:", isComposing);
-
-    // IME 조합 중이 아닐 때만 스페이스바 처리
-    if ((e.key === " " || e.code === "Space") && !isComposing) {
-      console.log("✅ Spacebar - not composing, allowing");
-
-      // 현재 값에 스페이스 추가 (더 간단한 방법)
-      const currentValue = String(value || "");
-      const newValue = currentValue + " ";
-
-      console.log("🔍 Old value:", currentValue);
-      console.log("🔍 New value:", newValue);
-
-      // 직접 onChange 호출
-      if (onChange) {
-        const target = e.target as HTMLInputElement;
-        const fakeEvent = {
-          target: { ...target, value: newValue },
-          currentTarget: target,
-          type: "change",
-        } as React.ChangeEvent<HTMLInputElement>;
-        onChange(fakeEvent);
-      }
-
-      // 기본 동작 막기
-      e.preventDefault();
-      return;
-    }
-
     // 부모에서 전달된 onKeyDown이 있으면 실행
     if (onKeyDown) {
       onKeyDown(e);
@@ -110,11 +81,10 @@ const DepartureInput = ({
       </div>
       <input
         className={clsx(
-          "w-full flex-grow bg-transparent body-02 py-3 pr-3 outline-none placeholder:text-gray3",
+          "w-full flex-grow bg-transparent body-02 py-3 pr-3 outline-none placeholder:text-gray3 whitespace-pre-wrap",
           hasValue ? "text-black" : "text-gray3"
         )}
         value={value}
-        onKeyDown={handleKeyDown}
         onChange={handleChange}
         onCompositionStart={handleCompositionStart}
         onCompositionEnd={handleCompositionEnd}

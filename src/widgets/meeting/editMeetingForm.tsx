@@ -247,7 +247,7 @@ const EditMeetingForm = () => {
 
   return (
     <>
-      <div className="w-full space-y-6 rounded-lg border border-main bg-white p-6">
+      <div className="w-full space-y-6 rounded-lg border border-main bg-white p-6 ">
         {/* 모임 목적 */}
         <section className="flex flex-col items-start gap-y-3">
           <h3 className="title-03 text-left text-black">모임 목적</h3>
@@ -274,13 +274,13 @@ const EditMeetingForm = () => {
         {/* 모임 요일 */}
         <section className="flex flex-col items-start gap-y-3">
           <h3 className="title-03 text-left text-black">모임 요일</h3>
-          <div className="flex justify-center gap-x-1.5">
+          <div className="w-full grid grid-cols-7 gap-x-1.5 justify-items-center">
             {dayOptions.map((day) => (
               <button
                 key={day.api}
                 onClick={() => handleDaySelect(day.api)}
                 className={clsx(
-                  "rounded-md border py-1.5 px-2 text-body-02 transition-colors min-w-[36px]",
+                  "w-full rounded-md border py-1.5 px-1 text-body-02 transition-colors min-w-[32px] max-w-[40px]",
                   selectedDays.includes(day.api)
                     ? "border-main bg-sub02 text-black shadow-glow-main"
                     : "border-gray2 bg-white text-gray3"
