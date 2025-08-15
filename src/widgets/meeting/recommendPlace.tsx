@@ -30,7 +30,7 @@ const PlaceRecommendation = ({ recommendation }: PlaceRecommendationProps) => {
 
           <button
             onClick={handlePreviewClick}
-            className="flex w-full items-center justify-center rounded-md bg-sub01 py-3 body-02 text-black"
+            className="flex w-full items-center justify-center rounded-md bg-sub01 py-3 title-03 text-black"
           >
             <svg
               width="16"

@@ -33,7 +33,12 @@ const Step2_Page = () => {
 
   const titleWithIcon = (
     <div className="flex items-center justify-center">
-      <img src={glassIcon} alt="검색 캐릭터" className="w-16 h-16 mr-3" />
+      <img
+        src={glassIcon}
+        alt="검색 캐릭터"
+        className="w-16 h-16 mr-3 transform scale-150"
+        style={{ transformOrigin: "center" }}
+      />
       <span className="text-left">{`{${groupName}}에\n딱 맞는 장소를 찾았어요!`}</span>
     </div>
   );
