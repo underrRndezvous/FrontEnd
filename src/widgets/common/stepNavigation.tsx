@@ -7,6 +7,9 @@ interface StepNavigationProps {
   isNextDisabled?: boolean;
   prevText?: string;
   nextText?: string;
+  isPrevDisabled?: boolean;
+  isScrollable?: boolean;
+  contentAlignment?: "center" | "start";
 }
 
 const StepNavigation = ({
@@ -15,10 +18,16 @@ const StepNavigation = ({
   isNextDisabled = false,
   prevText = "이전",
   nextText = "다음",
+  isPrevDisabled = false,
 }: StepNavigationProps) => {
   return (
-    <div className="flex w-full gap-x-5 py-6 px-2">
-      <Button format="Button2" color="secondary" onClick={onPrev}>
+    <div className="flex w-full gap-x-5 py-2 px-2">
+      <Button
+        format="Button2"
+        color="secondary"
+        onClick={onPrev}
+        disabled={isPrevDisabled}
+      >
         {prevText}
       </Button>
       <Button

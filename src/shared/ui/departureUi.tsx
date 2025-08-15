@@ -18,7 +18,7 @@ const IconMinus = () => (
 );
 
 interface DepartureInputProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange' | 'onSelect'> {
   variant: "leader" | "member";
   onRemove?: () => void;
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
@@ -33,7 +33,7 @@ const DepartureInput = ({
   onKeyDown,
   onChange,
   onRegionSelect,
-  ...props
+  ...restProps
 }: DepartureInputProps) => {
   const Icon = variant === "leader" ? IconCrown : IconPerson;
   const hasValue = value && String(value).length > 0;
@@ -75,7 +75,7 @@ const DepartureInput = ({
               "w-full bg-transparent body-02 py-3 pr-3 border-none outline-none placeholder:text-gray3",
               hasValue ? "text-black" : "text-gray3"
             )}
-            {...props}
+            {...restProps}
           />
         </div>
         {variant === "member" && hasValue && onRemove && (

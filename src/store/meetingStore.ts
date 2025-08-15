@@ -1,78 +1,76 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-export interface Place {
+export type TimeType = 'MORNING' | 'LUNCH' | 'AFTERNOON' | 'EVENING';
+export type DayType = 'MONDAY' | 'TUESDAY' | 'WEDNESDAY' | 'THURSDAY' | 'FRIDAY' | 'SATURDAY' | 'SUNDAY' | 'WEEKDAY' | 'WEEKEND';
+export type PlaceType = 'RESTAURANT' | 'CAFE' | 'BAR' | 'ACTIVITY';
+export type AtmosphereType = 'PRODUCTIVE' | 'AESTHETIC' | 'INDULGENT' | 'SOCIABLE';
+
+export interface PlaceRequest {
   id: number;
-  type: string | null;
-  subType: string | null;
+  placeType: PlaceType | null;
+  atmosphere: AtmosphereType | null;
 }
 
+export interface StartPointRequest {
+  id: number;
+  type: 'leader' | 'member';
+  first: string;
+  second: string;
+  third: string;
+}
 export interface Departure {
   id: number;
-  value: string;
   type: 'leader' | 'member';
+  value: string;
 }
 
 export interface MeetingState {
   groupName: string;
   groupPurpose: string | null;
-  selectedTimes: string[];
-  places: Place[];
-  departures: Departure[];
+  meetDays: DayType[]; 
+  meetTime: TimeType[]; 
+  place: PlaceRequest[];
+  startPoint: StartPointRequest[];
 }
+
 
 interface MeetingActions {
   setGroupName: (name: string) => void;
   setGroupPurpose: (purpose: string | null) => void;
-  setSelectedTimes: (times: string[]) => void;
-  setPlaces: (places: Place[]) => void;
-  setDepartures: (departures: Departure[]) => void;
+  setMeetDays: (days: DayType[]) => void; 
+  setMeetTime: (times: TimeType[]) => void; 
+  setPlace: (places: PlaceRequest[]) => void;
+  setStartPoint: (departures: StartPointRequest[]) => void;
   reset: () => void;
 }
 
 const initialState: MeetingState = {
   groupName: '',
   groupPurpose: null,
-  selectedTimes: [],
-  places: [],
-  departures: [],
+  meetTime: [],
+  place: [],
+  meetDays: [],
+  startPoint: [],
 };
 
 export const useMeetingStore = create<MeetingState & MeetingActions>()(
-  
   persist(
     (set) => ({
-      ...initialState, 
+      ...initialState,
 
       setGroupName: (name) => set({ groupName: name }),
       setGroupPurpose: (purpose) => set({ groupPurpose: purpose }),
-       setSelectedTimes: (times) => {
       
-        const koreanToEnglish: { [key: string]: string } = {
-          '오전': 'morning',
-          '점심': 'lunch', 
-          '오후': 'afternoon',
-          '저녁': 'dinner'
-        };
-        
-  
-        const normalizedTimes = times.map(time => koreanToEnglish[time] || time);
-        
-    
-        const uniqueTimes = [...new Set(normalizedTimes)];
-        
-        set({ selectedTimes: uniqueTimes });
-      },
-      // setSelectedTimes: (times) => set({ selectedTimes: times }),
+      setMeetDays: (days) => set({ meetDays: days }),
+      setMeetTime: (times) => set({ meetTime: [...new Set(times)] }), 
       
-      setPlaces: (places) => set({ places }),
-      setDepartures: (departures) => set({ departures }),
+      setPlace: (places) => set({ place: places }),
+      setStartPoint: (departures) => set({ startPoint: departures }),
       reset: () => set(initialState),
     }),
-
     {
       name: 'meeting-storage',
     }
   )
 );
-
