@@ -65,16 +65,17 @@ const Step1_4Page = () => {
 
   useEffect(() => {
     if (!places || places.length === 0) {
-      setPlaces([{ id: Date.now(), placeType: null, atmosphere: null }]);
+      setPlaces([{ id: 1, placeType: null, atmosphere: null }]);
       return;
     }
 
     const hasEmptySlot = places.some((p) => p.placeType === null);
 
     if (!hasEmptySlot && places.length < 5) {
+      const nextId = Math.max(...places.map(p => p.id)) + 1;
       setPlaces([
         ...places,
-        { id: Date.now(), placeType: null, atmosphere: null },
+        { id: nextId, placeType: null, atmosphere: null },
       ]);
     }
   }, [places, setPlaces]);
@@ -94,9 +95,10 @@ const Step1_4Page = () => {
 
   const handleAddPlace = () => {
     if (places.length >= 5) return;
+    const nextId = places.length > 0 ? Math.max(...places.map(p => p.id)) + 1 : 1;
     setPlaces([
       ...places,
-      { id: Date.now(), placeType: null, atmosphere: null },
+      { id: nextId, placeType: null, atmosphere: null },
     ]);
   };
 
