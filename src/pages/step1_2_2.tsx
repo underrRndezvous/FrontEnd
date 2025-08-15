@@ -3,11 +3,24 @@ import { useNavigate } from "react-router-dom";
 import StepFormLayout from "@/shared/ui/StepFormLayout";
 import DaySelector from "@/widgets/meeting/daySelector";
 import { useMeetingStore } from "@/store/meetingStore";
+import type { DayType } from "@/store/meetingStore";
+
+const dayKoreanToEnglish: { [key: string]: DayType } = {
+  월: "MONDAY",
+  화: "TUESDAY",
+  수: "WEDNESDAY",
+  목: "THURSDAY",
+  금: "FRIDAY",
+  토: "SATURDAY",
+  일: "SUNDAY",
+  평일: "WEEKDAY",
+  주말: "WEEKEND",
+};
 
 const Step1_2_2Page = () => {
   const navigate = useNavigate();
-  const { meetDays: selectedDays, setMeetDays: setSelectedDays } =
-    useMeetingStore();
+  const { meetDays, setMeetDays } = useMeetingStore();
+  const selectedDay = meetDays[0] || null;
 
   const handleNext = () => {
     navigate("/Plaza/step1_3");
@@ -17,14 +30,15 @@ const Step1_2_2Page = () => {
     navigate(-1);
   };
 
-  const handleSelectDay = (day: string) => {
-    const newSelectedDays = selectedDays.includes(day)
-      ? selectedDays.filter((d) => d !== day)
-      : [...selectedDays, day];
-    setSelectedDays(newSelectedDays);
+  const handleSelectDay = (dayInKorean: string) => {
+    const dayInEnglish = dayKoreanToEnglish[dayInKorean];
+
+    const newSelectedDay = selectedDay === dayInEnglish ? null : dayInEnglish;
+
+    setMeetDays(newSelectedDay ? [newSelectedDay] : []);
   };
 
-  const isNextDisabled = selectedDays.length === 0;
+  const isNextDisabled = !selectedDay;
 
   return (
     <StepFormLayout
@@ -34,7 +48,7 @@ const Step1_2_2Page = () => {
       onPrev={handlePrev}
       isNextDisabled={isNextDisabled}
     >
-      <DaySelector selectedDays={selectedDays} onSelect={handleSelectDay} />
+      <DaySelector selectedDay={selectedDay} onSelect={handleSelectDay} />
     </StepFormLayout>
   );
 };

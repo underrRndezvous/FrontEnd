@@ -2,7 +2,14 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import TimeSelector from "@/widgets/meeting/timeSelector";
 import StepFormLayout from "@/shared/ui/StepFormLayout";
-import { useMeetingStore } from "@/store/meetingStore";
+import { useMeetingStore, type TimeType } from "@/store/meetingStore";
+
+const timeIdToType: { [key: string]: TimeType } = {
+  morning: "MORNING",
+  lunch: "LUNCH",
+  afternoon: "AFTERNOON",
+  evening: "EVENING",
+};
 
 const Step1_3Page = () => {
   const navigate = useNavigate();
@@ -18,9 +25,13 @@ const Step1_3Page = () => {
   };
 
   const handleSelectTime = (id: string) => {
-    const newSelectedTimes = selectedTimes.includes(id)
-      ? selectedTimes.filter((item) => item !== id)
-      : [...selectedTimes, id];
+    const timeType = timeIdToType[id];
+    if (!timeType) return;
+
+    const newSelectedTimes = selectedTimes.includes(timeType)
+      ? selectedTimes.filter((item) => item !== timeType)
+      : [...selectedTimes, timeType];
+
     setSelectedTimes(newSelectedTimes);
   };
 

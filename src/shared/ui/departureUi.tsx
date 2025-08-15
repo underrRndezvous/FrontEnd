@@ -27,10 +27,36 @@ const DepartureInput = ({
   value,
   onRemove,
   onKeyDown,
+  onChange,
   ...props
 }: DepartureInputProps) => {
   const Icon = variant === "leader" ? IconCrown : IconPerson;
   const hasValue = value && String(value).length > 0;
+
+  const [isComposing, setIsComposing] = React.useState(false);
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (onKeyDown) {
+      onKeyDown(e);
+    }
+  };
+
+  const handleCompositionStart = () => {
+    console.log("🔍 Composition started");
+    setIsComposing(true);
+  };
+
+  const handleCompositionEnd = () => {
+    console.log("🔍 Composition ended");
+    setIsComposing(false);
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("🔍 Input changed:", e.target.value);
+    if (onChange) {
+      onChange(e);
+    }
+  };
 
   return (
     <div
@@ -49,11 +75,13 @@ const DepartureInput = ({
       </div>
       <input
         className={clsx(
-          "w-full flex-grow bg-transparent body-02 py-3 pr-3 outline-none placeholder:text-gray3",
+          "w-full flex-grow bg-transparent body-02 py-3 pr-3 outline-none placeholder:text-gray3 whitespace-pre-wrap",
           hasValue ? "text-black" : "text-gray3"
         )}
         value={value}
-        onKeyDown={onKeyDown}
+        onChange={handleChange}
+        onCompositionStart={handleCompositionStart}
+        onCompositionEnd={handleCompositionEnd}
         {...props}
       />
       {variant === "member" && hasValue && onRemove && (

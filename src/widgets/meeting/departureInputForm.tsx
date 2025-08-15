@@ -28,7 +28,7 @@ const DepartureInputForm = ({
             key={departure.id}
             variant={departure.type}
             value={departure.value}
-            placeholder="출발지 입력"
+            placeholder="출발지 입력 (예: 서울시 서초구 서초동)"
             onChange={(e) => onChange(departure.id, e.target.value)}
             onKeyDown={(e) => onKeyDown(e, departure.id)}
             onRemove={
@@ -39,7 +39,7 @@ const DepartureInputForm = ({
           />
         ))}
       </div>
-      {departures.length < 5 && (
+      {departures.length < 8 && (
         <button
           onClick={onAdd}
           className="flex w-11/12 mx-auto items-center rounded-lg border-2 border-dashed border-gray-300 bg-white bg-opacity-50 p-3 text-left"
