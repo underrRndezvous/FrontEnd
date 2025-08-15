@@ -233,13 +233,6 @@ const EditMeetingForm = () => {
       departures.map((d) => (d.id === id ? { ...d, ...parsedAddress } : d))
     );
   };
-  const setUiDepartures = (newDepartures: Departure[]) => {
-    const newStartPoint: StartPointRequest[] = newDepartures.map((dep) => {
-      const parsed = parseAddress(dep.value);
-      return { id: dep.id, type: dep.type, ...parsed };
-    });
-    setDepartures(newStartPoint);
-  };
 
   return (
     <>
@@ -329,11 +322,10 @@ const EditMeetingForm = () => {
           <h3 className="title-03 text-left mb-2">출발 위치</h3>
           <DepartureInputForm
             departures={uiDepartures}
-            setDepartures={setUiDepartures}
             onAdd={handleAddDeparture}
             onRemove={handleRemoveDeparture}
             onChange={handleChangeDeparture}
-            onKeyDown={(e, id) => {
+            onKeyDown={(e, _id) => {
               if (e.key === "Enter") e.preventDefault();
             }}
           />
