@@ -14,7 +14,7 @@ interface DepartureInputFormProps {
 
 const DepartureInputForm = ({
   departures,
-  setDepartures,
+  // setDepartures,
   onAdd,
   onRemove,
   onChange,

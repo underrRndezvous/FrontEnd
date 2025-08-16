@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import clsx from "clsx";
 import {
   useMeetingStore,
@@ -333,7 +333,7 @@ const EditMeetingForm = () => {
             onAdd={handleAddDeparture}
             onRemove={handleRemoveDeparture}
             onChange={handleChangeDeparture}
-            onKeyDown={(e, id) => {
+            onKeyDown={(e) => {
               if (e.key === "Enter") e.preventDefault();
             }}
           />

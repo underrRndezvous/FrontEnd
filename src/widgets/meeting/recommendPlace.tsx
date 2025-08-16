@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import type { Region, RecommendedPlace } from "@/shared/api/meetingApi";
 
 interface PlaceRecommendationProps {

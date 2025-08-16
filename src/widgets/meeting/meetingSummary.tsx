@@ -1,4 +1,4 @@
-import React from "react";
+// import React from "react";
 import { useMeetingStore } from "@/store/meetingStore";
 import IconCrown from "@/shared/asset/icon/crown.svg?react";
 import IconPerson from "@/shared/asset/icon/person.svg?react";
@@ -32,7 +32,7 @@ const dayMap: { [key: string]: string } = {
 
 const MeetingSummary = () => {
   const {
-    groupName,
+    // groupName,
     meetDays: selectedDays,
     meetTime: selectedTimes,
     groupPurpose,

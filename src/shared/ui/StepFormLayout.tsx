@@ -24,7 +24,7 @@ const StepFormLayout = ({
   onNext,
   onPrev,
   isNextDisabled,
-  headerClassName = "",
+  // headerClassName = "",
   isScrollable = false,
   isPrevDisabled = false,
   contentAlignment = "center",

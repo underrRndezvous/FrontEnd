@@ -1,4 +1,4 @@
-import React from "react";
+// import React from "react";
 import hiImage from "@/shared/asset/images/hi.png";
 import EnterGroupName from "@/features/enterGroupName";
 

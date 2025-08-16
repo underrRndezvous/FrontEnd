@@ -28,11 +28,7 @@ import { CSS } from "@dnd-kit/utilities";
 import { motion, AnimatePresence } from "framer-motion";
 
 import Button from "@/shared/ui/Button";
-import type {
-  Region,
-  RecommendedPlace,
-  StoreDetail,
-} from "@/shared/api/meetingApi";
+import type { Region, RecommendedPlace } from "@/shared/api/meetingApi";
 
 import { useStoreDetail } from "@/shared/api/meetingApi";
 import IconRestaurant from "/src/shared/asset/icon/restaurant.svg?react";
@@ -267,7 +263,9 @@ const SortablePlaceItem = ({
         {...listeners}
         className="flex-shrink-0 text-gray-400 cursor-grab"
       >
-        <IconDragHandle style={{ width: 16, height: 16 }} />
+        <div style={{ width: 16, height: 16 }}>
+          <IconDragHandle />
+        </div>
       </button>
 
       <div
@@ -298,7 +296,9 @@ const SortablePlaceItem = ({
             }}
             className="ml-auto flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
           >
-            <IconMinus className="w-3 h-3" />
+            <div className="w-3 h-3">
+              <IconMinus />
+            </div>
           </button>
         )}
       </div>

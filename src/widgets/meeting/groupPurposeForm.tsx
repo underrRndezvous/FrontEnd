@@ -1,4 +1,4 @@
-import React from "react";
+// import React from "react";
 import Selection from "@/shared/ui/selection";
 import type { SelectionOption } from "@/shared/ui/selection";
 

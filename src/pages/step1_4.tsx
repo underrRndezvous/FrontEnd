@@ -10,7 +10,7 @@ import {
   type AtmosphereType,
 } from "@/store/meetingStore";
 import AnimatedPageLayout from "@/shared/layout";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import IconRestaurant from "@/shared/asset/icon/restaurant.svg?react";
 import IconCafe from "@/shared/asset/icon/cafe.svg?react";
 import IconActivity from "@/shared/asset/icon/activity.svg?react";

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import SelectionGrid from "@/shared/ui/selection";
 import type { SelectionOption } from "@/shared/ui/selection";
 import Button from "@/shared/ui/Button";

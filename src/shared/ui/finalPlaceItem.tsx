@@ -1,4 +1,4 @@
-import React from "react";
+// import React from "react";
 import clsx from "clsx";
 import type { RecommendedPlace } from "@/shared/api/meetingApi";
 

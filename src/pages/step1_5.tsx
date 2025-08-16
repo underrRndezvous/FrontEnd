@@ -95,8 +95,8 @@ const Step1_5Page = () => {
   };
 
   const handleKeyDown = (
-    e: React.KeyboardEvent<HTMLInputElement>,
-    id: number
+    e: React.KeyboardEvent<HTMLInputElement>
+    // id: number
   ) => {
     if (e.key === "Enter") {
       e.preventDefault();

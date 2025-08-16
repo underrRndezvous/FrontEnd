@@ -1,4 +1,4 @@
-import React from "react";
+// import React from "react";
 import {
   DndContext,
   closestCenter,
@@ -13,7 +13,7 @@ import {
   arrayMove,
 } from "@dnd-kit/sortable";
 import SortablePlaceItem from "@/shared/ui/SortablePlaceItem";
-import { IconPlus } from "@/shared/ui/svg";
+// import { IconPlus } from "@/shared/ui/svg";
 import type {
   PlaceRequest,
   PlaceType,
@@ -35,7 +35,7 @@ const PlaceTypeForm = ({
   setPlaces,
   onItemClick,
   onRemove,
-  onAdd,
+  // onAdd,
   isEditPage = false,
   displaySubTypes = {},
 }: PlaceTypeFormProps) => {
