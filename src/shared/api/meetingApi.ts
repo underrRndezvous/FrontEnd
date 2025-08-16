@@ -12,6 +12,8 @@ export interface RecommendedPlace {
   placelong: number;
   isOpen: boolean;
 }
+export type PlaceRequestBody = Omit<PlaceRequest, 'id'> & { typeDetail: null }; // ✅ 수정됨
+export type StartPointRequestBody = Omit<StartPointRequest, 'id' | 'type'>;     // ✅ 수정됨
 
 export interface Region {
   hotPlace: string;
@@ -23,8 +25,8 @@ interface MeetingRequestBody {
   groupName: string;
   meetTime: TimeType[];
   meetDays: DayType;
-  place: (PlaceRequest & { typeDetail: null })[];
-  startPoint: Omit<StartPointRequest, 'id' | 'type'>[];
+  place: PlaceRequestBody[];      
+  startPoint: StartPointRequestBody[];
 }
 
 interface MeetingResponseBody {
@@ -54,18 +56,21 @@ const postMeetingInfo = async (): Promise<MeetingResponseBody> => {
   const transformedMeetDays = meetDays.map(day => dayKoreanToEnglish[day] || day as DayType);
 
   const requestBody: MeetingRequestBody = {
-    groupName,
-    meetTime: meetTime as TimeType[], 
-    meetDays: transformedMeetDays[0], 
-    place: place
-      .filter(p => p.placeType !== null)
-      .map((p, index) => ({
-        ...p,
+  groupName,
+  meetTime: meetTime as TimeType[], 
+  meetDays: transformedMeetDays[0], 
+  place: place
+    .filter(p => p.placeType !== null)
+    .map((p, index) => {
+      const { id, ...rest } = p; 
+      return {
+        ...rest,
         order: index + 1,
         typeDetail: null,
-      })),
-    startPoint: startPoint.map(({ id, type, ...rest }) => rest),
-  };
+      };
+    }),
+  startPoint: startPoint.map(({ id, type, ...rest }) => rest),
+};
 
   const { data } = await axios.post<MeetingResponseBody>('/meet', requestBody);
   return data;

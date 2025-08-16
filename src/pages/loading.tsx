@@ -28,6 +28,8 @@ const LoadingPage = () => {
 
   useEffect(() => {
     setStartTime(Date.now());
+    const storeData = useMeetingStore.getState();
+
     mutate();
   }, [mutate]);
 
