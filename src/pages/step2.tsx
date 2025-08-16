@@ -91,7 +91,7 @@ const Step2_Page = () => {
         <div className="fixed bottom-20 left-1/2 transform -translate-x-1/2 z-50">
           <div className="bg-gray-600 text-white px-6 py-3 rounded-lg shadow-lg max-w-sm">
             <p className="text-sm font-medium text-center">
-              다른 장소 찾기 기회가 {remainingChanges}회 남았어요
+              다른 장소 찾기 기회가 {remainingChanges - 1}회 남았어요
             </p>
             <p className="text-xs text-gray-300 text-center mt-1">
               (총 3개의 장소를 추천받을 수 있어요)

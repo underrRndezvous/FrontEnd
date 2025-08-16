@@ -42,7 +42,6 @@ const DepartureInput = ({
   const hasValue = value && String(value).length > 0;
 
   const handleChange = (newValue: string) => {
-    // RegionAutocomplete의 onChange는 string을 받으므로 이를 이벤트 객체로 변환
     if (onChange) {
       const syntheticEvent = {
         target: { value: newValue },
@@ -52,12 +51,9 @@ const DepartureInput = ({
     }
   };
 
-  // ⭐ 수정된 부분: 지역 선택 시 처리 함수
   const handleRegionSelect = (region: RegionItem) => {
-    // 1. 먼저 입력 필드 값을 업데이트
     handleChange(region.fullAddress);
 
-    // 2. 그다음 부모 컴포넌트의 onRegionSelect 호출
     if (onRegionSelect) {
       onRegionSelect(region);
     }
@@ -83,7 +79,6 @@ const DepartureInput = ({
           <RegionAutocomplete
             value={String(value || "")}
             onChange={handleChange}
-            // ⭐ 수정된 부분: handleRegionSelect 함수 사용
             onSelect={handleRegionSelect}
             onKeyDown={onKeyDown}
             className={clsx(
