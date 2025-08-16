@@ -52,12 +52,9 @@ const DepartureInput = ({
     }
   };
 
-  // ⭐ 수정된 부분: 지역 선택 시 처리 함수
+  // 지역 선택 시 처리 함수
   const handleRegionSelect = (region: RegionItem) => {
-    // 1. 먼저 입력 필드 값을 업데이트
-    handleChange(region.fullAddress);
-
-    // 2. 그다음 부모 컴포넌트의 onRegionSelect 호출
+    // RegionAutocomplete에서 이미 onChange가 호출되므로 여기서는 onRegionSelect만 호출
     if (onRegionSelect) {
       onRegionSelect(region);
     }

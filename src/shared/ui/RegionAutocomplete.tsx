@@ -40,7 +40,6 @@ const RegionAutocomplete = ({
     filteredRegions,
     selectedIndex,
     setSelectedIndex,
-    selectRegion,
     handleKeyDown: handleRegionKeyDown,
   } = useRegionSearch({
     onSelect: handleRegionSelect,
@@ -52,7 +51,7 @@ const RegionAutocomplete = ({
     if (value !== searchQuery) {
       setSearchQuery(value);
     }
-  }, [value, searchQuery, setSearchQuery]);
+  }, [value]);
 
   // selectedIndex 변경 시 스크롤 조정
   useEffect(() => {
@@ -98,12 +97,18 @@ const RegionAutocomplete = ({
     setTimeout(() => {
       setIsOpen(false);
       setSelectedIndex(-1);
-    }, 150);
+    }, 200);
   };
 
   const handleItemClick = (region: RegionItem, index: number) => {
+    // 즉시 상태 업데이트하고 선택 처리
     setSelectedIndex(index);
-    selectRegion(region);
+    handleRegionSelect(region);
+  };
+
+  const handleItemMouseDown = (region: RegionItem, index: number) => {
+    // onMouseDown은 onBlur보다 먼저 실행됨
+    handleItemClick(region, index);
   };
 
   // 검색어가 있을 때만 드롭다운 표시
@@ -139,19 +144,16 @@ const RegionAutocomplete = ({
           {filteredRegions.map((region, index) => (
             <li
               key={region.code}
-              onClick={() => handleItemClick(region, index)}
+              onMouseDown={() => handleItemMouseDown(region, index)}
               className={clsx(
                 "cursor-pointer px-4 py-3 text-sm hover:bg-gray-50",
                 "border-b border-gray-100 last:border-b-0",
                 selectedIndex === index && "bg-blue-50 text-blue-700"
               )}
             >
-              <div className="flex flex-col">
-                <span className="font-medium">{region.fullAddress}</span>
-                <span className="text-xs text-gray-500">
-                  {region.sido} · {region.gu} · {region.dong}
-                </span>
-              </div>
+              <span className="text-sm text-black font-medium truncate">
+                {region.fullAddress}
+              </span>
             </li>
           ))}
         </ul>

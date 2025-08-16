@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import StepFormLayout from "@/shared/ui/StepFormLayout";
 import DepartureInputForm from "@/widgets/meeting/departureInputForm";
@@ -12,11 +12,14 @@ const Step1_5Page = () => {
     {}
   );
 
-  const departures: Departure[] = startPoint.map((sp, index) => ({
-    id: sp.id || Date.now() + index,
-    type: index === 0 ? "leader" : "member",
-    value: displayValues[sp.id || 0] || "",
-  }));
+  const departures: Departure[] = useMemo(() => 
+    startPoint.map((sp, index) => ({
+      id: sp.id || Date.now() + index,
+      type: index === 0 ? "leader" : "member",
+      value: displayValues[sp.id || 0] || "",
+    })),
+    [startPoint, displayValues]
+  );
   useEffect(() => {
     const newDisplayValues: { [id: number]: string } = {};
     startPoint.forEach((sp) => {
@@ -26,7 +29,7 @@ const Step1_5Page = () => {
       newDisplayValues[sp.id || 0] = combined;
     });
     setDisplayValues(newDisplayValues);
-  }, []);
+  }, [startPoint]);
   const handleNext = () => {
     console.log("=== BEFORE CONVERSION ===");
     console.log("Current startPoint:", startPoint);
