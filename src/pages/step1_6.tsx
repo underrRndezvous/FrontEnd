@@ -23,7 +23,7 @@ const Step1_6Page = () => {
         <div className="relative grid w-screen grid-rows-[auto_1fr_auto] bg-gradient-to-b from-sub01 to-sub02 p-6 h-screen sm:w-[375px] sm:h-[645px] sm:rounded-lg">
           <div className="text-center mt-6">
             <h1 className="title-02 text-black mb-2">
-              {`{ ${meetingData.groupName} } 의\n모임 장소를 추천해드릴게요`}
+              {` ${meetingData.groupName}  의\n모임 장소를 추천해드릴게요`}
             </h1>
             <p className="body-02 text-gray3">
               정보가 맞는지 한 번 더 확인해주세요
