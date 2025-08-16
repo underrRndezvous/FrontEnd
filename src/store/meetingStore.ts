@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { persist, createJSONStorage } from 'zustand/middleware';
 
 export type TimeType = 'MORNING' | 'LUNCH' | 'AFTERNOON' | 'EVENING';
 export type DayType = 'MONDAY' | 'TUESDAY' | 'WEDNESDAY' | 'THURSDAY' | 'FRIDAY' | 'SATURDAY' | 'SUNDAY' | 'WEEKDAY' | 'WEEKEND';
@@ -71,6 +71,7 @@ export const useMeetingStore = create<MeetingState & MeetingActions>()(
     }),
     {
       name: 'meeting-storage',
+      storage: createJSONStorage(() => sessionStorage),
     }
   )
 );

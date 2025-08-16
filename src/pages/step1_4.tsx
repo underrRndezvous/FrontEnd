@@ -72,11 +72,8 @@ const Step1_4Page = () => {
     const hasEmptySlot = places.some((p) => p.placeType === null);
 
     if (!hasEmptySlot && places.length < 5) {
-      const nextId = Math.max(...places.map(p => p.id)) + 1;
-      setPlaces([
-        ...places,
-        { id: nextId, placeType: null, atmosphere: null },
-      ]);
+      const nextId = Math.max(...places.map((p) => p.id)) + 1;
+      setPlaces([...places, { id: nextId, placeType: null, atmosphere: null }]);
     }
   }, [places, setPlaces]);
 
@@ -95,11 +92,9 @@ const Step1_4Page = () => {
 
   const handleAddPlace = () => {
     if (places.length >= 5) return;
-    const nextId = places.length > 0 ? Math.max(...places.map(p => p.id)) + 1 : 1;
-    setPlaces([
-      ...places,
-      { id: nextId, placeType: null, atmosphere: null },
-    ]);
+    const nextId =
+      places.length > 0 ? Math.max(...places.map((p) => p.id)) + 1 : 1;
+    setPlaces([...places, { id: nextId, placeType: null, atmosphere: null }]);
   };
 
   const handleRemovePlace = (idToRemove: number) => {
@@ -202,6 +197,7 @@ const Step1_4Page = () => {
         >
           {overlayData && (
             <SelectionOverlay
+              key={overlayData.title}
               title={overlayData.title}
               buttonText={overlayData.buttonText}
               options={overlayData.options}

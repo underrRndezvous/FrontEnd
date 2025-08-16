@@ -44,6 +44,14 @@ const StepFormLayout = ({
             contentAlignment === "center" ? "justify-center" : "justify-start",
             isScrollable && "overflow-y-auto"
           )}
+          style={
+            isScrollable
+              ? {
+                  msOverflowStyle: "none",
+                  scrollbarWidth: "none",
+                }
+              : {}
+          }
         >
           {children}
         </main>

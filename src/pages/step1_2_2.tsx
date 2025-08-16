@@ -1,4 +1,4 @@
-import React from "react";
+// import React from "react";
 import { useNavigate } from "react-router-dom";
 import StepFormLayout from "@/shared/ui/StepFormLayout";
 import DaySelector from "@/widgets/meeting/daySelector";
@@ -22,7 +22,6 @@ const Step1_2_2Page = () => {
   const { meetDays, setMeetDays } = useMeetingStore();
   const selectedDay = meetDays[0] || null;
 
-  console.log("반영테스트");
   const handleNext = () => {
     navigate("/Plaza/step1_3");
   };
@@ -45,7 +44,7 @@ const Step1_2_2Page = () => {
     <AnimatedPageLayout>
       <StepFormLayout
         title="어떤 요일에 모일 예정인가요?"
-        subtitle="모임 예정 요일을 모두 선택해주세요"
+        subtitle="모임 예정 요일을 선택해주세요"
         onNext={handleNext}
         onPrev={handlePrev}
         isNextDisabled={isNextDisabled}

@@ -89,7 +89,7 @@ const DepartureInputForm = ({
 
   return (
     <div className="flex w-full flex-col items-center gap-y-3">
-      <div className="w-full flex flex-col gap-y-3 relative">
+      <div className="w-full flex flex-col gap-y-3 relative ">
         {departures.map((departure, index) => (
           <div
             key={departure.id}
@@ -101,7 +101,7 @@ const DepartureInputForm = ({
             <DepartureInput
               variant={departure.type}
               value={departure.value}
-              placeholder="출발지 입력 (예: 서울시 서초구 서초동)"
+              placeholder="(ex 서울시 서초구 서초동)"
               onChange={(e) => onChange(departure.id, e.target.value)}
               onKeyDown={(e) => onKeyDown(e, departure.id)}
               onRegionSelect={(region) =>
