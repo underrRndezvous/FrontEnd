@@ -22,6 +22,7 @@ const Step1_2_2Page = () => {
   const { meetDays, setMeetDays } = useMeetingStore();
   const selectedDay = meetDays[0] || null;
 
+  console.log("반영테스트");
   const handleNext = () => {
     navigate("/Plaza/step1_3");
   };
