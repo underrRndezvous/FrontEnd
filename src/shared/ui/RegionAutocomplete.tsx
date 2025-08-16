@@ -1,7 +1,7 @@
-import React, { useRef, useEffect, useState } from 'react';
-import clsx from 'clsx';
-import { useRegionSearch } from '@/shared/hooks/useRegionSearch';
-import type { RegionItem } from '@/shared/hooks/useRegionSearch';
+import React, { useRef, useEffect, useState } from "react";
+import clsx from "clsx";
+import { useRegionSearch } from "@/shared/hooks/useRegionSearch";
+import type { RegionItem } from "@/shared/hooks/useRegionSearch";
 
 interface RegionAutocompleteProps {
   value: string;
@@ -57,11 +57,13 @@ const RegionAutocomplete = ({
   // selectedIndex 변경 시 스크롤 조정
   useEffect(() => {
     if (listRef.current && selectedIndex >= 0) {
-      const selectedElement = listRef.current.children[selectedIndex] as HTMLElement;
+      const selectedElement = listRef.current.children[
+        selectedIndex
+      ] as HTMLElement;
       if (selectedElement) {
         selectedElement.scrollIntoView({
-          block: 'nearest',
-          behavior: 'smooth',
+          block: "nearest",
+          behavior: "smooth",
         });
       }
     }
@@ -78,7 +80,7 @@ const RegionAutocomplete = ({
   const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     // 지역 선택 키보드 핸들링
     handleRegionKeyDown(e);
-    
+
     // 외부에서 전달된 키보드 핸들러도 실행
     onKeyDown?.(e);
   };
@@ -105,7 +107,8 @@ const RegionAutocomplete = ({
   };
 
   // 검색어가 있을 때만 드롭다운 표시
-  const shouldShowDropdown = isOpen && isFocused && filteredRegions.length > 0 && searchQuery.trim();
+  const shouldShowDropdown =
+    isOpen && isFocused && filteredRegions.length > 0 && searchQuery.trim();
 
   return (
     <div className="relative w-full">
@@ -127,7 +130,7 @@ const RegionAutocomplete = ({
         )}
         autoComplete="off"
       />
-      
+
       {shouldShowDropdown && (
         <ul
           ref={listRef}

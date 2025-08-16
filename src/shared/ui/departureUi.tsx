@@ -18,7 +18,10 @@ const IconMinus = () => (
 );
 
 interface DepartureInputProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange' | 'onSelect'> {
+  extends Omit<
+    React.InputHTMLAttributes<HTMLInputElement>,
+    "onChange" | "onSelect"
+  > {
   variant: "leader" | "member";
   onRemove?: () => void;
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
@@ -49,6 +52,17 @@ const DepartureInput = ({
     }
   };
 
+  // ⭐ 수정된 부분: 지역 선택 시 처리 함수
+  const handleRegionSelect = (region: RegionItem) => {
+    // 1. 먼저 입력 필드 값을 업데이트
+    handleChange(region.fullAddress);
+
+    // 2. 그다음 부모 컴포넌트의 onRegionSelect 호출
+    if (onRegionSelect) {
+      onRegionSelect(region);
+    }
+  };
+
   return (
     <div className="relative w-11/12 mx-auto">
       <div
@@ -67,9 +81,10 @@ const DepartureInput = ({
         </div>
         <div className="flex-grow relative">
           <RegionAutocomplete
-            value={String(value || '')}
+            value={String(value || "")}
             onChange={handleChange}
-            onSelect={onRegionSelect}
+            // ⭐ 수정된 부분: handleRegionSelect 함수 사용
+            onSelect={handleRegionSelect}
             onKeyDown={onKeyDown}
             className={clsx(
               "w-full bg-transparent body-02 py-3 pr-3 border-none outline-none placeholder:text-gray3",

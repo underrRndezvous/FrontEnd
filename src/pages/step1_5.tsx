@@ -127,13 +127,15 @@ const Step1_5Page = () => {
         isScrollable={true}
         contentAlignment="start"
       >
-        <DepartureInputForm
-          departures={departures}
-          onAdd={handleAdd}
-          onRemove={handleRemove}
-          onChange={handleChange}
-          onKeyDown={handleKeyDown}
-        />
+        <div className="relative" style={{ minHeight: "400px" }}>
+          <DepartureInputForm
+            departures={departures}
+            onAdd={handleAdd}
+            onRemove={handleRemove}
+            onChange={handleChange}
+            onKeyDown={handleKeyDown}
+          />
+        </div>
       </StepFormLayout>
     </AnimatedPageLayout>
   );
