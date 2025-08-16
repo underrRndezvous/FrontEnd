@@ -22,7 +22,7 @@ const TimeSelector = ({ selectedTimes, onSelect }: TimeSelectorProps) => {
     morning: "오전",
   };
   const selectedIds = selectedTimes.map((type) => timeTypeToId[type]);
-  const textBaseStyle = "body-02 block transform -rotate-45";
+  const textBaseStyle = "text-[18px] font-bold block transform -rotate-45";
 
   return (
     <div className="flex w-full flex-col items-center">
