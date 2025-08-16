@@ -4,6 +4,7 @@ import StepFormLayout from "@/shared/ui/StepFormLayout";
 import DepartureInputForm from "@/widgets/meeting/departureInputForm";
 import { useMeetingStore, type Departure } from "@/store/meetingStore";
 import AnimatedPageLayout from "@/shared/layout";
+
 const Step1_5Page = () => {
   const navigate = useNavigate();
   const { startPoint, setStartPoint } = useMeetingStore();
@@ -12,14 +13,45 @@ const Step1_5Page = () => {
     {}
   );
 
-  const departures: Departure[] = useMemo(() => 
-    startPoint.map((sp, index) => ({
-      id: sp.id || Date.now() + index,
-      type: index === 0 ? "leader" : "member",
-      value: displayValues[sp.id || 0] || "",
-    })),
+  useEffect(() => {
+    if (startPoint.length === 0) {
+      const defaultStartPoint = {
+        id: Date.now(),
+        type: "leader" as const,
+        first: "",
+        second: "",
+        third: "",
+      };
+      setStartPoint([defaultStartPoint]);
+    }
+  }, [startPoint.length, setStartPoint]);
+
+  useEffect(() => {
+    const initialDisplayValues: { [id: number]: string } = {};
+    startPoint.forEach((sp) => {
+      const combined = [sp.first, sp.second, sp.third]
+        .filter((part) => part && part.trim() !== "")
+        .join(" ");
+      if (combined) {
+        initialDisplayValues[sp.id || 0] = combined;
+      }
+    });
+
+    if (Object.keys(initialDisplayValues).length > 0) {
+      setDisplayValues(initialDisplayValues);
+    }
+  }, []);
+
+  const departures: Departure[] = useMemo(
+    () =>
+      startPoint.map((sp, index) => ({
+        id: sp.id || Date.now() + index,
+        type: index === 0 ? "leader" : "member",
+        value: displayValues[sp.id || 0] || "",
+      })),
     [startPoint, displayValues]
   );
+
   useEffect(() => {
     const newDisplayValues: { [id: number]: string } = {};
     startPoint.forEach((sp) => {
@@ -28,8 +60,13 @@ const Step1_5Page = () => {
         .join(" ");
       newDisplayValues[sp.id || 0] = combined;
     });
-    setDisplayValues(newDisplayValues);
+
+    setDisplayValues((prev) => {
+      const hasExistingValues = Object.keys(prev).length > 0;
+      return hasExistingValues ? prev : newDisplayValues;
+    });
   }, [startPoint]);
+
   const handleNext = () => {
     console.log("=== BEFORE CONVERSION ===");
     console.log("Current startPoint:", startPoint);
@@ -61,6 +98,7 @@ const Step1_5Page = () => {
 
     navigate("/Plaza/step1_6");
   };
+
   const handlePrev = () => navigate(-1);
 
   const handleAdd = () => {
@@ -75,6 +113,7 @@ const Step1_5Page = () => {
     };
     setStartPoint([...startPoint, newStartPoint]);
   };
+
   const handleRemove = (id: number) => {
     if (startPoint.length <= 1) return;
     setStartPoint(startPoint.filter((sp) => (sp.id || 0) !== id));

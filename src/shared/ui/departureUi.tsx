@@ -51,9 +51,6 @@ const DepartureInput = ({
     }
   };
 
-
- 
-
   // 지역 선택 시 처리 함수
   const handleRegionSelect = (region: RegionItem) => {
     // RegionAutocomplete에서 이미 onChange가 호출되므로 여기서는 onRegionSelect만 호출
