@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '@/shared/api/axiosInstance';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useMeetingStore } from '@/store/meetingStore';
 import type { PlaceRequest, StartPointRequest, TimeType, DayType, } from '@/store/meetingStore';
@@ -23,7 +23,7 @@ interface MeetingRequestBody {
   groupName: string;
   meetTime: TimeType[];
   meetDays: DayType;
-  place: (Omit<PlaceRequest, 'id'> & { typeDetail: null })[];
+  place: (PlaceRequest & { typeDetail: null })[];
   startPoint: Omit<StartPointRequest, 'id' | 'type'>[];
 }
 
@@ -59,21 +59,22 @@ const postMeetingInfo = async (): Promise<MeetingResponseBody> => {
     meetDays: transformedMeetDays[0], 
     place: place
       .filter(p => p.placeType !== null)
-      .map(({ id, ...rest }) => ({
-        ...rest,
+      .map((p, index) => ({
+        ...p,
+        order: index + 1,
         typeDetail: null,
       })),
     startPoint: startPoint.map(({ id, type, ...rest }) => rest),
   };
 
-  const { data } = await axios.post<MeetingResponseBody>('/api/meet', requestBody);
+  const { data } = await axios.post<MeetingResponseBody>('/meet', requestBody);
   return data;
 };
 
 
 const getStoreDetail = async (storeId: number): Promise<StoreDetail> => {
   try {
-    const { data } = await axios.get<StoreDetail>(`/api/meet/store/detail?storeId=${storeId}`);
+    const { data } = await axios.get<StoreDetail>(`/meet/store/detail?storeId=${storeId}`);
     return data;
   } catch (error) {
     console.error('가게 상세 정보를 불러오는데 실패했습니다:', error);

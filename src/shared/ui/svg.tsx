@@ -1,17 +1,18 @@
 // import React from "react";
 
-export const IconMinus = () => (
+export const IconMinus = ({ className, ...props }: React.SVGProps<SVGSVGElement>) => (
   <svg
-    className="h-4 w-4 stroke-current text-gray-500"
+    className={className || "h-4 w-4 stroke-current text-gray-500"}
     fill="none"
     viewBox="0 0 24 24"
     strokeWidth={2.5}
+    {...props}
   >
     <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 12h-15" />
   </svg>
 );
 
-export const IconDragHandle = () => (
+export const IconDragHandle = ({ style, ...props }: React.SVGProps<SVGSVGElement>) => (
   <svg
     width="24"
     height="24"
@@ -19,6 +20,8 @@ export const IconDragHandle = () => (
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
     className="stroke-gray-400"
+    style={style}
+    {...props}
   >
     <path
       d="M9 8L12 5L15 8"

@@ -116,14 +116,6 @@ const Step1_5Page = () => {
   const isNextDisabled =
     departures.filter((d) => d.value.trim() !== "").length === 0;
 
-  const setDepartures = (newDepartures: Departure[]) => {
-    const newDisplayValues: { [id: number]: string } = {};
-    newDepartures.forEach((dep) => {
-      newDisplayValues[dep.id] = dep.value;
-    });
-    setDisplayValues(newDisplayValues);
-  };
-
   return (
     <AnimatedPageLayout>
       <StepFormLayout
@@ -137,7 +129,6 @@ const Step1_5Page = () => {
       >
         <DepartureInputForm
           departures={departures}
-          setDepartures={setDepartures}
           onAdd={handleAdd}
           onRemove={handleRemove}
           onChange={handleChange}
