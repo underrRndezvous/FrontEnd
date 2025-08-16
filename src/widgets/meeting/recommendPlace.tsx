@@ -104,7 +104,7 @@ const PlaceRecommendation = ({
   isChanging = false,
 }: PlaceRecommendationProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [animationKey, setAnimationKey] = useState(0); // ✨ 애니메이션 키 추가
+  const [animationKey, setAnimationKey] = useState(0);
 
   useEffect(() => {
     if (isChanging) {
@@ -166,7 +166,6 @@ const PlaceRecommendation = ({
         />
       )}
 
-      {/* ✨ CSS 애니메이션 정의 추가 */}
       <style>{`
         @keyframes slideInRight {
           from { 
