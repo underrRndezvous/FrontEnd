@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import StepFormLayout from "@/shared/ui/StepFormLayout";
 import PlaceRecommendation from "@/widgets/meeting/recommendPlace";
@@ -18,13 +18,31 @@ const Step2_Page = () => {
 
   const recommendationData = location.state?.recommendations;
 
+  useEffect(() => {
+    if (recommendationData) {
+      console.log("✅ 추천 장소 데이터 전체:", recommendationData);
+      console.log(`📍 추천된 지역 개수: ${recommendationData.length}개`);
+
+      const regionNames = recommendationData.map(
+        (region: any, index: number) => `${index + 1}. ${region.hotPlace}`
+      );
+      console.log("📜 추천 지역 목록:", regionNames);
+    } else {
+      console.log("⚠️ 추천 장소 데이터가 없습니다.");
+    }
+  }, [recommendationData]);
+
   if (!recommendationData || recommendationData.length === 0) {
     return <div>추천 정보를 불러올 수 없습니다.</div>;
   }
 
   const handleSelect = () => {
     navigate("/plaza/step3", {
-      state: { allRecommendedRegions: recommendationData },
+      state: {
+        allRecommendedRegions: recommendationData,
+
+        selectedRegion: currentRecommendation,
+      },
     });
   };
 

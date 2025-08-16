@@ -434,19 +434,35 @@ const Step3_Page = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  const allRecommendedRegions: Region[] | undefined =
+    location.state?.allRecommendedRegions;
   const selectedRegion: Region | undefined = location.state?.selectedRegion;
+
+  // [수정 2] 지도에 표시할 장소 목록 (모든 지역의 가게)
+  const mapPlaces = React.useMemo(() => {
+    if (!allRecommendedRegions) return [];
+    return allRecommendedRegions.flatMap(
+      (region) => region.recommendPlace || []
+    );
+  }, [allRecommendedRegions]);
+
+  // [수정 3] 상단 위젯(드래그 리스트)에 표시할 장소 목록 (선택한 지역의 가게)
   const [places, setPlaces] = React.useState<RecommendedPlace[]>(
     selectedRegion?.recommendPlace || []
   );
-
-  React.useEffect(() => {
-    console.log("📋 Step3 Page loaded with selectedRegion:", selectedRegion);
-    console.log("📋 Places:", selectedRegion?.recommendPlace);
-  }, [selectedRegion]);
-
   const [selectedCategory, setSelectedCategory] = React.useState<string | null>(
     null
   );
+
+  // [수정 5] 데이터 유효성 검사 로직을 selectedRegion 기준으로 변경합니다.
+  if (!selectedRegion || !allRecommendedRegions) {
+    React.useEffect(() => {
+      console.warn("⚠️ No region data, redirecting to home");
+      alert("추천 장소 정보가 없습니다. 홈으로 이동합니다.");
+      navigate("/");
+    }, [navigate]);
+    return null;
+  }
 
   const [selectedStoreId, setSelectedStoreId] = React.useState<number | null>(
     null
@@ -485,9 +501,9 @@ const Step3_Page = () => {
     drink: "술집",
   };
 
-  if (!selectedRegion || selectedRegion.recommendPlace.length === 0) {
+  if (!selectedRegion || !allRecommendedRegions) {
     React.useEffect(() => {
-      console.warn("⚠️ No selectedRegion data, redirecting to home");
+      console.warn("⚠️ No region data, redirecting to home");
       alert("추천 장소 정보가 없습니다. 홈으로 이동합니다.");
       navigate("/");
     }, [navigate]);
@@ -552,7 +568,7 @@ const Step3_Page = () => {
           >
             <div className="relative w-screen h-screen sm:w-[375px] sm:h-full">
               <MapComponent
-                places={places}
+                places={mapPlaces}
                 selectedCategory={selectedCategory}
                 categoryMapping={categoryMapping}
                 categoryIconPaths={categoryIconPaths}
