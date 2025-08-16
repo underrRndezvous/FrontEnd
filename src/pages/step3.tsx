@@ -150,78 +150,21 @@ const StoreDetailModal = ({
                 </button>
               </div>
             )}
-
             {storeDetail && (
-              <div className="space-y-3">
-                <h2 className="text-lg font-bold text-gray-900">
+              <div className="space-y-4 py-4">
+                {/* 가게 이름 */}
+                <h2 className="text-xl font-bold text-gray-900 text-center">
                   {storeDetail.storeName}
                 </h2>
 
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600">
-                    {storeDetail.storeDetail}
-                  </span>
-                  <div className="flex items-center">
-                    <span className="text-yellow-500 text-sm">★</span>
-                    <span className="text-sm font-medium ml-1">
-                      {storeDetail.rating}
-                    </span>
-                    <span className="text-xs text-gray-500 ml-1">
-                      ({storeDetail.reviewCount})
-                    </span>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <span className="text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded-full">
-                    {storeDetail.storeType}
-                  </span>
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span
-                      className={`text-xs px-2 py-1 rounded-full ${
-                        checkIsOpen(storeDetail.businessHours)
-                          ? "bg-green-100 text-green-700"
-                          : "bg-red-100 text-red-700"
-                      }`}
-                    >
-                      {checkIsOpen(storeDetail.businessHours)
-                        ? "영업중"
-                        : "영업종료"}
-                    </span>
-                    <span className="text-sm text-gray-600 truncate flex-1">
-                      {storeDetail.address}
-                    </span>
-                  </div>
-
-                  <button
-                    onClick={handleNaverSearch}
-                    className="text-xs bg-main text-black px-3 py-1 rounded-full font-medium hover:bg-opacity-80 transition-colors whitespace-nowrap ml-2"
-                  >
-                    보러가기
-                  </button>
-                </div>
-
-                <div className="text-sm text-gray-600">
-                  <span className="font-medium">영업시간:</span>{" "}
-                  {storeDetail.businessHours}
-                </div>
-
-                {storeDetail.image && (
-                  <div className="mt-3">
-                    <img
-                      src={storeDetail.image}
-                      alt={storeDetail.storeName}
-                      className="w-full h-32 object-cover rounded-lg"
-                      onError={(e) => {
-                        console.log("Image load error:", storeDetail.image);
-                        e.currentTarget.style.display = "none";
-                      }}
-                    />
-                  </div>
-                )}
+                {/* 네이버 지도로 이동 버튼 */}
+                <Button
+                  format="Button1"
+                  color="primary"
+                  onClick={handleNaverSearch}
+                >
+                  네이버 지도로 보러가기
+                </Button>
               </div>
             )}
           </motion.div>
