@@ -476,7 +476,15 @@ const Step3_Page = () => {
   };
 
   const handleShare = () => {
-    alert("공유하기 기능은 구현 예정입니다.");
+    if (window.Kakao && !window.Kakao.isInitialized()) {
+      window.Kakao.init("b7b75806d5bd4d130c404e0b30f148e0"); // 실제 앱 키로 교체
+    }
+    window.Kakao.Share.sendCustom({
+      templateId: 123447,
+      templateArgs: {
+        id: "test",
+      },
+    });
   };
 
   const handleCategoryClick = (category: string) => {
