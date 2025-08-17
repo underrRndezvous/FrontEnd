@@ -68,33 +68,24 @@ const Step1_5Page = () => {
   }, [startPoint]);
 
   const handleNext = () => {
-    console.log("=== BEFORE CONVERSION ===");
-    console.log("Current startPoint:", startPoint);
-    console.log("Current displayValues:", displayValues);
-
     const newStartPoint = startPoint.map((sp) => {
       const displayValue = displayValues[sp.id || 0] || "";
-      console.log(`Processing ID ${sp.id}: "${displayValue}"`);
-
       if (displayValue.trim()) {
         const parsed = parseAddress(displayValue);
-        console.log(
-          `Parsed: first:"${parsed.first}", second:"${parsed.second}", third:"${parsed.third}"`
-        );
         return { ...sp, ...parsed };
       }
-      return sp;
+
+      return { ...sp, first: "", second: "", third: "" };
     });
 
-    console.log("=== AFTER CONVERSION ===");
-    console.log("New startPoint:", newStartPoint);
+    const filteredStartPoint = newStartPoint.filter(
+      (sp) => (displayValues[sp.id || 0] || "").trim() !== ""
+    );
 
-    setStartPoint(newStartPoint);
+    console.log("=== FINAL DATA TO SAVE ===");
+    console.log("Filtered startPoint:", filteredStartPoint);
 
-    setTimeout(() => {
-      console.log("=== FINAL STORE STATE ===");
-      console.log("Store startPoint:", useMeetingStore.getState().startPoint);
-    }, 100);
+    setStartPoint(filteredStartPoint);
 
     navigate("/Plaza/step1_6");
   };

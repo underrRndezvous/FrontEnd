@@ -1,15 +1,40 @@
 import { useNavigate } from "react-router-dom";
-
 import MeetingSummary from "@/widgets/meeting/meetingSummary";
 import { useMeetingStore } from "@/store/meetingStore";
 import AnimatedPageLayout from "@/shared/layout";
 import StepNavigation from "@/widgets/common/stepNavigation";
+import { useRecommendPlaces } from "@/shared/api/meetingApi";
+
 const Step1_6Page = () => {
   const navigate = useNavigate();
   const meetingData = useMeetingStore();
 
+  const { mutate: recommendPlaces, isPending } = useRecommendPlaces();
+
   const handleRecommend = () => {
     navigate("/Plaza/loading");
+
+    recommendPlaces(undefined, {
+      onSuccess: (data) => {
+        const { regions, meetingId } = data;
+
+        console.log(" 추천 성공! meetingId:", meetingId);
+
+        navigate("/plaza/step2", {
+          state: {
+            recommendations: regions,
+            meetingId: meetingId,
+          },
+          replace: true,
+        });
+      },
+      onError: (error) => {
+        console.error("장소 추천에 실패했습니다:", error);
+        alert("장소 추천에 실패했습니다. 다시 시도해주세요.");
+
+        navigate(-1);
+      },
+    });
   };
 
   const handleEdit = () => {
@@ -34,13 +59,12 @@ const Step1_6Page = () => {
           </main>
 
           <div className="w-full pt-4">
-            {" "}
             <StepNavigation
               onNext={handleRecommend}
               onPrev={handleEdit}
-              isNextDisabled={false}
+              isNextDisabled={isPending}
               prevText="수정하기"
-              nextText="추천받기"
+              nextText={isPending ? "추천받는 중..." : "추천받기"}
               isPrevDisabled={false}
             />
           </div>

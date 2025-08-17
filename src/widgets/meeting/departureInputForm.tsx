@@ -37,7 +37,7 @@ const DepartureInputForm = ({
             <DepartureInput
               variant={departure.type}
               value={departure.value}
-              placeholder="(ex 서울시 서초구 서초동)"
+              placeholder="(ex 서울특별시 서초구 서초동)"
               onChange={(e) => onChange(departure.id, e.target.value)}
               onKeyDown={(e) => onKeyDown(e, departure.id)}
               onRegionSelect={(region) =>

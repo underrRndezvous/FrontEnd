@@ -17,6 +17,7 @@ const Step2_Page = () => {
   const [showToast, setShowToast] = useState(false);
 
   const recommendationData = location.state?.recommendations;
+  const meetingId = location.state?.meetingId;
 
   useEffect(() => {
     if (recommendationData) {
@@ -30,6 +31,12 @@ const Step2_Page = () => {
     } else {
       console.log(" 추천 장소 데이터가 없습니다.");
     }
+    console.log(" Step 2 loaded with meetingId:", meetingId);
+    if (recommendationData) {
+      console.log(" 추천 장소 데이터 전체:", recommendationData);
+    } else {
+      console.log("추천 장소 데이터가 없습니다.");
+    }
   }, [recommendationData]);
 
   if (!recommendationData || recommendationData.length === 0) {
@@ -40,8 +47,8 @@ const Step2_Page = () => {
     navigate("/plaza/step3", {
       state: {
         allRecommendedRegions: recommendationData,
-
         selectedRegion: currentRecommendation,
+        meetingId: meetingId,
       },
     });
   };
