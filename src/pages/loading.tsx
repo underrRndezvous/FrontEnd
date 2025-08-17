@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useMeetingStore } from "@/store/meetingStore";
@@ -23,39 +23,40 @@ const IconClose = () => (
 const LoadingPage = () => {
   const navigate = useNavigate();
   const { groupName } = useMeetingStore();
-  const { mutate, data, isSuccess, isError, error } = useRecommendPlaces();
-  const [startTime, setStartTime] = useState<number>(0);
+
+  const { mutate } = useRecommendPlaces();
 
   useEffect(() => {
-    setStartTime(Date.now());
-    const storeData = useMeetingStore.getState();
+    const startTime = Date.now();
 
-    mutate();
-  }, [mutate]);
+    mutate(undefined, {
+      onSuccess: (data) => {
+        console.log(" API 응답 성공! 받은 데이터 전체:", data);
 
-  useEffect(() => {
-    if (isSuccess && data) {
-      const elapsed = Date.now() - startTime;
-      const remainingTime = Math.max(0, 2000 - elapsed);
+        const elapsed = Date.now() - startTime;
+        const remainingTime = Math.max(0, 2000 - elapsed);
 
-      setTimeout(() => {
-        navigate("/Plaza/step2", { state: { recommendations: data.regions } });
-      }, remainingTime);
-    }
-  }, [isSuccess, data, navigate, startTime]);
-
-  useEffect(() => {
-    if (isError) {
-      const elapsed = Date.now() - startTime;
-      const remainingTime = Math.max(0, 2000 - elapsed);
-
-      setTimeout(() => {
-        console.error("추천 장소 조회 실패:", error);
-        alert("추천 장소를 찾는 데 실패했어요. 이전 페이지로 돌아갑니다.");
-        navigate(-1);
-      }, remainingTime);
-    }
-  }, [isError, error, navigate, startTime]);
+        setTimeout(() => {
+          navigate("/Plaza/step2", {
+            state: {
+              recommendations: data.regions,
+              meetingId: data.meetingId,
+            },
+            replace: true,
+          });
+        }, remainingTime);
+      },
+      onError: (error) => {
+        const elapsed = Date.now() - startTime;
+        const remainingTime = Math.max(0, 2000 - elapsed);
+        setTimeout(() => {
+          console.error("추천 장소 조회 실패:", error);
+          alert("추천 장소를 찾는 데 실패했어요. 이전 페이지로 돌아갑니다.");
+          navigate(-1);
+        }, remainingTime);
+      },
+    });
+  }, [mutate, navigate]);
 
   return (
     <motion.div

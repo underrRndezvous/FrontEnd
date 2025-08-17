@@ -36,6 +36,7 @@ interface MeetingRequestBody {
 
 interface MeetingResponseBody {
   regions: Region[];
+  meetingId?: number;
 }
 export interface StoreDetail {
   storeId: number;
@@ -48,7 +49,24 @@ export interface StoreDetail {
   businessHours: string;
   image: string;
 }
-
+const getMeetingDetail = async (meetingId: number): Promise<MeetingResponseBody> => {
+  try {
+    const { data } = await axios.get<MeetingResponseBody>(`/meet/${meetingId}`);
+    return data;
+  } catch (error) {
+    console.error('모임 상세 정보를 불러오는데 실패했습니다:', error);
+    throw error;
+  }
+};
+export const useMeetingDetail = (meetingId: number | null) => {
+  return useQuery<MeetingResponseBody, Error>({
+    queryKey: ['meetingDetail', meetingId],
+    queryFn: () => getMeetingDetail(meetingId!),
+    enabled: !!meetingId,
+    retry: 1,
+    staleTime: 5 * 60 * 1000,
+  });
+};
 const postMeetingInfo = async (): Promise<MeetingResponseBody> => {
   const { groupName, meetTime, meetDays, place, startPoint } = useMeetingStore.getState();
 
