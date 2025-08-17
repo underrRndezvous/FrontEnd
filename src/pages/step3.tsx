@@ -693,7 +693,7 @@ const Step3_Page = () => {
                 categoryMapping={categoryMapping}
                 categoryIconPaths={categoryIconPaths}
                 onMarkerClick={handleMarkerClick}
-                selectedRegion={selectedRegion}
+                selectedRegion={finalSelectedRegion}
                 currentCoursePlaces={places}
               />
 
