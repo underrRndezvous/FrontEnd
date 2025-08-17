@@ -20,15 +20,15 @@ const Step2_Page = () => {
 
   useEffect(() => {
     if (recommendationData) {
-      console.log("✅ 추천 장소 데이터 전체:", recommendationData);
-      console.log(`📍 추천된 지역 개수: ${recommendationData.length}개`);
+      console.log(" 추천 장소 데이터 전체:", recommendationData);
+      console.log(` 추천된 지역 개수: ${recommendationData.length}개`);
 
       const regionNames = recommendationData.map(
         (region: any, index: number) => `${index + 1}. ${region.hotPlace}`
       );
-      console.log("📜 추천 지역 목록:", regionNames);
+      console.log(" 추천 지역 목록:", regionNames);
     } else {
-      console.log("⚠️ 추천 장소 데이터가 없습니다.");
+      console.log(" 추천 장소 데이터가 없습니다.");
     }
   }, [recommendationData]);
 

@@ -12,8 +12,13 @@ export interface RecommendedPlace {
   placelong: number;
   isOpen: boolean;
 }
-export type PlaceRequestBody = Omit<PlaceRequest, 'id'> & { typeDetail: null }; // ✅ 수정됨
-export type StartPointRequestBody = Omit<StartPointRequest, 'id' | 'type'>;     // ✅ 수정됨
+export type PlaceRequestBody = Omit<PlaceRequest, 'id'> & {
+  typeDetail: TypeDetail; 
+};
+export type StartPointRequestBody = Omit<StartPointRequest, 'id' | 'type'>;     
+export type RestaurantTypeDetail = 'KOREAN' | 'JAPANESE' | 'CHINESE'  | 'WESTERN';
+export type BarTypeDetail = 'BEER' | 'IZAKAYA' | 'POCHA' | 'BAR_SPECIATLS';
+export type TypeDetail = RestaurantTypeDetail | BarTypeDetail | null;
 
 export interface Region {
   hotPlace: string;
@@ -57,16 +62,16 @@ const postMeetingInfo = async (): Promise<MeetingResponseBody> => {
 
   const requestBody: MeetingRequestBody = {
   groupName,
-  meetTime: meetTime as TimeType[], 
-  meetDays: transformedMeetDays[0], 
+  meetTime: meetTime as TimeType[],
+  meetDays: transformedMeetDays[0],
   place: place
     .filter(p => p.placeType !== null)
     .map((p, index) => {
-      const { id, ...rest } = p; 
+      const { id, ...rest } = p;
       return {
         ...rest,
         order: index + 1,
-        typeDetail: null,
+        typeDetail: p.typeDetail, 
       };
     }),
   startPoint: startPoint.map(({ id, type, ...rest }) => rest),

@@ -1,4 +1,3 @@
-// import React from "react";
 import {
   DndContext,
   closestCenter,
@@ -13,7 +12,6 @@ import {
   arrayMove,
 } from "@dnd-kit/sortable";
 import SortablePlaceItem from "@/shared/ui/SortablePlaceItem";
-// import { IconPlus } from "@/shared/ui/svg";
 import type {
   PlaceRequest,
   PlaceType,
@@ -35,7 +33,6 @@ const PlaceTypeForm = ({
   setPlaces,
   onItemClick,
   onRemove,
-  // onAdd,
   isEditPage = false,
   displaySubTypes = {},
 }: PlaceTypeFormProps) => {
@@ -69,6 +66,15 @@ const PlaceTypeForm = ({
       "kor-bar": "한식주점",
       beer: "맥주",
       wine: "와인/위스키",
+
+      WESTERN: "양식",
+      CHINESE: "중식",
+      JAPANESE: "일식",
+      KOREAN: "한식",
+      IZAKAYA: "이자카야",
+      POCHA: "포차",
+      BEER: "맥주",
+      BAR_SPECIATLS: "바/칵테일",
     };
 
     const mainText = typeMap[place.placeType];
@@ -77,9 +83,9 @@ const PlaceTypeForm = ({
     if (place.placeType === "CAFE" && place.atmosphere) {
       subText = ` - ${atmosphereMap[place.atmosphere]}`;
     } else {
-      const displaySubTypeKey = displaySubTypes[place.id];
-      if (displaySubTypeKey && displaySubTypeMap[displaySubTypeKey]) {
-        subText = ` - ${displaySubTypeMap[displaySubTypeKey]}`;
+      const displayKey = place.typeDetail || displaySubTypes[place.id];
+      if (displayKey && displaySubTypeMap[displayKey]) {
+        subText = ` - ${displaySubTypeMap[displayKey]}`;
       }
     }
 

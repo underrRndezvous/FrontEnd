@@ -8,6 +8,8 @@ import {
   useMeetingStore,
   type PlaceType,
   type AtmosphereType,
+  type RestaurantTypeDetail,
+  type BarTypeDetail,
 } from "@/store/meetingStore";
 import AnimatedPageLayout from "@/shared/layout";
 import { useState, useEffect } from "react";
@@ -36,10 +38,10 @@ const placeTypeOptions: SelectionOption[] = [
   { id: "BAR", label: "술집", IconComponent: IconBar },
 ];
 const foodTypeOptions: SelectionOption[] = [
-  { id: "western", label: "양식", IconComponent: IconPasta },
-  { id: "chinese", label: "중식", IconComponent: IconChinaFood },
-  { id: "japanese", label: "일식", IconComponent: IconJapanFood },
-  { id: "korean", label: "한식", IconComponent: IconKoreaFood },
+  { id: "WESTERN", label: "양식", IconComponent: IconPasta },
+  { id: "CHINESE", label: "중식", IconComponent: IconChinaFood },
+  { id: "JAPANESE", label: "일식", IconComponent: IconJapanFood },
+  { id: "KOREAN", label: "한식", IconComponent: IconKoreaFood },
 ];
 const barTypeOptions: SelectionOption[] = [
   { id: "izakaya", label: "이자카야", IconComponent: IconIzakaya },
@@ -65,7 +67,9 @@ const Step1_4Page = () => {
 
   useEffect(() => {
     if (!places || places.length === 0) {
-      setPlaces([{ id: 1, placeType: null, atmosphere: null }]);
+      setPlaces([
+        { id: 1, placeType: null, typeDetail: null, atmosphere: null },
+      ]);
       return;
     }
 
@@ -73,7 +77,10 @@ const Step1_4Page = () => {
 
     if (!hasEmptySlot && places.length < 5) {
       const nextId = Math.max(...places.map((p) => p.id)) + 1;
-      setPlaces([...places, { id: nextId, placeType: null, atmosphere: null }]);
+      setPlaces([
+        ...places,
+        { id: nextId, placeType: null, typeDetail: null, atmosphere: null },
+      ]);
     }
   }, [places, setPlaces]);
 
@@ -94,7 +101,10 @@ const Step1_4Page = () => {
     if (places.length >= 5) return;
     const nextId =
       places.length > 0 ? Math.max(...places.map((p) => p.id)) + 1 : 1;
-    setPlaces([...places, { id: nextId, placeType: null, atmosphere: null }]);
+    setPlaces([
+      ...places,
+      { id: nextId, typeDetail: null, placeType: null, atmosphere: null },
+    ]);
   };
 
   const handleRemovePlace = (idToRemove: number) => {
@@ -120,7 +130,9 @@ const Step1_4Page = () => {
       const placeType = selectedId as PlaceType;
       setPlaces(
         places.map((p) =>
-          p.id === editingId ? { ...p, placeType, atmosphere: null } : p
+          p.id === editingId
+            ? { ...p, placeType, typeDetail: null, atmosphere: null }
+            : p
         )
       );
       setDisplaySubTypes((prev) => ({ ...prev, [editingId]: "" }));
@@ -155,13 +167,34 @@ const Step1_4Page = () => {
         setPlaces(
           places.map((p) =>
             p.id === editingId
-              ? { ...p, atmosphere: selectedId as AtmosphereType }
+              ? {
+                  ...p,
+                  atmosphere: selectedId as AtmosphereType,
+                  typeDetail: null,
+                }
               : p
           )
         );
-      } else {
+      } else if (currentPlace?.placeType === "RESTAURANT") {
+        setPlaces(
+          places.map((p) =>
+            p.id === editingId
+              ? { ...p, typeDetail: selectedId as RestaurantTypeDetail }
+              : p
+          )
+        );
+        setDisplaySubTypes((prev) => ({ ...prev, [editingId]: selectedId }));
+      } else if (currentPlace?.placeType === "BAR") {
+        setPlaces(
+          places.map((p) =>
+            p.id === editingId
+              ? { ...p, typeDetail: selectedId as BarTypeDetail }
+              : p
+          )
+        );
         setDisplaySubTypes((prev) => ({ ...prev, [editingId]: selectedId }));
       }
+
       setOverlayData(null);
     }
   };
