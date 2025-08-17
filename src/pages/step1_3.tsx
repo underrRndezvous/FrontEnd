@@ -1,4 +1,3 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import TimeSelector from "@/widgets/meeting/timeSelector";
 import StepFormLayout from "@/shared/ui/StepFormLayout";

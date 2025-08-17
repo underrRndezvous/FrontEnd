@@ -71,14 +71,11 @@ const StoreDetailModal = ({
 
   const handleNaverSearch = () => {
     if (storeDetail) {
-      const query = encodeURIComponent(
-        `${storeDetail.storeName} ${storeDetail.address}`
-      );
+      const query = encodeURIComponent(storeDetail.storeName);
       const naverMapUrl = `https://map.naver.com/v5/search/${query}`;
       window.open(naverMapUrl, "_blank");
     }
   };
-
   const checkIsOpen = (businessHours: string): boolean => {
     try {
       const now = new Date();
@@ -105,7 +102,24 @@ const StoreDetailModal = ({
       return false;
     }
   };
+  const getTypeDetailInKorean = (storeType: string): string => {
+    const typeMapping: { [key: string]: string } = {
+      KOREAN: "한식",
+      JAPANESE: "일식",
+      CHINESE: "중식",
+      WESTERN: "양식",
+      BEER: "맥주집",
+      IZAKAYA: "이자카야",
+      POCHA: "포차",
+      BAR_SPECIATLS: "바/칵테일",
+      RESTAURANT: "음식점",
+      CAFE: "카페",
+      BAR: "술집",
+      ACTIVITY: "액티비티",
+    };
 
+    return typeMapping[storeType] || storeType;
+  };
   return (
     <AnimatePresence>
       {isOpen && storeId && (
@@ -151,20 +165,51 @@ const StoreDetailModal = ({
               </div>
             )}
             {storeDetail && (
-              <div className="space-y-4 py-4">
-                {/* 가게 이름 */}
-                <h2 className="text-xl font-bold text-gray-900 text-center">
-                  {storeDetail.storeName}
-                </h2>
+              <div className="space-y-4 py-2">
+                <div className="text-center">
+                  <h2 className="text-xl font-bold text-gray-900 mb-1">
+                    {storeDetail.storeName}
+                  </h2>
+                  <span className="inline-block px-3 py-1 bg-main text-black text-sm font-medium rounded-full">
+                    {getTypeDetailInKorean(storeDetail.storeType)}
+                  </span>
+                </div>
 
-                {/* 네이버 지도로 이동 버튼 */}
-                <Button
-                  format="Button1"
-                  color="primary"
-                  onClick={handleNaverSearch}
-                >
-                  네이버 지도로 보러가기
-                </Button>
+                <div className="space-y-3">
+                  <div className="bg-gray-50 rounded-lg p-3">
+                    <div className="flex items-start gap-2">
+                      <span className="text-sm font-medium text-gray-600 min-w-[40px]">
+                        주소
+                      </span>
+                      <span className="text-sm text-gray-800 flex-1 leading-relaxed">
+                        {storeDetail.address}
+                      </span>
+                    </div>
+                  </div>
+
+                  {storeDetail.storeDetail && (
+                    <div className="bg-gray-50 rounded-lg p-3">
+                      <div className="flex items-start gap-2">
+                        <span className="text-sm font-medium text-gray-600 min-w-[40px]">
+                          소개
+                        </span>
+                        <span className="text-sm text-gray-800 flex-1 leading-relaxed">
+                          {storeDetail.storeDetail}
+                        </span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <div className="pt-2">
+                  <Button
+                    format="Button1"
+                    color="primary"
+                    onClick={handleNaverSearch}
+                  >
+                    네이버 지도로 보러가기
+                  </Button>
+                </div>
               </div>
             )}
           </motion.div>
@@ -359,7 +404,7 @@ const MapComponent = ({
             clickable={true}
             onClick={() => {
               console.log(
-                "📍 Marker clicked:",
+                " Marker clicked:",
                 place.storeName,
                 "storeId:",
                 place.storeId
@@ -381,7 +426,6 @@ const Step3_Page = () => {
     location.state?.allRecommendedRegions;
   const selectedRegion: Region | undefined = location.state?.selectedRegion;
 
-  // [수정 2] 지도에 표시할 장소 목록 (모든 지역의 가게)
   const mapPlaces = React.useMemo(() => {
     if (!allRecommendedRegions) return [];
     return allRecommendedRegions.flatMap(
@@ -389,7 +433,6 @@ const Step3_Page = () => {
     );
   }, [allRecommendedRegions]);
 
-  // [수정 3] 상단 위젯(드래그 리스트)에 표시할 장소 목록 (선택한 지역의 가게)
   const [places, setPlaces] = React.useState<RecommendedPlace[]>(
     selectedRegion?.recommendPlace || []
   );
@@ -397,7 +440,6 @@ const Step3_Page = () => {
     null
   );
 
-  // [수정 5] 데이터 유효성 검사 로직을 selectedRegion 기준으로 변경합니다.
   if (!selectedRegion || !allRecommendedRegions) {
     React.useEffect(() => {
       console.warn("⚠️ No region data, redirecting to home");
@@ -471,7 +513,7 @@ const Step3_Page = () => {
   };
 
   const handleRemove = (storeId: number) => {
-    console.log("🗑️ Removing place with storeId:", storeId);
+    console.log(" Removing place with storeId:", storeId);
     setPlaces((prev) => prev.filter((place) => place.storeId !== storeId));
   };
 
@@ -480,24 +522,24 @@ const Step3_Page = () => {
   };
 
   const handleCategoryClick = (category: string) => {
-    console.log("🏷️ Category clicked:", category);
+    console.log(" Category clicked:", category);
     setSelectedCategory(selectedCategory === category ? null : category);
   };
 
   const handleMarkerClick = (storeId: number) => {
-    console.log("📍 Marker click handler called with storeId:", storeId);
+    console.log(" Marker click handler called with storeId:", storeId);
     setSelectedStoreId(storeId);
     setIsModalOpen(true);
   };
 
   const handlePlaceClick = (storeId: number) => {
-    console.log("🖱️ Place click handler called with storeId:", storeId);
+    console.log(" Place click handler called with storeId:", storeId);
     setSelectedStoreId(storeId);
     setIsModalOpen(true);
   };
 
   const handleCloseModal = () => {
-    console.log("❌ Modal closing");
+    console.log(" Modal closing");
     setIsModalOpen(false);
     setSelectedStoreId(null);
   };
