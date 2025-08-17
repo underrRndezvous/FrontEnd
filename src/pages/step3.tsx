@@ -42,10 +42,14 @@ const StoreDetailModal = ({
   storeId,
   isOpen,
   onClose,
+  onAddToCourse,
+  isInCourse,
 }: {
   storeId: number | null;
   isOpen: boolean;
   onClose: () => void;
+  onAddToCourse: (storeId: number) => void;
+  isInCourse: boolean;
 }) => {
   const { data: storeDetail, isLoading, error } = useStoreDetail(storeId || 0);
 
@@ -201,7 +205,7 @@ const StoreDetailModal = ({
                   )}
                 </div>
 
-                <div className="pt-2">
+                <div className="pt-2 space-y-2">
                   <Button
                     format="Button1"
                     color="primary"
@@ -209,6 +213,18 @@ const StoreDetailModal = ({
                   >
                     네이버 지도로 보러가기
                   </Button>
+                  {!isInCourse && (
+                    <Button
+                      format="Button1"
+                      color="secondary"
+                      onClick={() => {
+                        onAddToCourse(storeId);
+                        onClose();
+                      }}
+                    >
+                      코스에 추가하기
+                    </Button>
+                  )}
                 </div>
               </div>
             )}
@@ -300,12 +316,16 @@ const MapComponent = ({
   categoryMapping,
   categoryIconPaths,
   onMarkerClick,
+  selectedRegion,
+  currentCoursePlaces,
 }: {
   places: RecommendedPlace[];
   selectedCategory: string | null;
   categoryMapping: { [key: string]: string };
   categoryIconPaths: { [key: string]: string };
   onMarkerClick: (storeId: number) => void;
+  selectedRegion: Region;
+  currentCoursePlaces: RecommendedPlace[];
 }) => {
   const navermaps = useNavermaps();
 
@@ -322,6 +342,11 @@ const MapComponent = ({
     const isSelectedCategory =
       selectedCategory && koreanCategory === selectedCategory;
 
+    const isSelectedRegionPlace = selectedRegion.recommendPlace?.some(
+      (p) => p.storeId === place.storeId
+    );
+
+    const isInCurrentCourse = places.some((p) => p.storeId === place.storeId);
     if (isSelectedCategory) {
       const iconPath = categoryIconPaths[selectedCategory];
       return {
@@ -350,44 +375,69 @@ const MapComponent = ({
           </div>
         </div>`,
       };
-    } else {
+    } else if (
+      isSelectedRegionPlace ||
+      currentCoursePlaces.some((p) => p.storeId === place.storeId)
+    ) {
+      const courseIndex = currentCoursePlaces.findIndex(
+        (p) => p.storeId === place.storeId
+      );
       return {
         content: `<div style="
-          position: relative;
+        position: relative;
+        width: 32px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      ">
+        <div style="
           width: 32px;
-          height: 40px;
+          height: 32px;
+          background: #62FFBB;
+          border-radius: 50% 50% 50% 0;
+          transform: rotate(-45deg);
           display: flex;
           align-items: center;
           justify-content: center;
-          cursor: pointer;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.3);
         ">
           <div style="
-            width: 32px;
-            height: 32px;
-            background: #62FFBB;
-            border-radius: 50% 50% 50% 0;
-            transform: rotate(-45deg);
+            width: 18px;
+            height: 18px;
+            background: white;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-          ">
-            <div style="
-              width: 18px;
-              height: 18px;
-              background: white;
-              border-radius: 50%;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              transform: rotate(45deg);
-              font-weight: bold;
-              font-size: 11px;
-              color: black;
-              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            ">${index + 1}</div>
-          </div>
-        </div>`,
+            transform: rotate(45deg);
+            font-weight: bold;
+            font-size: 11px;
+            color: black;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+          ">${courseIndex + 1}</div>
+        </div>
+      </div>`,
+      };
+    } else {
+      const iconPath =
+        categoryIconPaths[koreanCategory] || categoryIconPaths["음식점"];
+      return {
+        content: `<div style="
+        width: 32px;
+        height: 32px;
+        background: #E5E5E5;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        border: 2px solid white;
+        cursor: pointer;
+      ">
+        <img src="${iconPath}" alt="${koreanCategory}" style="width: 16px; height: 16px;" />
+      </div>`,
       };
     }
   };
@@ -429,6 +479,16 @@ const Step3_Page = () => {
     isLoading: isMeetingDetailLoading,
     error: meetingDetailError,
   } = useMeetingDetail(meetingIdNumber);
+  const handleAddToCourse = (storeId: number) => {
+    console.log(" Adding to course, storeId:", storeId);
+
+    const placeToAdd = mapPlaces.find((place) => place.storeId === storeId);
+
+    if (placeToAdd && !places.some((p) => p.storeId === storeId)) {
+      setPlaces((prev) => [...prev, placeToAdd]);
+      console.log("Place added to course:", placeToAdd.storeName);
+    }
+  };
 
   const allRecommendedRegions: Region[] | undefined =
     location.state?.allRecommendedRegions;
@@ -633,6 +693,8 @@ const Step3_Page = () => {
                 categoryMapping={categoryMapping}
                 categoryIconPaths={categoryIconPaths}
                 onMarkerClick={handleMarkerClick}
+                selectedRegion={selectedRegion}
+                currentCoursePlaces={places}
               />
 
               <div className="absolute top-0 left-0 p-4 w-full h-full flex flex-col pointer-events-none">
@@ -701,6 +763,8 @@ const Step3_Page = () => {
             storeId={selectedStoreId}
             isOpen={isModalOpen}
             onClose={handleCloseModal}
+            onAddToCourse={handleAddToCourse}
+            isInCourse={places.some((p) => p.storeId === selectedStoreId)} // 추가
           />
         </div>
       </div>
