@@ -5,10 +5,13 @@ export type TimeType = 'MORNING' | 'LUNCH' | 'AFTERNOON' | 'EVENING';
 export type DayType = 'MONDAY' | 'TUESDAY' | 'WEDNESDAY' | 'THURSDAY' | 'FRIDAY' | 'SATURDAY' | 'SUNDAY' | 'WEEKDAY' | 'WEEKEND';
 export type PlaceType = 'RESTAURANT' | 'CAFE' | 'BAR' | 'ACTIVITY';
 export type AtmosphereType = 'PRODUCTIVE' | 'AESTHETIC' | 'INDULGENT' | 'SOCIABLE';
-
+export type RestaurantTypeDetail = 'KOREAN' | 'JAPANESE' | 'CHINESE'  | 'WESTERN';
+export type BarTypeDetail = 'BEER' | 'IZAKAYA' | 'POCHA' | 'BAR_SPECIATLS';
+export type TypeDetail = RestaurantTypeDetail | BarTypeDetail | null;
 export interface PlaceRequest {
   id: number;
   placeType: PlaceType | null;
+  typeDetail: TypeDetail;
   atmosphere: AtmosphereType | null;
 }
 
@@ -51,7 +54,14 @@ const initialState: MeetingState = {
   meetTime: [],
   place: [],
   meetDays: [],
-  startPoint: [],
+  
+  startPoint: [{
+      id: 1,
+      type: 'leader',
+      first: '',
+      second: '',
+      third: '',
+    }],
 };
 
 export const useMeetingStore = create<MeetingState & MeetingActions>()(
