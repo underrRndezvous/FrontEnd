@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import clsx from "clsx";
 import {
   useMeetingStore,
@@ -79,6 +79,22 @@ const EditMeetingForm = () => {
   const [displaySubTypes, setDisplaySubTypes] = useState<{
     [key: number]: string;
   }>({});
+  const [displayValues, setDisplayValues] = useState<{ [id: number]: string }>(
+    {}
+  );
+
+  useEffect(() => {
+    const initialDisplayValues: { [id: number]: string } = {};
+    departures.forEach((sp) => {
+      const combined = [sp.first, sp.second, sp.third]
+        .filter((part) => part && part.trim() !== "")
+        .join(" ");
+      if (combined) {
+        initialDisplayValues[sp.id || 0] = combined;
+      }
+    });
+    setDisplayValues(initialDisplayValues);
+  }, []);
 
   const purposeOptions = [
     { id: "date", label: "데이트" },
@@ -103,11 +119,13 @@ const EditMeetingForm = () => {
   ];
 
   const handleDaySelect = (dayApi: DayType) => {
-    const newDays = selectedDays.includes(dayApi)
-      ? selectedDays.filter((d) => d !== dayApi)
-      : [...selectedDays, dayApi];
-    setSelectedDays(newDays);
+    if (selectedDays.includes(dayApi)) {
+      setSelectedDays(selectedDays.filter((d) => d !== dayApi));
+    } else {
+      setSelectedDays([dayApi]);
+    }
   };
+
   const handleTimeSelect = (timeKey: TimeType) => {
     setSelectedTimes(
       selectedTimes.includes(timeKey)
@@ -182,10 +200,11 @@ const EditMeetingForm = () => {
     if (places.length < 5) {
       setPlaces([
         ...places,
-        { id: Date.now(), placeType: null, atmosphere: null },
+        { id: Date.now(), placeType: null, atmosphere: null, typeDetail: null },
       ]);
     }
   };
+
   const handleRemovePlace = (id: number) => {
     if (places.length > 1) {
       setPlaces(places.filter((p) => p.id !== id));
@@ -193,44 +212,51 @@ const EditMeetingForm = () => {
   };
 
   const parseAddress = (address: string) => {
-    const firstSpaceIndex = address.indexOf(" ");
-    const secondSpaceIndex =
-      firstSpaceIndex >= 0 ? address.indexOf(" ", firstSpaceIndex + 1) : -1;
+    if (!address || address.trim() === "") {
+      return { first: "", second: "", third: "" };
+    }
+
+    const parts = address.trim().split(/\s+/);
     return {
-      first: firstSpaceIndex >= 0 ? address.slice(0, firstSpaceIndex) : address,
-      second:
-        secondSpaceIndex >= 0
-          ? address.slice(firstSpaceIndex + 1, secondSpaceIndex)
-          : firstSpaceIndex >= 0
-          ? address.slice(firstSpaceIndex + 1)
-          : "",
-      third: secondSpaceIndex >= 0 ? address.slice(secondSpaceIndex + 1) : "",
+      first: parts[0] || "",
+      second: parts[1] || "",
+      third: parts.slice(2).join(" ") || "",
     };
   };
 
   const uiDepartures: Departure[] = departures.map((sp) => ({
     id: sp.id,
     type: sp.type,
-    value: [sp.first, sp.second, sp.third].join(" "),
+    value: displayValues[sp.id] || "",
   }));
 
   const handleAddDeparture = () => {
     if (departures.length < 5) {
+      const newId = Date.now();
       setDepartures([
         ...departures,
-        { id: Date.now(), type: "member", first: "", second: "", third: "" },
+        { id: newId, type: "member", first: "", second: "", third: "" },
       ]);
     }
   };
+
   const handleRemoveDeparture = (id: number) => {
     if (departures.length > 1) {
       setDepartures(departures.filter((d) => d.id !== id));
+      setDisplayValues((prev) => {
+        const newValues = { ...prev };
+        delete newValues[id];
+        return newValues;
+      });
     }
   };
+
   const handleChangeDeparture = (id: number, value: string) => {
-    const parsedAddress = parseAddress(value);
+    setDisplayValues((prev) => ({ ...prev, [id]: value }));
+
+    const parsed = parseAddress(value);
     setDepartures(
-      departures.map((d) => (d.id === id ? { ...d, ...parsedAddress } : d))
+      departures.map((d) => (d.id === id ? { ...d, ...parsed } : d))
     );
   };
 
