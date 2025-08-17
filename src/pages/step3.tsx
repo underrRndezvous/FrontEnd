@@ -521,6 +521,27 @@ const Step3_Page = () => {
   const [selectedCategory, setSelectedCategory] = React.useState<string | null>(
     null
   );
+  const [selectedStoreId, setSelectedStoreId] = React.useState<number | null>(
+    null
+  );
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
+
+  // 모든 hook을 최상위에 위치
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
+  // 조건부 리다이렉션을 useEffect 내부에서 처리 (로딩 완료 후에만)
+  React.useEffect(() => {
+    if (!isMeetingDetailLoading && !meetingDetailError && (!finalSelectedRegion || !finalAllRecommendedRegions)) {
+      console.warn("⚠️ No region data, redirecting to home");
+      alert("추천 장소 정보가 없습니다. 홈으로 이동합니다.");
+      navigate("/");
+    }
+  }, [finalSelectedRegion, finalAllRecommendedRegions, navigate, isMeetingDetailLoading, meetingDetailError]);
 
   if (isMeetingDetailLoading) {
     return (
@@ -552,26 +573,10 @@ const Step3_Page = () => {
       </AnimatedPageLayout>
     );
   }
+
   if (!finalSelectedRegion || !finalAllRecommendedRegions) {
-    React.useEffect(() => {
-      console.warn("⚠️ No region data, redirecting to home");
-      alert("추천 장소 정보가 없습니다. 홈으로 이동합니다.");
-      navigate("/");
-    }, [navigate]);
     return null;
   }
-
-  const [selectedStoreId, setSelectedStoreId] = React.useState<number | null>(
-    null
-  );
-  const [isModalOpen, setIsModalOpen] = React.useState(false);
-
-  const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    })
-  );
 
   const categoryIcons = {
     음식점: IconRestaurant,
@@ -598,14 +603,6 @@ const Step3_Page = () => {
     drink: "술집",
   };
 
-  if (!finalSelectedRegion || !finalAllRecommendedRegions) {
-    React.useEffect(() => {
-      console.warn("⚠️ No region data, redirecting to home");
-      alert("추천 장소 정보가 없습니다. 홈으로 이동합니다.");
-      navigate("/");
-    }, [navigate]);
-    return null;
-  }
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
