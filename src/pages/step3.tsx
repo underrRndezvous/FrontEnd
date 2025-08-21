@@ -300,7 +300,7 @@ const SortablePlaceItem = ({
             }}
             className="ml-auto flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
           >
-            <div className="w-3 h-3">
+            <div className="w-3 h-3 flex items-center justify-center">
               <IconMinus />
             </div>
           </button>
@@ -536,12 +536,22 @@ const Step3_Page = () => {
 
   // 조건부 리다이렉션을 useEffect 내부에서 처리 (로딩 완료 후에만)
   React.useEffect(() => {
-    if (!isMeetingDetailLoading && !meetingDetailError && (!finalSelectedRegion || !finalAllRecommendedRegions)) {
+    if (
+      !isMeetingDetailLoading &&
+      !meetingDetailError &&
+      (!finalSelectedRegion || !finalAllRecommendedRegions)
+    ) {
       console.warn("⚠️ No region data, redirecting to home");
       alert("추천 장소 정보가 없습니다. 홈으로 이동합니다.");
       navigate("/");
     }
-  }, [finalSelectedRegion, finalAllRecommendedRegions, navigate, isMeetingDetailLoading, meetingDetailError]);
+  }, [
+    finalSelectedRegion,
+    finalAllRecommendedRegions,
+    navigate,
+    isMeetingDetailLoading,
+    meetingDetailError,
+  ]);
 
   if (isMeetingDetailLoading) {
     return (
@@ -602,7 +612,6 @@ const Step3_Page = () => {
     entertainment: "액티비티",
     drink: "술집",
   };
-
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
