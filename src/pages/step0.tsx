@@ -11,13 +11,18 @@ const Step0_Page = () => {
 
   return (
     <motion.div
-      className="flex min-h-screen items-center justify-center bg-gray-100 p-4"
+      className="flex min-h-screen items-center justify-center bg-gray-100 sm:p-4"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
     >
-      <div className="relative flex w-screen flex-col bg-white p-6 h-screen sm:w-[375px] sm:h-[645px] sm:rounded-lg">
+      <div
+        className="relative flex flex-col bg-white 
+                    w-screen h-screen sm:w-[375px] sm:h-[645px] sm:rounded-lg
+                    pt-[env(safe-area-inset-top)] sm:pt-4
+                    pb-[env(safe-area-inset-bottom)] sm:pb-2"
+      >
         <MeetingStart onStart={handleStart} />
       </div>
     </motion.div>
