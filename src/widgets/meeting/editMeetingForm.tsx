@@ -368,6 +368,7 @@ const EditMeetingForm = () => {
       >
         {overlayData && (
           <SelectionOverlay
+            key={overlayData.title}
             title={overlayData.title}
             buttonText={overlayData.buttonText}
             options={overlayData.options}
