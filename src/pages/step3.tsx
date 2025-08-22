@@ -53,26 +53,6 @@ const StoreDetailModal = ({
 }) => {
   const { data: storeDetail, isLoading, error } = useStoreDetail(storeId || 0);
 
-  React.useEffect(() => {
-    if (storeId) {
-      console.log("🔍 Modal opened with storeId:", storeId);
-    }
-    if (storeDetail) {
-      console.log(" Store detail loaded:", storeDetail);
-    }
-    if (error) {
-      console.error(" Store detail error:", error);
-      console.error("Error details:", {
-        message: error.message,
-        name: error.name,
-        stack: error.stack,
-      });
-    }
-    if (isLoading) {
-      console.log("⏳ Loading store detail...");
-    }
-  }, [storeId, storeDetail, error, isLoading]);
-
   const handleNaverSearch = () => {
     if (storeDetail) {
       const query = encodeURIComponent(storeDetail.storeName);
@@ -80,32 +60,7 @@ const StoreDetailModal = ({
       window.open(naverMapUrl, "_blank");
     }
   };
-  const checkIsOpen = (businessHours: string): boolean => {
-    try {
-      const now = new Date();
-      const currentHour = now.getHours();
-      const currentMinute = now.getMinutes();
-      const currentTime = currentHour * 60 + currentMinute;
 
-      const timeMatch = businessHours.match(
-        /(\d{1,2}):(\d{2})\s*~\s*(\d{1,2}):(\d{2})/
-      );
-      if (timeMatch) {
-        const openHour = parseInt(timeMatch[1]);
-        const openMinute = parseInt(timeMatch[2]);
-        const closeHour = parseInt(timeMatch[3]);
-        const closeMinute = parseInt(timeMatch[4]);
-
-        const openTime = openHour * 60 + openMinute;
-        const closeTime = closeHour * 60 + closeMinute;
-
-        return currentTime >= openTime && currentTime <= closeTime;
-      }
-      return false;
-    } catch {
-      return false;
-    }
-  };
   const getTypeDetailInKorean = (storeType: string): string => {
     const typeMapping: { [key: string]: string } = {
       KOREAN: "한식",
@@ -190,19 +145,6 @@ const StoreDetailModal = ({
                       </span>
                     </div>
                   </div>
-
-                  {storeDetail.storeDetail && (
-                    <div className="bg-gray-50 rounded-lg p-3">
-                      {/* <div className="flex items-start gap-2">
-                        <span className="text-sm font-medium text-gray-600 min-w-[40px]">
-                          소개
-                        </span>
-                        <span className="text-sm text-gray-800 flex-1 leading-relaxed">
-                          {storeDetail.storeDetail}
-                        </span>
-                      </div> */}
-                    </div>
-                  )}
                 </div>
 
                 <div className="pt-2 space-y-2">
@@ -275,12 +217,6 @@ const SortablePlaceItem = ({
       <div
         className="flex flex-grow items-center rounded-md border-[1px] border-main bg-white p-2 cursor-pointer hover:bg-gray-50 transition-colors"
         onClick={() => {
-          console.log(
-            "🖱️ Place clicked:",
-            place.storeName,
-            "storeId:",
-            place.storeId
-          );
           onPlaceClick(place.storeId);
         }}
       >
@@ -453,12 +389,6 @@ const MapComponent = ({
             title={place.storeName}
             clickable={true}
             onClick={() => {
-              console.log(
-                " Marker clicked:",
-                place.storeName,
-                "storeId:",
-                place.storeId
-              );
               onMarkerClick(place.storeId);
             }}
           />
@@ -480,13 +410,10 @@ const Step3_Page = () => {
     error: meetingDetailError,
   } = useMeetingDetail(meetingIdNumber);
   const handleAddToCourse = (storeId: number) => {
-    console.log(" Adding to course, storeId:", storeId);
-
     const placeToAdd = mapPlaces.find((place) => place.storeId === storeId);
 
     if (placeToAdd && !places.some((p) => p.storeId === storeId)) {
       setPlaces((prev) => [...prev, placeToAdd]);
-      console.log("Place added to course:", placeToAdd.storeName);
     }
   };
 
@@ -496,14 +423,7 @@ const Step3_Page = () => {
   const finalAllRecommendedRegions =
     meetingDetailData?.regions || allRecommendedRegions;
   const finalSelectedRegion = meetingDetailData?.regions?.[0] || selectedRegion;
-  console.log("🔍 Current Data Sources:");
-  console.log("URL meetingId:", meetingIdNumber);
-  console.log("location.state:", location.state);
-  console.log("allRecommendedRegions:", allRecommendedRegions);
-  console.log("selectedRegion:", selectedRegion);
-  console.log("meetingDetailData:", meetingDetailData);
-  console.log("finalSelectedRegion:", finalSelectedRegion);
-  console.log("finalAllRecommendedRegions:", finalAllRecommendedRegions);
+
   const mapPlaces = React.useMemo(() => {
     if (!finalAllRecommendedRegions) return [];
     return finalAllRecommendedRegions.flatMap(
@@ -526,7 +446,6 @@ const Step3_Page = () => {
   );
   const [isModalOpen, setIsModalOpen] = React.useState(false);
 
-  // 모든 hook을 최상위에 위치
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
@@ -534,14 +453,12 @@ const Step3_Page = () => {
     })
   );
 
-  // 조건부 리다이렉션을 useEffect 내부에서 처리 (로딩 완료 후에만)
   React.useEffect(() => {
     if (
       !isMeetingDetailLoading &&
       !meetingDetailError &&
       (!finalSelectedRegion || !finalAllRecommendedRegions)
     ) {
-      console.warn("⚠️ No region data, redirecting to home");
       alert("추천 장소 정보가 없습니다. 홈으로 이동합니다.");
       navigate("/");
     }
@@ -631,21 +548,12 @@ const Step3_Page = () => {
   };
 
   const handleRemove = (storeId: number) => {
-    console.log(" Removing place with storeId:", storeId);
     setPlaces((prev) => prev.filter((place) => place.storeId !== storeId));
   };
 
   const handleShare = () => {
-    console.log(" Debug Share Info:");
-    console.log("meetingDetailData:", meetingDetailData);
-    console.log("meetingDetailData?.meetingId:", meetingDetailData?.meetingId);
-    console.log("meetingIdNumber:", meetingIdNumber);
-    console.log("URL searchParams:", searchParams.get("id"));
-
     const shareId =
       meetingId || meetingDetailData?.meetingId || location.state?.meetingId;
-
-    console.log("Final shareId:", shareId);
 
     if (shareId) {
       if (window.Kakao && !window.Kakao.isInitialized()) {
@@ -663,24 +571,20 @@ const Step3_Page = () => {
   };
 
   const handleCategoryClick = (category: string) => {
-    console.log(" Category clicked:", category);
     setSelectedCategory(selectedCategory === category ? null : category);
   };
 
   const handleMarkerClick = (storeId: number) => {
-    console.log(" Marker click handler called with storeId:", storeId);
     setSelectedStoreId(storeId);
     setIsModalOpen(true);
   };
 
   const handlePlaceClick = (storeId: number) => {
-    console.log(" Place click handler called with storeId:", storeId);
     setSelectedStoreId(storeId);
     setIsModalOpen(true);
   };
 
   const handleCloseModal = () => {
-    console.log(" Modal closing");
     setIsModalOpen(false);
     setSelectedStoreId(null);
   };
@@ -752,7 +656,7 @@ const Step3_Page = () => {
                   )}
                 </div>
 
-                <div className="pointer-events-auto mt-auto px-8">
+                <div className="pointer-events-auto px-8 pb-safe mb-6">
                   <Button
                     format="Button1"
                     color="primary"

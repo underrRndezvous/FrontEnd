@@ -21,8 +21,7 @@ const TimeSelector = ({ selectedTimes, onSelect }: TimeSelectorProps) => {
     morning: "오전",
   };
   const selectedIds = selectedTimes.map((type) => timeTypeToId[type]);
-  const textBaseStyle = "text-[18px] font-bold block transform -rotate-45";
-
+  const textBaseStyle = "block transform -rotate-45";
   return (
     <div className="flex w-full flex-col items-center">
       <div className="relative h-64 w-64">
@@ -31,6 +30,7 @@ const TimeSelector = ({ selectedTimes, onSelect }: TimeSelectorProps) => {
             onClick={() => onSelect("morning")}
             className={clsx(
               "relative rounded-tl-full bg-white border-2 transition-all",
+
               selectedIds.includes("morning")
                 ? "shadow-glow-main border-main"
                 : "border-gray1"
@@ -39,8 +39,10 @@ const TimeSelector = ({ selectedTimes, onSelect }: TimeSelectorProps) => {
             <span
               className={clsx(
                 textBaseStyle,
-                "absolute bottom-5 right-5",
-                selectedIds.includes("morning") ? "text-black" : "text-gray3"
+                "absolute bottom-8 right-8",
+                selectedIds.includes("morning")
+                  ? "title-03 text-black"
+                  : "body-02 text-gray3"
               )}
             >
               {timeSlots.morning}
@@ -59,8 +61,10 @@ const TimeSelector = ({ selectedTimes, onSelect }: TimeSelectorProps) => {
             <span
               className={clsx(
                 textBaseStyle,
-                "absolute bottom-5 left-5",
-                selectedIds.includes("lunch") ? "text-black" : "text-gray3"
+                "absolute bottom-8 left-8",
+                selectedIds.includes("lunch")
+                  ? "title-03 text-black"
+                  : "body-02 text-gray3"
               )}
             >
               {timeSlots.lunch}
@@ -79,8 +83,10 @@ const TimeSelector = ({ selectedTimes, onSelect }: TimeSelectorProps) => {
             <span
               className={clsx(
                 textBaseStyle,
-                "absolute top-5 right-5",
-                selectedIds.includes("evening") ? "text-black" : "text-gray3"
+                "absolute top-8 right-8",
+                selectedIds.includes("evening")
+                  ? "title-03 text-black"
+                  : "body-02 text-gray3"
               )}
             >
               {timeSlots.evening}
@@ -99,8 +105,10 @@ const TimeSelector = ({ selectedTimes, onSelect }: TimeSelectorProps) => {
             <span
               className={clsx(
                 textBaseStyle,
-                "absolute top-5 left-5",
-                selectedIds.includes("afternoon") ? "text-black" : "text-gray3"
+                "absolute top-8 left-8",
+                selectedIds.includes("afternoon")
+                  ? "title-03 text-black"
+                  : "body-02 text-gray3"
               )}
             >
               {timeSlots.afternoon}
