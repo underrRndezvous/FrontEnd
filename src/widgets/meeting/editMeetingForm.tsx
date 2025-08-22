@@ -120,18 +120,22 @@ const EditMeetingForm = () => {
 
   const handleDaySelect = (dayApi: DayType) => {
     if (selectedDays.includes(dayApi)) {
-      setSelectedDays(selectedDays.filter((d) => d !== dayApi));
+      if (selectedDays.length > 1) {
+        setSelectedDays(selectedDays.filter((d) => d !== dayApi));
+      }
     } else {
       setSelectedDays([dayApi]);
     }
   };
 
   const handleTimeSelect = (timeKey: TimeType) => {
-    setSelectedTimes(
-      selectedTimes.includes(timeKey)
-        ? selectedTimes.filter((t) => t !== timeKey)
-        : [...selectedTimes, timeKey]
-    );
+    if (selectedTimes.includes(timeKey)) {
+      if (selectedTimes.length > 1) {
+        setSelectedTimes(selectedTimes.filter((t) => t !== timeKey));
+      }
+    } else {
+      setSelectedTimes([...selectedTimes, timeKey]);
+    }
   };
 
   const handleItemClick = (id: number) => {
