@@ -23,11 +23,7 @@ const MeetingStart = ({ onStart }: MeetingStartProps) => {
         <img
           src={characterImage}
           alt="캐릭터"
-<<<<<<< HEAD
           className="w-48 sm:w-60 animate-bounce object-contain"
-=======
-          className="w-48 sm:w-60 animate-bounce max-h-full object-contain"
->>>>>>> c8451dcddd41dc2c2d3bd117c4b18bc9a1f1b019
         />
       </div>
 
