@@ -22,6 +22,9 @@ const DepartureInputForm = ({
   const handleRegionSelect = (id: number, region: RegionItem) => {
     onChange(id, region.fullAddress);
   };
+  console.log("departures 배열:", departures);
+  console.log("departures.length:", departures.length);
+  console.log("조건 결과 (< 5):", departures.length < 5);
 
   return (
     <div className="flex w-full flex-col items-center gap-y-3">
@@ -52,7 +55,7 @@ const DepartureInputForm = ({
           </div>
         ))}
       </div>
-      {departures.length < 8 && (
+      {departures.length < 5 && (
         <button
           onClick={onAdd}
           className="flex w-11/12 mx-auto items-center rounded-lg border-2 border-dashed border-gray-300 bg-white bg-opacity-50 p-3 text-left"
