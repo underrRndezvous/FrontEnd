@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import StepFormLayout from "@/shared/ui/StepFormLayout";
 import PlaceRecommendation from "@/widgets/meeting/recommendPlace";
@@ -13,33 +13,16 @@ const Step2_Page = () => {
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isChanging, setIsChanging] = useState(false);
-  const [remainingChanges, setRemainingChanges] = useState(3);
   const [showToast, setShowToast] = useState(false);
+
+  const [isReviewMode, setIsReviewMode] = useState(false);
 
   const recommendationData = location.state?.recommendations;
   const meetingId = location.state?.meetingId;
 
-  useEffect(() => {
-    if (recommendationData) {
-      console.log(" 추천 장소 데이터 전체:", recommendationData);
-      console.log(` 추천된 지역 개수: ${recommendationData.length}개`);
+  const totalRecommendations = recommendationData?.length || 0;
 
-      const regionNames = recommendationData.map(
-        (region: any, index: number) => `${index + 1}. ${region.hotPlace}`
-      );
-      console.log(" 추천 지역 목록:", regionNames);
-    } else {
-      console.log(" 추천 장소 데이터가 없습니다.");
-    }
-    console.log(" Step 2 loaded with meetingId:", meetingId);
-    if (recommendationData) {
-      console.log(" 추천 장소 데이터 전체:", recommendationData);
-    } else {
-      console.log("추천 장소 데이터가 없습니다.");
-    }
-  }, [recommendationData]);
-
-  if (!recommendationData || recommendationData.length === 0) {
+  if (!recommendationData || totalRecommendations === 0) {
     return <div>추천 정보를 불러올 수 없습니다.</div>;
   }
 
@@ -54,32 +37,53 @@ const Step2_Page = () => {
   };
 
   const handleFindAnotherPlace = () => {
-    if (remainingChanges <= 0) {
+    const nextIndex = currentIndex + 1;
+    if (nextIndex >= totalRecommendations) {
       return;
     }
 
     setIsChanging(true);
-
     setTimeout(() => {
-      setCurrentIndex((prevIndex) => prevIndex + 1);
-      setIsChanging(false);
+      setCurrentIndex(nextIndex);
 
-      const newRemainingChanges = remainingChanges - 1;
-      setRemainingChanges(newRemainingChanges);
-
-      if (newRemainingChanges > 0) {
-        setShowToast(true);
-
-        setTimeout(() => {
-          setShowToast(false);
-        }, 2000);
+      if (nextIndex === totalRecommendations - 1) {
+        setIsReviewMode(true);
       }
+      setIsChanging(false);
     }, 300);
+
+    const changesLeft = totalRecommendations - 1 - nextIndex;
+    if (changesLeft >= 0) {
+      setShowToast(true);
+      setTimeout(() => {
+        setShowToast(false);
+      }, 2000);
+    }
+  };
+
+  const handleGoPrevious = () => {
+    if (currentIndex > 0) {
+      setIsChanging(true);
+      setTimeout(() => {
+        setCurrentIndex((prevIndex) => prevIndex - 1);
+        setIsChanging(false);
+      }, 300);
+    }
   };
 
   const currentRecommendation = recommendationData[currentIndex];
-  const isLastRecommendation =
-    currentIndex === recommendationData.length - 1 || remainingChanges <= 0;
+
+  if (!currentRecommendation) {
+    return (
+      <AnimatedPageLayout>
+        <div>데이터를 불러오는 중...</div>
+      </AnimatedPageLayout>
+    );
+  }
+
+  const isAtFirstRecommendation = currentIndex === 0;
+
+  const shouldDisablePrevious = isReviewMode && isAtFirstRecommendation;
 
   const titleWithIcon = (
     <div className="flex items-center justify-center">
@@ -99,10 +103,10 @@ const Step2_Page = () => {
         title={titleWithIcon}
         subtitle=""
         onNext={handleSelect}
-        onPrev={handleFindAnotherPlace}
+        onPrev={isReviewMode ? handleGoPrevious : handleFindAnotherPlace}
         nextButtonText="이 장소 선택하기"
-        prevButtonText="다른 장소 찾기"
-        isPrevDisabled={isLastRecommendation}
+        prevButtonText={isReviewMode ? "이전" : "다른 장소 찾기"}
+        isPrevDisabled={shouldDisablePrevious}
         contentAlignment="start"
         isScrollable={false}
       >
@@ -116,10 +120,11 @@ const Step2_Page = () => {
         <div className="fixed bottom-20 left-1/2 transform -translate-x-1/2 z-50">
           <div className="bg-gray-600 text-white px-6 py-3 rounded-lg shadow-lg max-w-sm">
             <p className="text-sm font-medium text-center">
-              다른 장소 찾기 기회가 {remainingChanges - 1}회 남았어요
+              다른 장소 찾기 기회가 {totalRecommendations - 1 - currentIndex}회
+              남았어요
             </p>
             <p className="text-xs text-gray-300 text-center mt-1">
-              (총 3개의 장소를 추천받을 수 있어요)
+              (총 {totalRecommendations}개의 장소를 추천받을 수 있어요)
             </p>
           </div>
         </div>

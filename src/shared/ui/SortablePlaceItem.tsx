@@ -27,7 +27,7 @@ const SortablePlaceItem = ({
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({
       id: place.id,
-      disabled: isEditPage,
+      disabled: false,
     });
 
   const style = {
@@ -47,15 +47,13 @@ const SortablePlaceItem = ({
       style={style}
       className="flex w-full items-center gap-x-2 touch-none"
     >
-      {!isEditPage && (
-        <button
-          {...attributes}
-          {...listeners}
-          className="flex-shrink-0 text-gray-400 cursor-grab"
-        >
-          <IconDragHandle />
-        </button>
-      )}
+      <button
+        {...attributes}
+        {...listeners}
+        className="flex-shrink-0 text-gray-400 cursor-grab"
+      >
+        <IconDragHandle />
+      </button>
 
       <div
         className={clsx(

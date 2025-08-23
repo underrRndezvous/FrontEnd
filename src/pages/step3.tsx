@@ -420,9 +420,15 @@ const Step3_Page = () => {
   const allRecommendedRegions: Region[] | undefined =
     location.state?.allRecommendedRegions;
   const selectedRegion: Region | undefined = location.state?.selectedRegion;
+
   const finalAllRecommendedRegions =
     meetingDetailData?.regions || allRecommendedRegions;
-  const finalSelectedRegion = meetingDetailData?.regions?.[0] || selectedRegion;
+  const finalSelectedRegion =
+    meetingDetailData?.regions?.[0] ||
+    selectedRegion ||
+    (finalAllRecommendedRegions && finalAllRecommendedRegions.length > 0
+      ? finalAllRecommendedRegions[0]
+      : null);
 
   const mapPlaces = React.useMemo(() => {
     if (!finalAllRecommendedRegions) return [];
@@ -438,6 +444,7 @@ const Step3_Page = () => {
       setPlaces(finalSelectedRegion.recommendPlace);
     }
   }, [finalSelectedRegion]);
+
   const [selectedCategory, setSelectedCategory] = React.useState<string | null>(
     null
   );
@@ -454,20 +461,44 @@ const Step3_Page = () => {
   );
 
   React.useEffect(() => {
-    if (
-      !isMeetingDetailLoading &&
-      !meetingDetailError &&
-      (!finalSelectedRegion || !finalAllRecommendedRegions)
-    ) {
-      alert("추천 장소 정보가 없습니다. 홈으로 이동합니다.");
-      navigate("/");
+    console.log("Step3 Debug Info:", {
+      meetingId,
+      meetingIdNumber,
+      isMeetingDetailLoading,
+      meetingDetailError,
+      hasLocationState: !!location.state,
+      hasMeetingDetailData: !!meetingDetailData,
+      finalSelectedRegion: !!finalSelectedRegion,
+      finalAllRecommendedRegions: !!finalAllRecommendedRegions,
+      mapPlacesCount: mapPlaces.length,
+    });
+
+    if (!isMeetingDetailLoading && !meetingDetailError) {
+      if (meetingId && !meetingDetailData && !location.state) {
+        console.error("No data available from both API and location state");
+        alert("모임 정보를 불러올 수 없습니다. 홈으로 이동합니다.");
+        navigate("/");
+        return;
+      }
+
+      if (!finalSelectedRegion && !finalAllRecommendedRegions) {
+        console.error("No region data available");
+        alert("추천 장소 정보가 없습니다. 홈으로 이동합니다.");
+        navigate("/");
+        return;
+      }
     }
   }, [
+    meetingId,
+    meetingIdNumber,
     finalSelectedRegion,
     finalAllRecommendedRegions,
     navigate,
     isMeetingDetailLoading,
     meetingDetailError,
+    location.state,
+    meetingDetailData,
+    mapPlaces.length,
   ]);
 
   if (isMeetingDetailLoading) {
@@ -483,7 +514,7 @@ const Step3_Page = () => {
     );
   }
 
-  if (meetingDetailError) {
+  if (meetingDetailError && !location.state) {
     return (
       <AnimatedPageLayout>
         <div className="flex min-h-screen items-center justify-center bg-gray-100">
@@ -591,12 +622,12 @@ const Step3_Page = () => {
 
   return (
     <AnimatedPageLayout>
-      <div className="flex min-h-screen items-center justify-center bg-gray-100 p-4">
-        <div className="relative flex w-screen flex-col bg-gradient-to-b from-sub01 to-sub02 h-screen sm:w-[375px] sm:h-[645px] rounded-lg overflow-hidden">
+      <div className="flex min-h-screen items-center justify-center bg-gray-100 p-0 sm:p-4">
+        <div className="relative flex w-full flex-col bg-gradient-to-b from-sub01 to-sub02 h-screen sm:w-[375px] sm:h-[645px] sm:rounded-lg overflow-hidden">
           <NavermapsProvider
             ncpClientId={import.meta.env.VITE_NAVER_MAP_CLIENT_ID || ""}
           >
-            <div className="relative w-screen h-screen sm:w-[375px] sm:h-full">
+            <div className="relative w-full h-full">
               <MapComponent
                 places={mapPlaces}
                 selectedCategory={selectedCategory}
@@ -674,7 +705,7 @@ const Step3_Page = () => {
             isOpen={isModalOpen}
             onClose={handleCloseModal}
             onAddToCourse={handleAddToCourse}
-            isInCourse={places.some((p) => p.storeId === selectedStoreId)} // 추가
+            isInCourse={places.some((p) => p.storeId === selectedStoreId)}
           />
         </div>
       </div>
