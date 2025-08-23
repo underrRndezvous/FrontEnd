@@ -33,6 +33,7 @@ const PlaceTypeForm = ({
   setPlaces,
   onItemClick,
   onRemove,
+  onAdd,
   isEditPage = false,
   displaySubTypes = {},
 }: PlaceTypeFormProps) => {

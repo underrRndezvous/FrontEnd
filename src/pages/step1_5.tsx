@@ -82,9 +82,6 @@ const Step1_5Page = () => {
       (sp) => (displayValues[sp.id || 0] || "").trim() !== ""
     );
 
-    console.log("=== FINAL DATA TO SAVE ===");
-    console.log("Filtered startPoint:", filteredStartPoint);
-
     setStartPoint(filteredStartPoint);
 
     navigate("/Plaza/step1_6");
@@ -93,7 +90,7 @@ const Step1_5Page = () => {
   const handlePrev = () => navigate(-1);
 
   const handleAdd = () => {
-    if (startPoint.length >= 5) return;
+    if (startPoint.length >= 8) return;
     const newId = Date.now();
     const newStartPoint = {
       id: newId,
@@ -127,22 +124,9 @@ const Step1_5Page = () => {
     setDisplayValues((prev) => ({ ...prev, [id]: newValue }));
   };
 
-  const handleKeyDown = (
-    e: React.KeyboardEvent<HTMLInputElement>
-    // id: number
-  ) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      // const currentDeparture = departures.find((d) => d.id === id);
-      // const isLastInput = departures[departures.length - 1].id === id;
-
-      // if (
-      //   currentDeparture?.type === "member" &&
-      //   isLastInput &&
-      //   currentDeparture.value.trim() !== ""
-      // ) {
-      //   handleAdd();
-      // }
     }
   };
 

@@ -20,12 +20,10 @@ import IconRestaurant from "@/shared/asset/icon/restaurant.svg?react";
 import IconCafe from "@/shared/asset/icon/cafe.svg?react";
 import IconActivity from "@/shared/asset/icon/activity.svg?react";
 import IconBar from "@/shared/asset/icon/bar.svg?react";
-
 import IconPasta from "@/shared/asset/icon/pasta.svg?react";
 import IconChinaFood from "@/shared/asset/icon/chinafood.svg?react";
 import IconJapanFood from "@/shared/asset/icon/japanfood.svg?react";
 import IconKoreaFood from "@/shared/asset/icon/koreafood.svg?react";
-
 import IconIzakaya from "@/shared/asset/icon/izakaya.svg?react";
 import IconKor from "@/shared/asset/icon/kor.svg?react";
 import IconBeer from "@/shared/asset/icon/beer.svg?react";
@@ -95,7 +93,24 @@ const EditMeetingForm = () => {
     });
     setDisplayValues(initialDisplayValues);
   }, []);
+  useEffect(() => {
+    if (!places || places.length === 0) {
+      setPlaces([
+        { id: Date.now(), placeType: null, typeDetail: null, atmosphere: null },
+      ]);
+      return;
+    }
 
+    const hasEmptySlot = places.some((p) => p.placeType === null);
+
+    if (!hasEmptySlot && places.length < 8) {
+      const nextId = Math.max(...places.map((p) => p.id)) + 1;
+      setPlaces([
+        ...places,
+        { id: nextId, placeType: null, typeDetail: null, atmosphere: null },
+      ]);
+    }
+  }, [places, setPlaces]);
   const purposeOptions = [
     { id: "date", label: "데이트" },
     { id: "business", label: "비즈니스" },
@@ -153,6 +168,7 @@ const EditMeetingForm = () => {
     const editingId = editingPlaceId!;
     if (isMainStep) {
       const placeType = selectedId as PlaceType;
+
       setPlaces(
         places.map((p) =>
           p.id === editingId ? { ...p, placeType, atmosphere: null } : p
@@ -201,7 +217,7 @@ const EditMeetingForm = () => {
   };
 
   const handleAddPlace = () => {
-    if (places.length < 5) {
+    if (places.length < 8) {
       setPlaces([
         ...places,
         { id: Date.now(), placeType: null, atmosphere: null, typeDetail: null },
