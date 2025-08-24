@@ -37,7 +37,10 @@ import IconActivity from "/src/shared/asset/icon/activity.svg?react";
 import IconBar from "/src/shared/asset/icon/bar.svg?react";
 import { IconMinus, IconDragHandle } from "@/shared/ui/svg";
 import clsx from "clsx";
-
+import restaurantIconUrl from "/src/shared/asset/icon/restaurant.svg";
+import cafeIconUrl from "/src/shared/asset/icon/cafe.svg";
+import activityIconUrl from "/src/shared/asset/icon/activity.svg";
+import barIconUrl from "/src/shared/asset/icon/bar.svg";
 const StoreDetailModal = ({
   storeId,
   isOpen,
@@ -268,9 +271,12 @@ const MapComponent = ({
   const getMapCenter = () => {
     if (!places || places.length === 0)
       return new navermaps.LatLng(37.5665, 126.978);
-    const latSum = places.reduce((sum, p) => sum + p.placelati, 0);
-    const lngSum = places.reduce((sum, p) => sum + p.placelong, 0);
-    return new navermaps.LatLng(latSum / places.length, lngSum / places.length);
+    const latSum = currentCoursePlaces.reduce((sum, p) => sum + p.placelati, 0);
+    const lngSum = currentCoursePlaces.reduce((sum, p) => sum + p.placelong, 0);
+    return new navermaps.LatLng(
+      latSum / currentCoursePlaces.length,
+      lngSum / currentCoursePlaces.length
+    );
   };
 
   const createMarkerIcon = (place: RecommendedPlace, index: number) => {
@@ -544,10 +550,10 @@ const Step3_Page = () => {
   };
 
   const categoryIconPaths = {
-    음식점: "/src/shared/asset/icon/restaurant.svg",
-    카페: "/src/shared/asset/icon/cafe.svg",
-    액티비티: "/src/shared/asset/icon/activity.svg",
-    술집: "/src/shared/asset/icon/bar.svg",
+    음식점: restaurantIconUrl,
+    카페: cafeIconUrl,
+    액티비티: activityIconUrl,
+    술집: barIconUrl,
   };
 
   const categoryMapping: { [key: string]: string } = {
