@@ -58,7 +58,7 @@ const initialState: MeetingState = {
   startPoint: [{
       id: 1,
       type: 'leader',
-      first: '',
+      first: '서울시',
       second: '',
       third: '',
     }],

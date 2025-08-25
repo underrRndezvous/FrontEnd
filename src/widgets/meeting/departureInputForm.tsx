@@ -10,6 +10,7 @@ interface DepartureInputFormProps {
   onRemove: (id: number) => void;
   onChange: (id: number, value: string) => void;
   onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>, id: number) => void;
+  inputRefs?: React.MutableRefObject<{ [id: number]: HTMLInputElement | null }>;
 }
 
 const DepartureInputForm = ({
@@ -18,6 +19,7 @@ const DepartureInputForm = ({
   onRemove,
   onChange,
   onKeyDown,
+  inputRefs,
 }: DepartureInputFormProps) => {
   const handleRegionSelect = (id: number, region: RegionItem) => {
     onChange(id, region.fullAddress);
@@ -35,9 +37,14 @@ const DepartureInputForm = ({
             }}
           >
             <DepartureInput
+              ref={(el) => {
+                if (inputRefs && inputRefs.current) {
+                  inputRefs.current[departure.id] = el;
+                }
+              }}
               variant={departure.type}
               value={departure.value}
-              placeholder="(ex 서울특별시 서초구 서초동)"
+              placeholder="(ex 서울시 서초구 서초동)"
               onChange={(e) => onChange(departure.id, e.target.value)}
               onKeyDown={(e) => onKeyDown(e, departure.id)}
               onRegionSelect={(region) =>

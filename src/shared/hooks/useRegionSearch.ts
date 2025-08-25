@@ -47,16 +47,19 @@ export const useRegionSearch = ({
     if (!searchQuery.trim()) return [];
 
     const query = searchQuery.toLowerCase().trim();
+    const queryNoSpace = query.replace(/\s/g, ''); // 띄어쓰기 제거
     
     return processedRegions
       .filter(region => {
         const fullAddress = region.fullAddress.toLowerCase();
+        const fullAddressNoSpace = fullAddress.replace(/\s/g, ''); // 띄어쓰기 제거
         const sido = region.sido.toLowerCase();
         const gu = region.gu.toLowerCase();
         const dong = region.dong.toLowerCase();
         
         return (
           fullAddress.includes(query) ||
+          fullAddressNoSpace.includes(queryNoSpace) || // 띄어쓰기 없는 검색 추가
           sido.includes(query) ||
           gu.includes(query) ||
           dong.includes(query)

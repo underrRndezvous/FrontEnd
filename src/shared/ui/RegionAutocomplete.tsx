@@ -13,7 +13,7 @@ interface RegionAutocompleteProps {
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
-const RegionAutocomplete = ({
+const RegionAutocomplete = React.forwardRef<HTMLInputElement, RegionAutocompleteProps>(({
   value,
   onChange,
   onSelect,
@@ -21,10 +21,19 @@ const RegionAutocomplete = ({
   className,
   disabled,
   onKeyDown,
-}: RegionAutocompleteProps) => {
+}, ref) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // ref를 external ref와 internal ref 모두에 연결
+  useEffect(() => {
+    if (typeof ref === 'function') {
+      ref(inputRef.current);
+    } else if (ref) {
+      ref.current = inputRef.current;
+    }
+  }, [ref]);
   const listRef = useRef<HTMLUListElement>(null);
 
   const handleRegionSelect = (region: RegionItem) => {
@@ -160,6 +169,6 @@ const RegionAutocomplete = ({
       )}
     </div>
   );
-};
+});
 
 export default RegionAutocomplete;

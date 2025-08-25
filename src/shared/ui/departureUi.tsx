@@ -29,7 +29,7 @@ interface DepartureInputProps
   onRegionSelect?: (region: RegionItem) => void;
 }
 
-const DepartureInput = ({
+const DepartureInput = React.forwardRef<HTMLInputElement, DepartureInputProps>(({
   variant,
   value,
   onRemove,
@@ -37,7 +37,7 @@ const DepartureInput = ({
   onChange,
   onRegionSelect,
   ...restProps
-}: DepartureInputProps) => {
+}, ref) => {
   const Icon = variant === "leader" ? IconCrown : IconPerson;
   const hasValue = value && String(value).length > 0;
 
@@ -75,6 +75,7 @@ const DepartureInput = ({
         </div>
         <div className="flex-grow relative">
           <RegionAutocomplete
+            ref={ref}
             value={String(value || "")}
             onChange={handleChange}
             onSelect={handleRegionSelect}
@@ -97,6 +98,6 @@ const DepartureInput = ({
       </div>
     </div>
   );
-};
+});
 
 export default DepartureInput;
