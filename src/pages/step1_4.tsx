@@ -44,10 +44,10 @@ const foodTypeOptions: SelectionOption[] = [
   { id: "KOREAN", label: "한식", IconComponent: IconKoreaFood },
 ];
 const barTypeOptions: SelectionOption[] = [
-  { id: "izakaya", label: "이자카야", IconComponent: IconIzakaya },
-  { id: "kor-bar", label: "한식주점", IconComponent: IconKor },
-  { id: "beer", label: "맥주", IconComponent: IconBeer },
-  { id: "wine", label: "와인/위스키", IconComponent: IconWine },
+  { id: "IZAKAYA", label: "이자카야", IconComponent: IconIzakaya },
+  { id: "POCHA", label: "한식주점", IconComponent: IconKor },
+  { id: "BEER", label: "맥주", IconComponent: IconBeer },
+  { id: "BAR_SPECIATLS", label: "와인/위스키", IconComponent: IconWine },
 ];
 const atmosphereOptions: SelectionOption[] = [
   { id: "PRODUCTIVE", label: "작업하기 좋은", IconComponent: IconNote },
