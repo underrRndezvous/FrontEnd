@@ -28,19 +28,32 @@ const Step1_5Page = () => {
       setStartPoint([defaultStartPoint]);
       setDisplayValues({ [newId]: "서울시 " });
     } else {
-      // 기존 startPoint가 있는 경우 displayValues 동기화
-      const initialDisplayValues: { [id: number]: string } = {};
-      startPoint.forEach((sp) => {
-        const combined = [sp.first, sp.second, sp.third]
-          .filter((part) => part && part.trim() !== "")
-          .join(" ");
-        if (combined) {
-          initialDisplayValues[sp.id || 0] = combined;
-        }
+      // startPoint에 새로운 항목이 추가되었을 때만 displayValues 업데이트
+      setDisplayValues((prev) => {
+        const newDisplayValues = { ...prev };
+        
+        startPoint.forEach((sp) => {
+          // 새로운 항목이거나 기존 값이 없는 경우만 업데이트
+          if (!newDisplayValues.hasOwnProperty(sp.id || 0)) {
+            const combined = [sp.first, sp.second, sp.third]
+              .filter((part) => part && part.trim() !== "")
+              .join(" ");
+            newDisplayValues[sp.id || 0] = combined || "서울시 ";
+          }
+        });
+        
+        // 삭제된 항목 정리
+        const validIds = new Set(startPoint.map(sp => sp.id || 0));
+        Object.keys(newDisplayValues).forEach(id => {
+          if (!validIds.has(Number(id))) {
+            delete newDisplayValues[Number(id)];
+          }
+        });
+        
+        return newDisplayValues;
       });
-      setDisplayValues(initialDisplayValues);
     }
-  }, [startPoint.length, setStartPoint]);
+  }, [startPoint, setStartPoint]);
 
 
   const departures: Departure[] = useMemo(
@@ -118,7 +131,7 @@ const Step1_5Page = () => {
       third: "",
     };
     setStartPoint([...startPoint, newStartPoint]);
-    setDisplayValues((prev) => ({ ...prev, [newId]: "서울시 " }));
+    // displayValues는 useEffect에서 자동으로 설정됨
   };
 
   const handleRemove = (id: number) => {
