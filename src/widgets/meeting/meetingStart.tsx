@@ -13,7 +13,7 @@ const MeetingStart = ({ onStart }: MeetingStartProps) => {
         <img
           src={logoImage}
           alt="PLAZA 로고"
-          className="h-10 sm:h-12 object-contain"
+          className="h-12 sm:h-12 object-contain"
         />
       </div>
 
