@@ -1,23 +1,25 @@
-import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-import EditMeetingForm, {
-  type EditMeetingFormRef,
-} from "@/widgets/meeting/editMeetingForm";
+import EditMeetingForm from "@/widgets/meeting/editMeetingForm";
 import AnimatedPageLayout from "@/shared/layout";
 import StepNavigation from "@/widgets/common/stepNavigation";
 import { useMeetingStore } from "@/store/meetingStore";
 
 const EditMeetingPage = () => {
   const navigate = useNavigate();
-  const { setStartPoint } = useMeetingStore();
-  const editFormRef = useRef<EditMeetingFormRef>(null);
+  const { startPoint, setStartPoint } = useMeetingStore();
 
   const handleSave = () => {
-    if (editFormRef.current) {
-      const filteredDepartures = editFormRef.current.getFilteredDepartures();
-      setStartPoint(filteredDepartures);
-    }
+    const validDepartures = startPoint.filter((departure) => {
+      const hasValue = [
+        departure.first,
+        departure.second,
+        departure.third,
+      ].some((part) => part && part.trim() !== "");
+      return hasValue;
+    });
+
+    setStartPoint(validDepartures);
 
     navigate("/Plaza/step1_6");
   };
@@ -42,7 +44,7 @@ const EditMeetingPage = () => {
               msOverflowStyle: "none",
             }}
           >
-            <EditMeetingForm ref={editFormRef} />
+            <EditMeetingForm />
           </main>
 
           <div className="w-full pt-4">

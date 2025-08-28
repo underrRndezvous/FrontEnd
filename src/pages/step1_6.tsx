@@ -8,6 +8,16 @@ import { useRecommendPlaces } from "@/shared/api/meetingApi";
 const Step1_6Page = () => {
   const navigate = useNavigate();
   const meetingData = useMeetingStore();
+  console.log("=== Step6 데이터 확인 ===");
+  console.log("meetingData.place:", meetingData.place);
+  meetingData.place.forEach((place, index) => {
+    console.log(`장소 ${index + 1}:`, {
+      id: place.id,
+      placeType: place.placeType,
+      typeDetail: place.typeDetail,
+      atmosphere: place.atmosphere,
+    });
+  });
 
   const { mutate: recommendPlaces, isPending } = useRecommendPlaces();
 

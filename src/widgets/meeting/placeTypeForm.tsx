@@ -59,23 +59,14 @@ const PlaceTypeForm = ({
     };
 
     const displaySubTypeMap: { [key: string]: string } = {
-      western: "양식",
-      chinese: "중식",
-      japanese: "일식",
-      korean: "한식",
-      izakaya: "이자카야",
-      "kor-bar": "한식주점",
-      beer: "맥주",
-      wine: "와인/위스키",
-
       WESTERN: "양식",
       CHINESE: "중식",
       JAPANESE: "일식",
       KOREAN: "한식",
       IZAKAYA: "이자카야",
-      POCHA: "포차",
+      POCHA: "한식주점",
       BEER: "맥주",
-      BAR_SPECIATLS: "바/칵테일",
+      BAR_SPECIATLS: "와인/위스키",
     };
 
     const mainText = typeMap[place.placeType];

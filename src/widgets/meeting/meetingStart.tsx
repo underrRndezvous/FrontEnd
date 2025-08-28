@@ -8,13 +8,13 @@ interface MeetingStartProps {
 const MeetingStart = ({ onStart }: MeetingStartProps) => {
   return (
     <div className="grid h-full grid-rows-[auto_1fr_auto] p-4 sm:p-6 text-center">
-      <div className="pt-2 sm:pt-4">
+      <div className="pt-12 sm:pt-2 md:pt-4">
         <h1 className="title-01 mb-2 text-black">
           모임의 모든 것,
           <br />
           PLAZA에서 쉽고 빠르게
         </h1>
-        <p className="title-03 mb-6 sm:mb-12 text-gray4 min-w-max ">
+        <p className="title-03 mb-6 sm:mb-12 text-gray4 min-w-max">
           모임에 딱 맞는 장소, 컨텐츠를 찾을 수 있어요!
         </p>
       </div>
@@ -27,7 +27,7 @@ const MeetingStart = ({ onStart }: MeetingStartProps) => {
         />
       </div>
 
-      <div className="w-full px-2 sm:px-4 pt-4 sm:pt-6">
+      <div className="w-full px-2 sm:px-4 pb-12 sm:pb-4 md:pb-6">
         <Button format="Button1" color="primary" onClick={onStart}>
           시작하기
         </Button>

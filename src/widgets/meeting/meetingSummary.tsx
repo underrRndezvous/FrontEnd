@@ -1,4 +1,3 @@
-// import React from "react";
 import { useMeetingStore } from "@/store/meetingStore";
 import IconCrown from "@/shared/asset/icon/crown.svg?react";
 import IconPerson from "@/shared/asset/icon/person.svg?react";
@@ -32,7 +31,6 @@ const dayMap: { [key: string]: string } = {
 
 const MeetingSummary = () => {
   const {
-    // groupName,
     meetDays: selectedDays,
     meetTime: selectedTimes,
     groupPurpose,
@@ -49,6 +47,7 @@ const MeetingSummary = () => {
 
   const getPlaceTypeText = (place: PlaceRequest) => {
     if (!place.placeType) return "";
+
     const typeMap: { [key: string]: string } = {
       RESTAURANT: "음식점",
       CAFE: "카페",
@@ -56,22 +55,46 @@ const MeetingSummary = () => {
       BAR: "술집",
     };
 
+    const restaurantDetailMap: { [key: string]: string } = {
+      WESTERN: "양식",
+      CHINESE: "중식",
+      JAPANESE: "일식",
+      KOREAN: "한식",
+    };
+
+    const barDetailMap: { [key: string]: string } = {
+      BEER: "맥주",
+      IZAKAYA: "이자카야",
+      POCHA: "한식주점",
+      BAR_SPECIATLS: "와인/위스키",
+    };
+
+    const atmosphereMap: { [key: string]: string } = {
+      PRODUCTIVE: "작업하기 좋은",
+      AESTHETIC: "사진찍기 좋은",
+      INDULGENT: "디저트가 맛있는",
+      SOCIABLE: "대화하기 좋은",
+    };
+
     const mainText = typeMap[place.placeType] || "장소 유형";
 
-    if (place.atmosphere && place.placeType === "CAFE") {
-      const atmosphereMap: { [key: string]: string } = {
-        PRODUCTIVE: "생산적인",
-        AESTHETIC: "감성적인",
-        INDULGENT: "여유로운",
-        SOCIABLE: "사교적인",
-      };
+    if (place.placeType === "RESTAURANT" && place.typeDetail) {
+      const detailText = restaurantDetailMap[place.typeDetail];
+      return detailText ? `${mainText} - ${detailText}` : mainText;
+    }
+
+    if (place.placeType === "BAR" && place.typeDetail) {
+      const detailText = barDetailMap[place.typeDetail];
+      return detailText ? `${mainText} - ${detailText}` : mainText;
+    }
+
+    if (place.placeType === "CAFE" && place.atmosphere) {
       const atmosphereText = atmosphereMap[place.atmosphere];
-      return `${mainText} - ${atmosphereText}`;
+      return atmosphereText ? `${mainText} - ${atmosphereText}` : mainText;
     }
 
     return mainText;
   };
-
   const convertedDepartures = departures.map((departure) => ({
     ...departure,
     value: [departure.first, departure.second, departure.third]
@@ -81,13 +104,6 @@ const MeetingSummary = () => {
 
   return (
     <div className="relative w-full">
-      {/* <button
-        className="absolute right-4 top-4 text-gray-500 text-xl leading-none hover:text-gray-700"
-        onClick={onClose}
-        aria-label="닫기"
-      >
-        ×
-      </button> */}
       <div
         className="w-full rounded-lg  bg-white p-4 text-left overflow-y-auto max-h-[375px] scrollbar-hide border border-main"
         style={{
