@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import StepFormLayout from "@/shared/ui/StepFormLayout";
 import PlaceRecommendation from "@/widgets/meeting/recommendPlace";

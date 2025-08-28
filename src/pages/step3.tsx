@@ -1,4 +1,5 @@
 import React from "react";
+import { useEffect } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import {
   NavermapsProvider,
@@ -467,32 +468,20 @@ const Step3_Page = () => {
   );
 
   React.useEffect(() => {
-    console.log("Step3 Debug Info:", {
-      meetingId,
-      meetingIdNumber,
-      isMeetingDetailLoading,
-      meetingDetailError,
-      hasLocationState: !!location.state,
-      hasMeetingDetailData: !!meetingDetailData,
-      finalSelectedRegion: !!finalSelectedRegion,
-      finalAllRecommendedRegions: !!finalAllRecommendedRegions,
-      mapPlacesCount: mapPlaces.length,
-    });
+    if (isMeetingDetailLoading) {
+      return;
+    }
 
-    if (!isMeetingDetailLoading && !meetingDetailError) {
-      if (meetingId && !meetingDetailData && !location.state) {
-        console.error("No data available from both API and location state");
-        alert("모임 정보를 불러올 수 없습니다. 홈으로 이동합니다.");
-        navigate("/");
-        return;
-      }
+    if (!meetingDetailData && !location.state) {
+      alert("모임 정보를 불러올 수 없습니다. 이전 페이지로 이동합니다.");
+      navigate(-1);
+      return;
+    }
 
-      if (!finalSelectedRegion && !finalAllRecommendedRegions) {
-        console.error("No region data available");
-        alert("추천 장소 정보가 없습니다. 홈으로 이동합니다.");
-        navigate("/");
-        return;
-      }
+    if (finalAllRecommendedRegions && finalAllRecommendedRegions.length === 0) {
+      alert("추천 장소 정보가 없습니다. 이전 페이지로 이동합니다.");
+      navigate(-1);
+      return;
     }
   }, [
     meetingId,
@@ -527,7 +516,7 @@ const Step3_Page = () => {
           <div className="text-center">
             <p className="text-red-500 mb-2">모임 정보를 불러올 수 없습니다.</p>
             <button
-              onClick={() => navigate("/")}
+              onClick={() => navigate(-1)}
               className="px-4 py-2 bg-main text-black rounded"
             >
               홈으로 이동
