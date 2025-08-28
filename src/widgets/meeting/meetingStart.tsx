@@ -27,7 +27,7 @@ const MeetingStart = ({ onStart }: MeetingStartProps) => {
         />
       </div>
 
-      <div className="w-full px-2 sm:px-4 pb-12 sm:pb-4 md:pb-6">
+      <div className="w-full px-2 sm:px-4 pb-10 sm:pb-4 md:pb-4">
         <Button format="Button1" color="primary" onClick={onStart}>
           시작하기
         </Button>

@@ -24,27 +24,27 @@ const Step1_6Page = () => {
   const handleRecommend = () => {
     navigate("/Plaza/loading");
 
-    recommendPlaces(undefined, {
-      onSuccess: (data) => {
-        const { regions, meetingId } = data;
+    // recommendPlaces(undefined, {
+    //   onSuccess: (data) => {
+    //     const { regions, meetingId } = data;
 
-        console.log(" 추천 성공! meetingId:", meetingId);
+    //     console.log(" 추천 성공! meetingId:", meetingId);
 
-        navigate("/plaza/step2", {
-          state: {
-            recommendations: regions,
-            meetingId: meetingId,
-          },
-          replace: true,
-        });
-      },
-      onError: (error) => {
-        console.error("장소 추천에 실패했습니다:", error);
-        alert("장소 추천에 실패했습니다. 다시 시도해주세요.");
+    //     navigate("/plaza/step2", {
+    //       state: {
+    //         recommendations: regions,
+    //         meetingId: meetingId,
+    //       },
+    //       replace: true,
+    //     });
+    //   },
+    //   onError: (error) => {
+    //     console.error("장소 추천에 실패했습니다:", error);
+    //     alert("장소 추천에 실패했습니다. 다시 시도해주세요.");
 
-        navigate(-1);
-      },
-    });
+    //     navigate(-1);
+    //   },
+    // });
   };
 
   const handleEdit = () => {

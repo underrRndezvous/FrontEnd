@@ -23,15 +23,17 @@ const IconClose = () => (
 const LoadingPage = () => {
   const navigate = useNavigate();
   const { groupName } = useMeetingStore();
-
+  const meetingData = useMeetingStore();
   const { mutate } = useRecommendPlaces();
 
   useEffect(() => {
     const startTime = Date.now();
-
+    console.log("=== LoadingPage에서 API 호출 데이터 ===");
+    console.log("meetingData:", meetingData);
+    console.log("place 데이터:", meetingData.place);
     mutate(undefined, {
       onSuccess: (data) => {
-        console.log(" API 응답 성공! 받은 데이터 전체:", data);
+        console.log("API 응답 성공! 받은 데이터 전체:", data);
 
         const elapsed = Date.now() - startTime;
         const remainingTime = Math.max(0, 2000 - elapsed);
@@ -56,7 +58,7 @@ const LoadingPage = () => {
         }, remainingTime);
       },
     });
-  }, [mutate, navigate]);
+  }, [mutate, navigate, meetingData]);
 
   return (
     <motion.div
