@@ -27,18 +27,14 @@ const MeetingStart = ({ onStart }: MeetingStartProps) => {
         </p>
       </div>
 
-      <div className="flex flex-col items-center justify-center min-h-0 -mt-8">
+      <div className="flex flex-col items-center justify-center min-h-0">
         <video
           src={plazaVideo}
           autoPlay
           loop
           muted
           playsInline
-          className="w-48 sm:w-60 object-contain bg-transparent rounded-none border-none"
-          style={{
-            backgroundColor: "transparent",
-            mixBlendMode: "multiply",
-          }}
+          className="w-48 sm:w-60 object-contain"
         >
           동영상을 지원하지 않는 브라우저입니다.
         </video>

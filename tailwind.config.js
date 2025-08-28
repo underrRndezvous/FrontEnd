@@ -21,7 +21,8 @@ export default {
         gray3: '#757875',
         gray2: '#B1B4B1',
         gray1: '#EDF0ED',
-        white: '#FCFFFC'
+        white: '#FCFFFC',
+        customBackground: 'rgb(252, 255, 252)'
 
       },
       fontSize: {
