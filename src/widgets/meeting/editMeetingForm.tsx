@@ -161,6 +161,7 @@ const EditMeetingForm = () => {
 
   const handleItemClick = (id: number) => {
     setEditingPlaceId(id);
+
     setOverlayData({
       title: "모임 장소 유형을 선택해주세요",
       buttonText: "다음",
@@ -190,12 +191,16 @@ const EditMeetingForm = () => {
             title: "음식점 유형을 선택해주세요",
             options: foodTypeOptions,
           },
-          BAR: { title: "술집 유형을 선택해주세요", options: barTypeOptions },
+          BAR: {
+            title: "술집 유형을 선택해주세요",
+            options: barTypeOptions,
+          },
           CAFE: {
             title: "카페 유형을 선택해주세요",
             options: atmosphereOptions,
           },
         };
+
         setOverlayData({
           ...nextOverlayMap[placeType],
           buttonText: "선택하기",

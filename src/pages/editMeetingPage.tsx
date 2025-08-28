@@ -3,10 +3,24 @@ import { useNavigate } from "react-router-dom";
 import EditMeetingForm from "@/widgets/meeting/editMeetingForm";
 import AnimatedPageLayout from "@/shared/layout";
 import StepNavigation from "@/widgets/common/stepNavigation";
+import { useMeetingStore } from "@/store/meetingStore";
+
 const EditMeetingPage = () => {
   const navigate = useNavigate();
+  const { startPoint, setStartPoint } = useMeetingStore();
 
   const handleSave = () => {
+    const validDepartures = startPoint.filter((departure) => {
+      const hasValue = [
+        departure.first,
+        departure.second,
+        departure.third,
+      ].some((part) => part && part.trim() !== "");
+      return hasValue;
+    });
+
+    setStartPoint(validDepartures);
+
     navigate("/Plaza/step1_6");
   };
 
