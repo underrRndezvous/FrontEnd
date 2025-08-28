@@ -1,6 +1,6 @@
 import Button from "@/shared/ui/Button";
 import logoImage from "@/shared/asset/images/logo.png";
-import plazaVideo from "@/shared/asset/images/plaza_video.mp4";
+import plazaVideo from "@/shared/asset/images/plaza-video2.mp4";
 interface MeetingStartProps {
   onStart: () => void;
 }
@@ -27,7 +27,7 @@ const MeetingStart = ({ onStart }: MeetingStartProps) => {
         </p>
       </div>
 
-      <div className="flex flex-col items-center justify-center min-h-0">
+      <div className="flex flex-col items-center justify-center min-h-0 -mt-16">
         <video
           src={plazaVideo}
           autoPlay
