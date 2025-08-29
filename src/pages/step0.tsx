@@ -19,7 +19,7 @@ const Step0_Page = () => {
     >
       <div
         className="relative flex flex-col bg-white
-                    w-screen h-[90vh] sm:w-[375px] sm:h-[645px] sm:rounded-lg
+                    w-screen h-screen sm:w-[375px] sm:h-[645px] sm:rounded-lg
                     pt-[env(safe-area-inset-top)] sm:pt-4
                     pb-[env(safe-area-inset-bottom)] sm:pb-2"
       >
