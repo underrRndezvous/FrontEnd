@@ -18,9 +18,9 @@ const MeetingStart = ({ onStart }: MeetingStartProps) => {
 
       <div className="pt-20 sm:pt-24 md:pt-14">
         <h1 className="title-01 mb-2 text-black">
-          모임의 모든 것,
+          모임에 꼭 맞는 선택,
           <br />
-          PLAZA에서 쉽고 빠르게
+          PLAZA에서 쉽고 간편하게!
         </h1>
         <p className="title-03 mb-6 sm:mb-12 text-gray4 min-w-max">
           모임에 딱 맞는 장소, 컨텐츠를 찾을 수 있어요!
