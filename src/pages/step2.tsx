@@ -16,6 +16,7 @@ const Step2_Page = () => {
   const [showToast, setShowToast] = useState(false);
 
   const [isReviewMode, setIsReviewMode] = useState(false);
+  const [hasReachedEnd, setHasReachedEnd] = useState(false);
 
   const recommendationData = location.state?.recommendations;
   const meetingId = location.state?.meetingId;
@@ -48,6 +49,7 @@ const Step2_Page = () => {
 
       if (nextIndex === totalRecommendations - 1) {
         setIsReviewMode(true);
+        setHasReachedEnd(true);
       }
       setIsChanging(false);
     }, 300);
@@ -71,6 +73,20 @@ const Step2_Page = () => {
     }
   };
 
+  const handleReview = () => {
+    setIsChanging(true);
+    setTimeout(() => {
+      let nextIndex;
+      if (currentIndex < totalRecommendations - 1) {
+        nextIndex = currentIndex + 1;
+      } else {
+        nextIndex = 0;
+      }
+      setCurrentIndex(nextIndex);
+      setIsChanging(false);
+    }, 300);
+  };
+
   const currentRecommendation = recommendationData[currentIndex];
 
   if (!currentRecommendation) {
@@ -82,8 +98,31 @@ const Step2_Page = () => {
   }
 
   const isAtFirstRecommendation = currentIndex === 0;
+  const isAtLastRecommendation = currentIndex === totalRecommendations - 1;
 
-  const shouldDisablePrevious = isReviewMode && isAtFirstRecommendation;
+  const getPrevButtonProps = () => {
+    if (!isReviewMode) {
+      return {
+        text: "다른 장소 찾기",
+        handler: handleFindAnotherPlace,
+        disabled: false,
+      };
+    } else if (hasReachedEnd) {
+      return {
+        text: "다시보기",
+        handler: handleReview,
+        disabled: false,
+      };
+    } else {
+      return {
+        text: "이전",
+        handler: handleGoPrevious,
+        disabled: false,
+      };
+    }
+  };
+
+  const prevButtonProps = getPrevButtonProps();
 
   const titleWithIcon = (
     <div className="flex items-center justify-center">
@@ -103,10 +142,10 @@ const Step2_Page = () => {
         title={titleWithIcon}
         subtitle=""
         onNext={handleSelect}
-        onPrev={isReviewMode ? handleGoPrevious : handleFindAnotherPlace}
+        onPrev={prevButtonProps.handler}
         nextButtonText="이 장소 선택하기"
-        prevButtonText={isReviewMode ? "이전" : "다른 장소 찾기"}
-        isPrevDisabled={shouldDisablePrevious}
+        prevButtonText={prevButtonProps.text}
+        isPrevDisabled={prevButtonProps.disabled}
         contentAlignment="start"
         isScrollable={false}
       >
