@@ -198,7 +198,12 @@ const Step1_4Page = () => {
       setOverlayData(null);
     }
   };
-
+  const handleOverlayClose = () => {
+    if (overlayData?.step === "sub") {
+      return;
+    }
+    setOverlayData(null);
+  };
   const isNextDisabled =
     places.filter((p) => p.placeType !== null).length === 0;
 
@@ -224,10 +229,7 @@ const Step1_4Page = () => {
             />
           </div>
         </StepFormLayout>
-        <Overlay
-          isOpen={overlayData !== null}
-          onClose={() => setOverlayData(null)}
-        >
+        <Overlay isOpen={overlayData !== null} onClose={handleOverlayClose}>
           {overlayData && (
             <SelectionOverlay
               key={overlayData.title}
@@ -235,7 +237,7 @@ const Step1_4Page = () => {
               buttonText={overlayData.buttonText}
               options={overlayData.options}
               onConfirm={handleConfirm}
-              onClose={() => setOverlayData(null)}
+              onClose={handleOverlayClose}
             />
           )}
         </Overlay>

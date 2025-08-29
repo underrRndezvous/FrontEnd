@@ -173,6 +173,7 @@ const EditMeetingForm = () => {
   const handleConfirm = (selectedId: string) => {
     const isMainStep = overlayData?.step === "main";
     const editingId = editingPlaceId!;
+
     if (isMainStep) {
       const placeType = selectedId as PlaceType;
       setPlaces(
@@ -250,7 +251,12 @@ const EditMeetingForm = () => {
       setOverlayData(null);
     }
   };
-
+  const handleOverlayClose = () => {
+    if (overlayData?.step === "sub") {
+      return;
+    }
+    setOverlayData(null);
+  };
   const handleAddPlace = () => {
     if (places.length >= 5) return;
     const nextId =
@@ -427,17 +433,14 @@ const EditMeetingForm = () => {
         </section>
       </div>
 
-      <Overlay
-        isOpen={overlayData !== null}
-        onClose={() => setOverlayData(null)}
-      >
+      <Overlay isOpen={overlayData !== null} onClose={handleOverlayClose}>
         {overlayData && (
           <SelectionOverlay
             title={overlayData.title}
             buttonText={overlayData.buttonText}
             options={overlayData.options}
             onConfirm={handleConfirm}
-            onClose={() => setOverlayData(null)}
+            onClose={handleOverlayClose}
           />
         )}
       </Overlay>
